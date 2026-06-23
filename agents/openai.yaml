@@ -1,0 +1,4 @@
+interface:
+  display_name: "CS Paper Review Protocol"
+  short_description: "Venue-aware CS paper review protocol"
+  default_prompt: "Use $cs-paper-review-protocol to run a strict venue-aware review of my CS paper from the LaTeX source and PDF."
