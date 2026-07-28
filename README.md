@@ -37,6 +37,72 @@ authority, and compares topic proximity across six scientific axes. Corpus
 size and resemblance never determine acceptance or waive a core criterion.
 See [venue conditioning](references/venue-conditioning.md).
 
+## Review pipeline
+
+This is the per-paper workflow. Repository refresh, adapter evaluation, and
+release work are maintenance activities and do not run inside this pipeline.
+
+```mermaid
+flowchart TD
+    S(["Start initial or delta review"]) --> A{"Authority, privacy, and policy allow review?"}
+
+    A -- "No" --> B["Blocked preflight<br/>Do not inspect protected content"]
+    B --> END
+    A -- "Yes" --> F["Freeze exact source, PDF, supplements, and lineage<br/>Delta also binds the prior run and typed author response"]
+
+    F --> H{"Initial or delta review?"}
+    H -- "Initial" --> I
+    H -- "Delta" --> G{"Pre-review delta continuity validates?<br/>Exact initial predecessor, unchanged goal/target/profile/coverage authority,<br/>chronology, and typed response bindings"}
+    G -- "No" --> P["Partial or blocked<br/>Record the exact unresolved dependency"]
+    G -- "Yes" --> I{"Authoritative scientific source readable?"}
+    I -- "No" --> BI["Blocked<br/>Record the exact source-integrity gap"]
+    I -- "Yes" --> J{"Bound PDF alignment sufficient for rendered-layout claims?"}
+    J -- "No" --> W["Continue with an explicit rendering limitation"]
+    J -- "Yes" --> V{"Target venue state"}
+    W --> V
+
+    V -- "Unknown" --> C["Portable criteria and coverage map"]
+    V -- "Known profile validates" --> C
+    V -- "Known profile unavailable or invalid" --> U["Continue portable-only<br/>Record the venue-overlay limitation"]
+    U --> C
+
+    C --> R["Root portable scientific assessment<br/>If the Codex adapter is active, request Sol Ultra"]
+
+    R --> D{"Would a bounded independent or specialist check add material evidence?"}
+    D -- "Yes" --> L["Optional leaf task<br/>Isolated inputs and canonical JSON receipt<br/>If the Codex adapter is active, request Sol Ultra"]
+    L --> X["Persist task state<br/>Recover interruption and reconcile late results"]
+    X --> D
+
+    D -- "No or no more" --> E["Verify evidence and adjudicate one canonical ledger<br/>Delta: verify successor evidence and inspect introduced risk"]
+    E --> Q{"All criteria, delta transitions, tasks, conflicts, and limitations settled?"}
+
+    Q -- "A targeted check can resolve the gap" --> T["Acquire bounded targeted evidence<br/>Root check or optional isolated leaf with persisted lifecycle"]
+    T --> E
+    Q -- "Author evidence, authority, or an experiment is required" --> P
+    Q -- "Yes" --> O["Apply a validated venue profile only after the portable conclusion"]
+
+    O --> M{"Optional comparison corpus requested?"}
+    M -- "Yes" --> K["Contextual calibration only<br/>Keep venue-background and topic-near corpora separate"]
+    M -- "No" --> Y
+    K --> Y["Generate canonical reviewer, AE, and summary views<br/>Run deterministic validation"]
+    BI --> Y
+    P --> Y
+    Y --> Z{"Validation passes?"}
+    Z -- "No" --> Y
+    Z -- "Yes" --> OUT["Complete, partial, or blocked<br/>Stop without editing the manuscript"]
+
+    OUT --> DR{"Author later requests a delta review?"}
+    DR -- "Yes" --> S
+    DR -- "No" --> END(["End"])
+```
+
+The root is the sole canonical writer. Delegation follows uncovered evidence
+risk. Task count is an observed runtime fact, not a rigor criterion. Targeted
+verification and delta review are the only scientific feedback loops; neither
+loop authorises paper editing or experiment execution. Sol Ultra controls apply
+when the optional Codex adapter is active; corpus calibration occurs only after
+the portable assessment and any validated venue overlay.
+
 ## Use
 
 Invoke `$cs-paper-review` and provide the manuscript source, matching PDF when
@@ -198,7 +264,8 @@ results, and effective runtime telemetry are distinct facts. A task name,
 static agent file, or self-report is not configuration proof. The current
 offline validator reserves but does not grant `runtime-attested`.
 `configured-and-evaluated` is the highest state available without trusted
-effective telemetry. Release `0.2.0` selects
+effective telemetry. Release `0.2.1` preserves the lifecycle selection made in
+`0.2.0` and changes documentation only:
 `persisted-task-registry` through the exact
 [adapter manifest](adapters/codex/adapter-manifest.json) and passing
 [promotion record](compatibility/adapter-promotion.json). Both candidates

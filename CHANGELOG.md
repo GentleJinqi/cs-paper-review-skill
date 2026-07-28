@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.2.1 — 2026-07-28
+
+- Added a concise, user-facing conceptual pipeline to both English and Chinese
+  READMEs so readers can see the normal per-paper review flow, evidence-driven
+  delegation loop, completion gate, and delta-review loop at a glance.
+- Kept maintainer-only skill-update and release orchestration out of the public
+  README.
+
+This is a documentation-only patch. It does not change the portable scientific
+core, venue profiles, Sol Ultra adapter, schemas, validators, lifecycle
+selection, or evaluation claims from `0.2.0`.
+
 ## 0.2.0 — 2026-07-28
 
 - Rebuilt the public repository as the portable review-core authority while

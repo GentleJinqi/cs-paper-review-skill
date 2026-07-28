@@ -1,14 +1,18 @@
 {
   "schema_version": "1.0.0",
-  "observed_remote_main": "2810ea62cdc24bed48b8079fab02b4cb684c0238",
+  "observed_remote_main": "8a4ce8251e3180146244768ab8219817d5200813",
   "observed_tags_and_releases": {
-    "tags": [],
-    "github_releases": []
+    "tags": [
+      "v0.2.0"
+    ],
+    "github_releases": [
+      "v0.2.0"
+    ]
   },
-  "previous_released_version_or_none": null,
-  "change_class": "minor-pre-1.0-breaking",
-  "selected_version": "0.2.0",
-  "selected_tag": "v0.2.0",
-  "rationale": "This is the first licensed tagged release. It replaces historical fixed-count and default-target behaviour with a portable evidence contract; under pre-1.0 SemVer that breaking capability redesign advances the minor version.",
-  "decided_at": "2026-07-28T10:50:00+01:00"
+  "previous_released_version_or_none": "0.2.0",
+  "change_class": "patch-documentation-only",
+  "selected_version": "0.2.1",
+  "selected_tag": "v0.2.1",
+  "rationale": "This patch adds the user-facing per-paper review pipeline to the bilingual READMEs. It changes no scientific, venue, adapter, schema, validator, lifecycle, or evaluation behaviour.",
+  "decided_at": "2026-07-28T12:54:22+01:00"
 }

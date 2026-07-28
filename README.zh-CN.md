@@ -32,6 +32,71 @@ topic-near 数据集必须分开，决策状态要有证据等级，方向相近
 本身既不能预测录用，也不能豁免 core criterion。详见
 [venue conditioning](references/venue-conditioning.md)。
 
+## Review 执行管线
+
+这是单篇论文的实际执行流程。外部仓库更新、adapter 候选评估和发布工作属于
+维护期，不会进入这条管线。
+
+```mermaid
+flowchart TD
+    S(["开始 initial 或 delta review"]) --> A{"授权、隐私和政策是否允许 review？"}
+
+    A -- "否" --> B["Blocked preflight<br/>不读取受保护内容"]
+    B --> END
+    A -- "是" --> F["冻结准确 source、PDF、supplement 与 lineage<br/>Delta 另绑定 prior run 和 typed author response"]
+
+    F --> H{"Initial 还是 delta review？"}
+    H -- "Initial" --> I
+    H -- "Delta" --> G{"Review 前的 delta 连续性是否通过校验？<br/>精确 initial predecessor、不变的 goal/target/profile/coverage authority、<br/>chronology 与 typed response bindings"}
+    G -- "否" --> P["Partial 或 blocked<br/>准确记录未解决的依赖"]
+    G -- "是" --> I{"权威科学 source 是否可读？"}
+    I -- "否" --> BI["Blocked<br/>准确记录 source 完整性缺口"]
+    I -- "是" --> J{"绑定的 PDF 对齐是否足以支持 rendered-layout 判断？"}
+    J -- "否" --> W["继续 review，并明确记录 rendering limitation"]
+    J -- "是" --> V{"目标 venue 状态"}
+    W --> V
+
+    V -- "Unknown" --> C["Portable criteria 与 coverage map"]
+    V -- "已知且 profile 校验通过" --> C
+    V -- "已知但 profile 缺失或无效" --> U["继续 portable-only review<br/>记录 venue-overlay limitation"]
+    U --> C
+
+    C --> R["root portable 科学评估<br/>启用 Codex adapter 时请求 Sol Ultra"]
+
+    R --> D{"有界独立或专门核验能否增加实质证据？"}
+    D -- "是" --> L["可选叶子任务<br/>隔离输入并返回 canonical JSON receipt<br/>启用 Codex adapter 时请求 Sol Ultra"]
+    L --> X["持久化任务状态<br/>中断后恢复并对账 late result"]
+    X --> D
+
+    D -- "否或不再需要" --> E["核验证据并裁决为唯一 canonical ledger<br/>Delta：核验 successor evidence 并检查 introduced risk"]
+    E --> Q{"所有 criteria、delta transition、task、冲突和 limitation 均已结算？"}
+
+    Q -- "定向核验可以解决" --> T["获取有界定向证据<br/>由 root 核验，或使用具备持久化生命周期的可选隔离叶子任务"]
+    T --> E
+    Q -- "需要作者证据、权限或新实验" --> P
+    Q -- "是" --> O["只在 portable 结论之后应用已校验的 venue profile"]
+
+    O --> M{"是否请求可选 comparison corpus？"}
+    M -- "是" --> K["仅作语境校准<br/>venue-background 与 topic-near corpus 分离"]
+    M -- "否" --> Y
+    K --> Y["生成 canonical reviewer、AE 与 summary views<br/>执行确定性校验"]
+    BI --> Y
+    P --> Y
+    Y --> Z{"校验通过？"}
+    Z -- "否" --> Y
+    Z -- "是" --> OUT["Complete、partial 或 blocked<br/>停止且不修改论文"]
+
+    OUT --> DR{"作者之后是否请求 delta review？"}
+    DR -- "是" --> S
+    DR -- "否" --> END(["结束"])
+```
+
+root 是唯一 canonical writer。是否委派只取决于尚未覆盖的证据风险；任务
+数量是运行观察值，不是严谨性指标。定向核验与 delta review 是仅有的科学
+反馈 loop；二者都不授权修改论文或运行实验。只有启用可选 Codex adapter
+时才应用 Sol Ultra 控制；corpus 校准仅发生在 portable assessment 以及任何
+已校验 venue overlay 之后。
+
 ## 使用方式
 
 调用 `$cs-paper-review`，并说明稿件 source、与之匹配的 PDF、supplement、
@@ -178,7 +243,7 @@ task）请求 `gpt-5.6-sol` 与 Codex `ultra`。root 根据独立评估或专业
 是四类不同事实。任务名称、静态 agent 文件或子任务自述都不能证明实际
 配置。当前离线 validator 会保留但不会授予 `runtime-attested`。
 `configured-and-evaluated` 是没有可信 effective telemetry 时可用的最高
-状态。`0.2.0` release 通过精确的
+状态。`0.2.1` 只更新文档，并保留 `0.2.0` 已作出的 lifecycle 选择：
 [adapter manifest](adapters/codex/adapter-manifest.json) 与通过的
 [promotion record](compatibility/adapter-promotion.json) 选择了
 `persisted-task-registry`。两个候选在同一套 oracle-blind fixtures 上分别

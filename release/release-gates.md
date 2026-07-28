@@ -1,7 +1,14 @@
-# Release gates for v0.2.0
+# Release gates for v0.2.1
 
 The release may be tagged only when the exact candidate commit satisfies:
 
+- the public README contains only the user-facing per-paper review pipeline;
+  maintainer update/release orchestration remains outside the public README;
+- the English and Chinese Mermaid graphs have the same nodes, branches, and
+  feedback loops, with language-only differences;
+- `SKILL.md`, scientific core, venue profiles, Sol Ultra adapter, schemas,
+  validators, lifecycle selection, and evaluation artifacts remain
+  byte-identical to `v0.2.0`;
 - deterministic bundle, run-contract, corpus, fixture, closure, and release
   validators;
 - a selected lifecycle candidate backed by two oracle-blind Sol Ultra
