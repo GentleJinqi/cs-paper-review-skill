@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/cs-paper-review/adapter-evaluation-authority.schema.json",
+  "title": "Release-governed adapter evaluation authority",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "authority_id",
+    "fixture_set",
+    "fixture_manifest_locator",
+    "fixture_manifest_sha256",
+    "scorer",
+    "fixtures",
+    "semantic_dimensions",
+    "selection_rule"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "authority_id": {
+      "const": "adapter-lifecycle-forward-v1"
+    },
+    "fixture_set": {
+      "const": "forward-v1"
+    },
+    "fixture_manifest_locator": {
+      "const": "evals/adapter-fixtures/manifest.json"
+    },
+    "fixture_manifest_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "scorer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scorer_id",
+        "locator",
+        "sha256",
+        "version",
+        "role"
+      ],
+      "properties": {
+        "scorer_id": {
+          "const": "codex-evaluation-harness"
+        },
+        "locator": {
+          "const": "scripts/adapter_evaluation_scorer.py"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "version": {
+          "const": "1.0.0"
+        },
+        "role": {
+          "const": "deterministic_scorer_not_execution_attestation"
+        }
+      }
+    },
+    "fixtures": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "fixture_id",
+          "dimension",
+          "assertion_ids",
+          "input_sha256",
+          "oracle_sha256"
+        ],
+        "properties": {
+          "fixture_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "dimension": {
+            "enum": [
+              "quality",
+              "lifecycle"
+            ]
+          },
+          "assertion_ids": {
+            "type": "array",
+            "minItems": 2,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "input_sha256": {
+            "$ref": "#/$defs/sha256"
+          },
+          "oracle_sha256": {
+            "$ref": "#/$defs/sha256"
+          }
+        }
+      }
+    },
+    "semantic_dimensions": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "compaction_recovery",
+          "late_result_handling",
+          "duplicate_dispatch",
+          "evidence_retention",
+          "complexity",
+          "review_quality"
+        ]
+      }
+    },
+    "selection_rule": {
+      "const": "strict_preference_majority"
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

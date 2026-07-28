@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0.0",
+  "authority_id": "adapter-lifecycle-forward-v1",
+  "fixture_set": "forward-v1",
+  "fixture_manifest_locator": "evals/adapter-fixtures/manifest.json",
+  "fixture_manifest_sha256": "8f1d0ab8d19f37fd9bb9d023d438e7b53b5338939cc3a4071ae5c40bcea9815b",
+  "scorer": {
+    "scorer_id": "codex-evaluation-harness",
+    "locator": "scripts/adapter_evaluation_scorer.py",
+    "sha256": "dfacbc817215d02be2ac20591fb3191dcc8548d9af275dfae7f818016eb81a1f",
+    "version": "1.0.0",
+    "role": "deterministic_scorer_not_execution_attestation"
+  },
+  "fixtures": [
+    {
+      "fixture_id": "quality-claim-evidence",
+      "dimension": "quality",
+      "assertion_ids": [
+        "finding-recall-preserved",
+        "no-fabricated-finding"
+      ],
+      "input_sha256": "e6f2c49dc6ea6b66c46563c2b6f67dd83812c80391db40b40d6514071247bf60",
+      "oracle_sha256": "8ed1b3a5b1003116766b25b83e403ef42013701dfce6d2f40a32cf75e9bc7560"
+    },
+    {
+      "fixture_id": "lifecycle-interruption",
+      "dimension": "lifecycle",
+      "assertion_ids": [
+        "interruption-recovered",
+        "no-duplicate-dispatch"
+      ],
+      "input_sha256": "a0195a3dee82a14ce3523a3b5930aa0c7721ddd2ae5a9d4bee8182a00a6b0460",
+      "oracle_sha256": "ffaa7fbc4712a690133624617e1874354e299925e8eb118256c87b67717649ad"
+    }
+  ],
+  "semantic_dimensions": [
+    "compaction_recovery",
+    "late_result_handling",
+    "duplicate_dispatch",
+    "evidence_retention",
+    "complexity",
+    "review_quality"
+  ],
+  "selection_rule": "strict_preference_majority"
+}

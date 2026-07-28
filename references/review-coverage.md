@@ -16,6 +16,15 @@ Inapplicable is a justified result, never an omission. Uncertain and blocked
 rows prevent complete status. A single finding may satisfy several rows when
 it has one primary criterion and lists the others as related criteria.
 
+For a delta run, `delta_applicability_reconciliation` is allowed and required
+only when a criterion's applicability differs from the validated predecessor.
+It binds the exact prior and current values, canonical author-response ID,
+current evidence artifact IDs, and a paper-specific rationale. It must be
+absent or `null` when applicability is unchanged. If a carried criterion
+becomes `inapplicable`, its finding must be `disputed` and `rejected` with
+non-obligating closure; applicability drift cannot be presented as a resolved
+scientific repair.
+
 ## Canonical criteria
 
 | Criterion ID | Primary stage | Responsibility |
@@ -24,7 +33,7 @@ it has one primary criterion and lists the others as related criteria.
 | `RC-INPUT-LINEAGE` | `input-freeze` | Binding artifact identity, hash, version, and lineage |
 | `RC-INPUT-ALIGNMENT` | `input-freeze` | Source/rendering match and evidentiary roles |
 | `RC-INPUT-VERIFIABILITY` | `input-freeze` | Read integrity and sufficient inputs for the requested scope |
-| `RC-CRITERIA-AUTHORITY` | `criteria-freeze` | Current first-party requirements separated from calibration |
+| `RC-CRITERIA-AUTHORITY` | `criteria-freeze` | First-party requirements with a recorded currency boundary, separated from calibration |
 | `RC-COVERAGE-ACCOUNTING` | `coverage-map` | One evidence-bounded disposition for every canonical responsibility |
 | `RC-DELTA-LINEAGE` | `coverage-map` | Prior-ledger and revised-artifact traceability when applicable |
 | `RC-PROBLEM-FORMULATION` | `scientific-assessment` | Problem, assumptions, scope, and task identity |

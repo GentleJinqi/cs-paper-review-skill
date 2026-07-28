@@ -1,113 +1,296 @@
-# CS Paper Review Protocol
+# CS Paper Review
 
 [中文说明](README.zh-CN.md)
 
-`cs-paper-review-protocol` is a Codex skill for strict, venue-aware pre-submission review of CS, ML, CV, NLP, and related research manuscripts. It is designed for papers submitted to venues such as TMLR, ICLR, NeurIPS, ICML, CVPR, ICCV, ECCV, WACV, ACL, EMNLP, NAACL, and similar venues.
+`cs-paper-review` is an author-side, review-only workflow for
+evidence-bounded assessment of CS, ML, CV, NLP, and related manuscripts. It
+freezes the reviewed version, accounts for scientific responsibilities,
+verifies material findings, and records uncertainty. It does not edit the
+paper, run experiments, or manufacture missing evidence.
 
-The skill reviews a manuscript. It does not edit the manuscript, run experiments, invent results, or silently turn missing author data into fabricated evidence.
+## Architecture
 
-## Recommended Setup
+The release has three deliberately separate layers:
 
-This skill is strongest when Codex can use multiple subagents. For strict review, strongly prefer:
+1. The portable scientific core defines review responsibilities,
+   criterion-by-criterion coverage, evidence rules, adjudication, and truthful
+   completion. Start with
+   [scientific-core](references/scientific-core.md),
+   [review-coverage](references/review-coverage.md), and
+   [review-workflow](references/review-workflow.md).
+2. An optional venue overlay may add venue-, year-, and track-specific
+   criteria or native assessment fields. It activates only after a versioned
+   profile, source manifest, and release-governed authority record resolve
+   and their local bytes verify. This offline check proves the recorded
+   tuple, host allowlist, and byte integrity; source authority and currency
+   remain release/update governance obligations rather than live network
+   attestations. An unspecified target remains `unknown`; no venue is
+   substituted and no acceptance probability is predicted.
+3. The optional
+   [Codex GPT-5.6 Sol Ultra adapter](adapters/codex-gpt-5.6-sol-ultra.md)
+   controls one execution environment. It cannot weaken or replace the
+   scientific core.
 
-```toml
-[agents]
-max_threads = 12
+## Use
+
+Invoke `$cs-paper-review` and provide the manuscript source, matching PDF when
+available, supplements, and the authority or confidentiality constraints that
+govern processing. A delta review additionally requires the frozen prior
+initial run, its finding ledger, the prior source, and a canonical typed
+author-response record; the ledger alone is insufficient. A `complete` delta
+also requires matched prior/current PDFs and distinct visible revision
+evidence in both source and rendering.
+
+Venue-neutral example:
+
+```text
+Use $cs-paper-review for an author-side pre-submission review. The target
+venue is unknown. Freeze main.tex and its matching PDF, then report an
+evidence-grounded finding ledger without changing the manuscript.
 ```
 
-Lower limits still work, but strict review will run in batches and may take longer.
+Target-conditioned example:
 
-## Install
+```text
+Use $cs-paper-review for an ICML 2026 main-track review. Apply the venue
+overlay only if the exact release-governed profile validates; otherwise keep
+the scientific assessment venue-neutral and disclose the limitation.
+```
 
-If your Codex setup loads skills from `~/.codex/skills`, clone this repository there:
+Delta example:
+
+```text
+Use $cs-paper-review for a delta review against the frozen prior ledger.
+Preserve stable finding identities and distinguish resolution from impact
+change.
+```
+
+The target repository's instructions and the user's chosen output location
+remain authoritative. This skill does not impose a global run directory.
+
+## Execution footprint
+
+Repository source discovery, upstream refresh, lifecycle-candidate comparison,
+the unit suite, and release/rights review are maintenance-time work. They are
+not rerun for each paper.
+
+A paper review starts with one root and the portable criterion map. Delegation
+is optional and only follows a distinct material evidence need; a root-only run
+is valid when it can settle the coverage. The target overlay is loaded only
+when the user names a target. `validate_run.py` is a local deterministic check,
+not another model-review graph. Nothing in the runtime defines rigor by agent
+count, repeated rounds, or token consumption.
+
+## Evidence workflow
+
+The workflow proceeds through scope and authorisation, input freeze, criteria
+freeze, coverage mapping, scientific assessment, targeted verification,
+adjudication, synthesis, and completion.
+
+Editable source governs scientific content. Only a matching rendered artifact
+can support layout or readability conclusions. Missing, stale, mismatched, or
+unreadable inputs produce explicit uncertainty rather than guessed passes or
+defects. A `matched` state is supported by a typed receipt that binds one
+source and one distinct PDF plus explicit comparison checks; offline
+validation does not rebuild the PDF or independently establish provenance.
+
+Delegation is optional and follows uncovered evidence risk. The root remains
+the sole owner of canonical run, coverage, finding, and synthesis artifacts.
+Concurrency is a capacity constraint, not evidence of rigor.
+
+## Canonical contracts
+
+- [run manifest](templates/run-manifest.json): input lineage, authority,
+  target/profile state, execution provenance, coverage, and completion;
+- [finding ledger](templates/finding-ledger.json): stable findings,
+  verification, delta axes, closure gates, dissent, and provenance;
+- [task report schema](schemas/task-report.schema.json): the canonical,
+  byte-bound JSON result of each completed delegated task;
+- [reviewer report](templates/reviewer-report.md): evidence-bounded assessment;
+- [adjudication assessment](templates/ae-assessment.md): disposition,
+  conflicts, merges, and dissent;
+- [review summary](templates/review-summary.md): portable conclusions,
+  optional target overlay, limitations, and non-claims.
+
+The JSON run manifest, ledger, and task reports are machine authorities.
+Markdown reports are human-readable views and must agree with those records;
+they cannot introduce or omit decision-relevant findings. Each view includes
+one canonical JSON machine-binding block for completion, coverage, findings,
+limitations, and structured venue results; the surrounding narrative is
+nonauthoritative.
+
+The shipped run template is deliberately fail-closed: it records unknown
+authority/classification, no protected inputs, no tasks, no outputs, and a
+blocked administrative preflight. Establish authority first; do not merely
+flip the gate while leaving `replace-with-*` template sentinels.
+
+`complete` requires all frozen inputs to validate, every applicable scientific
+obligation to be settled, every dispatched task to be completed with a valid
+byte-bound JSON report and no descendants, typed resolvable evidence for every
+complete stage, all canonical outputs to be produced and bound, reconciled
+limitations, no unresolved dissent, and run/ledger/human-view consistency.
+`partial` preserves useful conclusions while naming unresolved
+responsibilities. `blocked` records a hard authority, policy, input-integrity,
+or capability barrier. A known target with no valid venue profile cannot be
+reported as a complete target-conditioned review.
+
+Venue-native fields are used only when the validated profile defines their
+role, type, prompt, requiredness, labels or numeric range, anchors, and source
+links. The run's structured venue assessment must account for every venue rule
+and native field, validate each recorded value against its type/range/labels,
+and bind its digest into all human views. Portable decision impact remains
+separate and authoritative when no native field exists. A locally `loaded`
+profile is a validated snapshot, not proof that an official page remains
+current.
+
+Each published source record binds a bounded manual capture of visible
+first-party text, exact UTF-8 byte spans, and a human release review of the
+bounded interpretation. The offline validator proves capture/excerpt,
+claim/profile, manifest, and release-registry consistency. It does not fetch
+the live page or machine-prove that a paraphrase is semantically entailed.
+Profile prompts and simulation-required fields are local operational mappings,
+not claims about official form requiredness. Refresh and human-audit the
+official sources before relying on a target-conditioned live review.
+
+Machine-contract entry points include the
+[run schema](schemas/run-manifest.schema.json),
+[ledger schema](schemas/finding-ledger.schema.json),
+[task-report schema](schemas/task-report.schema.json),
+[runtime-receipt schema](schemas/runtime-evidence-receipt.schema.json),
+[source/PDF alignment schema](schemas/source-pdf-alignment-receipt.schema.json),
+[rendered-evidence schema](schemas/rendered-evidence-receipt.schema.json),
+[author-response schema](schemas/author-response.schema.json),
+[venue profile](schemas/venue-profile.schema.json),
+[venue source manifest](schemas/venue-source-manifest.schema.json),
+[venue source evidence](schemas/venue-source-evidence.schema.json),
+[venue source capture](schemas/venue-source-capture.schema.json),
+[venue authority registry schema](schemas/venue-authority-registry.schema.json),
+[adapter manifest](adapters/codex/adapter-manifest.json), and
+[promotion record schema](schemas/adapter-promotion.schema.json). Promotion
+fixtures use the adjacent typed evaluation schemas, including separate
+[candidate-execution](schemas/adapter-evaluation-execution-receipt.schema.json)
+and
+[independent semantic-review](schemas/adapter-semantic-review-receipt.schema.json)
+receipts.
+
+## Sol Ultra compatibility
+
+The adapter requests `gpt-5.6-sol` with Codex `ultra` for the root and every
+completed adapter task, including all substantive tasks. The root decides
+whether independent or specialist work can materially improve evidence;
+completed adapter-task records must request read-only, leaf-only,
+context-isolated execution. Those are adapter-required, byte-cross-recorded
+dispatch controls; the
+offline validator does not independently observe effective permissions,
+actual fork history, or host topology.
+Incomplete or portable tasks use their separate non-adapter representation.
+There is no execution roster or count-based review tier.
+
+Requested configuration, byte-verified configuration receipts, validation
+results, and effective runtime telemetry are distinct facts. A task name,
+static agent file, or self-report is not configuration proof. The current
+offline validator reserves but does not grant `runtime-attested`.
+`configured-and-evaluated` is the schema's future upper state without trusted
+telemetry. In this release no lifecycle candidate is selected, so the highest
+non-blocked compatibility claim is `evaluation_pending`.
+
+Both lifecycle candidates remain inactive. The current release therefore
+cannot claim more than `evaluation_pending`. A later comparative evaluation
+may select one only by binding its promotion record in the
+[adapter manifest](adapters/codex/adapter-manifest.json). Selection requires
+both candidates to have distinct completed Sol Ultra execution receipts over
+the same fixtures and an independent Sol Ultra semantic comparison across the
+six published lifecycle/quality dimensions.
+
+## Offline validation
+
+Validate the installed bundle:
 
 ```bash
-git clone git@github.com:GentleJinqi/cs-paper-review-skill.git ~/.codex/skills/cs-paper-review-protocol
+python scripts/validate_bundle.py .
 ```
 
-You can also keep it repo-local and invoke it by path if your workflow supports local skill references.
+Validate a completed run with separate bundle and run-evidence roots:
 
-## Quick Start
-
-Typical strict TMLR review:
-
-```text
-Use $cs-paper-review-protocol to run a strict TMLR review of my paper. Use the LaTeX source as the content source and the PDF for layout/readability checks.
+```bash
+python scripts/validate_run.py \
+  --bundle-root . \
+  --evidence-root /absolute/path/to/review-run \
+  /absolute/path/to/review-run/run-manifest.json \
+  /absolute/path/to/review-run/finding-ledger.json
 ```
 
-Standard lighter review:
+After every dispatch has a terminal record, generate the exact inventory from
+the run manifest. `--recorded-at` must be the real observation time after every
+bound task report and control receipt:
 
-```text
-Use $cs-paper-review-protocol to run a standard NeurIPS review of my paper from main.tex and main.pdf.
+```bash
+python scripts/build_terminal_inventory.py \
+  --bundle-root . \
+  --recorded-at 2026-07-28T14:30:00Z \
+  /absolute/path/to/review-run/run-manifest.json \
+  > /absolute/path/to/review-run/delegation-terminal-inventory.json
 ```
 
-If you do not specify a venue, the default venue profile is TMLR.
+Record that file's raw-byte SHA-256 in the run manifest. Generate each complete
+deterministic human view rather than hand-editing its narrative:
 
-## Review Tiers
-
-### Strict
-
-Default mode. It uses 3 or 4 blind holistic reviewer agents plus process agents for coverage, AE-style adjudication, regression or new-risk review when relevant, special-topic review, AI-writing/style review, terminology/math review, layout/PDF review, benchmark/meta calibration, and final meta-adjudication.
-
-Strict mode is intended for serious pre-submission checks when review quality matters more than token cost.
-
-### Standard
-
-Lighter mode. It uses 3 blind holistic reviewers, 1 AE-style adjudicator, and a combined regression/new-risk/meta reviewer when prior ledgers exist. A style or layout reviewer may be added when the PDF or manuscript structure suggests risk.
-
-Standard mode is useful for later review rounds or quick sanity checks after major issues have already been repaired.
-
-## Workflow Map
-
-```mermaid
-flowchart TD
-    A["User request"] --> B["Read repo instructions"]
-    B --> C["Freeze LaTeX/PDF inputs"]
-    C --> D["Refresh official venue rubric"]
-    D --> E["Create review-run contract"]
-    E --> F["Blind holistic reviewers"]
-    F --> G["Blind AE-style adjudication"]
-    G --> H["Process audits"]
-    H --> I["Issue ledger"]
-    I --> J["Rejected/downgraded suggestions"]
-    J --> K["Review summary"]
-    K --> L["Subagent cleanup"]
+```bash
+python scripts/render_human_binding.py \
+  --bundle-root . \
+  --role review_summary \
+  /absolute/path/to/review-run/run-manifest.json \
+  /absolute/path/to/review-run/finding-ledger.json \
+  > /absolute/path/to/review-run/review-summary.md
 ```
 
-## What It Produces
+Update that output's raw-byte SHA-256 and run the full validator above. Any
+manual change to a generated human view is rejected.
 
-By default, a run writes artifacts under:
+The CLI applies the published JSON Schema structure first and then the
+cross-file semantic checks. It runs offline, rejects traversal, symlinked or
+hard-linked evidence, and recomputes referenced byte digests.
 
-```text
-.paper-review/runs/<date>-<venue>-<tier>-NN/
-```
+Deterministic policy guards reject venue-outcome forecasts in either direction
+while preserving validated venue-native recommendation fields. They also
+reject using reviewer/task count as a cause of scientific confidence.
+Active Markdown and structured scalars are scanned independently after Unicode
+normalisation and local polarity analysis; sibling fields are never joined,
+and an active file that cannot be structurally parsed fails closed. These are
+bounded guardrails, not a general semantic proof.
 
-Core artifacts include:
+The promotion validator derives case results by comparing typed, hash-bound
+outputs with typed oracles and cross-checks the execution and semantic-review
+receipts. The release authority also pins the exact deterministic scorer
+implementation. That proves supported schema, safe locators, hash equality,
+cross-record consistency, scorer identity, and deterministic agreement. It
+does not authenticate the model executor, semantic reviewer, host, live
+invocation, scientific truth, official-source currency, build equivalence,
+historical nonmutation, effective permissions, or sandbox enforcement.
 
-- `frozen-inputs.md`
-- `official-rubric.md`
-- `review-run-contract.md`
-- reviewer reports
-- `issue-ledger.md`
-- `rejected-suggestions.md`
-- `review-summary.md`
-- `subagent-cleanup.md`
+## Boundaries and provenance
 
-The exact run folder may change if the target repository has its own `AGENTS.md` or review-artifact policy.
+The review workflow is constrained to review-only behaviour: it must not
+mutate manuscript files, transmit confidential material without recorded
+authority, invent results or citations, or turn missing evidence into a
+scientific conclusion. The offline validator checks frozen bytes, role
+separation, receipts, and declared outputs; it cannot prove that no mutation
+happened before those bytes were frozen or that a host enforced an effective
+sandbox. Record such unavailable host evidence as a limitation.
+Official-review use must also satisfy the governing venue policy.
 
-## Boundaries
+The machine-readable venue boundary is defined by the
+[profile schema](schemas/venue-profile.schema.json),
+[source-manifest schema](schemas/venue-source-manifest.schema.json), and
+[authority registry](references/venue-authorities.json).
 
-The skill:
+The initial repository snapshot is preserved in
+[legacy history](docs/legacy-2026-06-23.md). Current external-source pins,
+licence routes, and mechanism-level adoption decisions are recorded under
+[sources](sources/adoption-matrix.md); upstream style alone is not an adopted
+mechanism.
 
-- uses official venue guidance first;
-- treats non-official sources only as labeled field-norm calibration;
-- prefers LaTeX as the scientific content source and PDF as the layout/readability source;
-- treats missing numbers, missing figures, and red revision markup as reviewable gates rather than direct defects;
-- may recommend experiments or author data gates;
-- does not run experiments, edit the manuscript, fabricate numbers, invent citations, or install itself globally.
-
-## Notes On Venue Awareness
-
-For TMLR, the skill uses TMLR-style reviewer recommendation context such as `accept`, `leaning accept`, `leaning reject`, and `reject`, and AE decision context such as `accept as is`, `accept with minor revisions`, and `reject`.
-
-For other venues, it first refreshes official reviewer, author, submission, ethics, reproducibility, and formatting guidance. It does not invent official score fields when the venue does not publish them.
+Release history and reuse boundaries are recorded in
+[CHANGELOG](CHANGELOG.md), [migration guidance](MIGRATION.md),
+[source provenance](SOURCES.md), and
+[third-party notices](THIRD_PARTY_NOTICES.md).

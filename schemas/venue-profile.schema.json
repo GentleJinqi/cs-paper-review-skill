@@ -1,0 +1,289 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/cs-paper-review/venue-profile.schema.json",
+  "title": "Versioned venue review overlay",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "profile_id",
+    "profile_version",
+    "venue",
+    "year",
+    "track",
+    "source_manifest_locator",
+    "source_sha256",
+    "criteria",
+    "native_assessment_fields"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "profile_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "profile_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?$"
+    },
+    "venue": {
+      "type": "string",
+      "minLength": 1
+    },
+    "year": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 2000
+    },
+    "track": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "source_manifest_locator": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "criteria": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/sourced_rule"
+      }
+    },
+    "native_assessment_fields": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/native_field"
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "sourced_rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rule_id",
+        "statement",
+        "portable_criterion_ids",
+        "source_ids",
+        "source_anchors",
+        "source_claim_ids"
+      ],
+      "properties": {
+        "rule_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "portable_criterion_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^RC-[A-Z0-9-]+$"
+          }
+        },
+        "source_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        },
+        "source_anchors": {
+          "$ref": "#/$defs/source_anchors"
+        },
+        "source_claim_ids": {
+          "$ref": "#/$defs/source_claim_ids"
+        }
+      }
+    },
+    "native_field": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "field_id",
+        "role",
+        "field_type",
+        "prompt",
+        "portable_criterion_ids",
+        "required",
+        "minimum",
+        "maximum",
+        "allowed_labels",
+        "anchors",
+        "direction",
+        "source_ids",
+        "source_anchors",
+        "source_claim_ids"
+      ],
+      "properties": {
+        "field_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "role": {
+          "enum": [
+            "reviewer",
+            "area_chair",
+            "meta_reviewer"
+          ]
+        },
+        "field_type": {
+          "enum": [
+            "categorical",
+            "integer_scale",
+            "numeric_scale",
+            "text"
+          ]
+        },
+        "prompt": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "portable_criterion_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^RC-[A-Z0-9-]+$"
+          }
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "minimum": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "maximum": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "allowed_labels": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        },
+        "anchors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "value",
+              "label"
+            ],
+            "properties": {
+              "value": {
+                "type": [
+                  "number",
+                  "string"
+                ]
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              }
+            }
+          }
+        },
+        "direction": {
+          "enum": [
+            "higher_better",
+            "higher_worse",
+            "higher_more_favourable",
+            "higher_more_certain",
+            "not_ordered",
+            "not_applicable"
+          ]
+        },
+        "source_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        },
+        "source_anchors": {
+          "$ref": "#/$defs/source_anchors"
+        },
+        "source_claim_ids": {
+          "$ref": "#/$defs/source_claim_ids"
+        }
+      }
+    },
+    "source_anchors": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source_id",
+          "section_anchor"
+        ],
+        "properties": {
+          "source_id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "section_anchor": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        }
+      }
+    },
+    "source_claim_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      }
+    }
+  }
+}

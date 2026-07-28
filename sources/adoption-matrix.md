@@ -19,6 +19,17 @@ for incremental conformance testing, not accepted into the release.
 | Content injection boundary | OpenJudge safety preflight | evaluation-only | Quoted research is not blocked; actual injected instructions and unavailable classifier fail safely. |
 | Claim drift | ARS claim ladder/token conservation | evaluation-only | Independently authored fixtures and semantic, not token-only, evidence. |
 | Targeted dropped-finding recall | PaperJury recall | evaluation-only | Demonstrated incremental supported recall without duplication or false consensus. |
+| Hierarchical manuscript coverage | academic-writing-skills ordered forward/reverse pass | evaluation-only | A layer-specific receipt must recover orphan headings, paragraph handoff failures, standalone abbreviations, and rendered-table defects without importing writing-style rules or editing the manuscript. |
+
+## Current Integration Status
+
+The refreshed core independently implements the retained input-lineage,
+source/PDF, canonical-ledger, evidence-falsification, dissent, closure, and
+stable-delta mechanisms through its own schemas, validator, and tests. No
+external pipeline or expression was copied. The lifecycle candidates and the
+new hierarchical-coverage candidate remain inactive because the current
+bounded comparison does not justify promotion; absence of a promotion is not
+paper-review incompleteness.
 
 ## Rejected Or Deferred Patterns
 

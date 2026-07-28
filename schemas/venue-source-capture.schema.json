@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/cs-paper-review/venue-source-capture.schema.json",
+  "title": "Bounded manual capture of visible official venue source text",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "source_id",
+    "url",
+    "captured_at",
+    "capture_method",
+    "capture_scope",
+    "captured_text"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "source_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "url": {
+      "type": "string",
+      "pattern": "^https://\\S+$"
+    },
+    "captured_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "capture_method": {
+      "const": "manual_browser_visible_text"
+    },
+    "capture_scope": {
+      "const": "bounded_official_excerpts_not_full_page"
+    },
+    "captured_text": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 12000,
+      "pattern": "\\S"
+    }
+  }
+}

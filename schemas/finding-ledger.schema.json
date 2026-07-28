@@ -86,7 +86,6 @@
             "candidate",
             "retained",
             "merged",
-            "downgraded",
             "rejected",
             "unresolved"
           ]
@@ -150,7 +149,8 @@
         },
         "claim": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "pattern": "\\S"
         },
         "evidence": {
           "type": "object",
@@ -159,30 +159,100 @@
             "artifact_id",
             "source_anchor",
             "semantic_anchor",
-            "observation"
+            "observation",
+            "anchor_verification"
           ],
           "properties": {
             "artifact_id": {
               "type": "string",
-              "minLength": 1
+              "minLength": 1,
+              "pattern": "\\S"
             },
             "source_anchor": {
               "type": "string",
-              "minLength": 1
+              "minLength": 1,
+              "pattern": "\\S"
             },
             "semantic_anchor": {
               "type": "string",
-              "minLength": 1
+              "minLength": 1,
+              "pattern": "\\S"
             },
             "observation": {
               "type": "string",
-              "minLength": 1
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "anchor_verification": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "method",
+                "excerpt",
+                "excerpt_sha256"
+              ],
+              "properties": {
+                "method": {
+                  "enum": [
+                    "utf8_exact_excerpt",
+                    "rendered_receipt"
+                  ]
+                },
+                "excerpt": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "excerpt_sha256": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "start_byte": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 0
+                },
+                "end_byte": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 0
+                },
+                "occurrence": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 1
+                },
+                "rendered_receipt_locator": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "rendered_receipt_sha256": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "pattern": "^[0-9a-f]{64}$"
+                }
+              }
             }
           }
         },
         "why_it_matters": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "pattern": "\\S"
         },
         "action_type": {
           "enum": [
@@ -205,7 +275,8 @@
             "state",
             "owner",
             "gate",
-            "requirement"
+            "requirement",
+            "resolution_evidence"
           ],
           "properties": {
             "state": {
@@ -243,6 +314,117 @@
                 "string",
                 "null"
               ]
+            },
+            "resolution_evidence": {
+              "type": [
+                "object",
+                "null"
+              ],
+              "additionalProperties": false,
+              "required": [
+                "artifact_id",
+                "source_anchor",
+                "semantic_anchor",
+                "observation",
+                "anchor_verification",
+                "author_response_id",
+                "prior_finding_id"
+              ],
+              "properties": {
+                "artifact_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                "source_anchor": {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                "semantic_anchor": {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                "observation": {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                "anchor_verification": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "method",
+                    "excerpt",
+                    "excerpt_sha256"
+                  ],
+                  "properties": {
+                    "method": {
+                      "enum": [
+                        "utf8_exact_excerpt",
+                        "rendered_receipt"
+                      ]
+                    },
+                    "excerpt": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "excerpt_sha256": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "pattern": "^[0-9a-f]{64}$"
+                    },
+                    "start_byte": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ],
+                      "minimum": 0
+                    },
+                    "end_byte": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ],
+                      "minimum": 0
+                    },
+                    "occurrence": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ],
+                      "minimum": 1
+                    },
+                    "rendered_receipt_locator": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "rendered_receipt_sha256": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "pattern": "^[0-9a-f]{64}$"
+                    }
+                  }
+                },
+                "author_response_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                "prior_finding_id": {
+                  "type": "string",
+                  "pattern": "^F-[0-9a-f]{16}$"
+                }
+              }
             }
           }
         },
@@ -267,7 +449,34 @@
                 "null"
               ]
             }
-          }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "state": {
+                    "const": "none"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "summary": {
+                    "const": null
+                  }
+                }
+              },
+              "else": {
+                "properties": {
+                  "summary": {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "\\S"
+                  }
+                }
+              }
+            }
+          ]
         },
         "provenance": {
           "type": "object",
@@ -285,6 +494,7 @@
             },
             "originating_task_ids": {
               "type": "array",
+              "minItems": 1,
               "uniqueItems": true,
               "items": {
                 "type": "string",
@@ -357,4 +567,3 @@
     }
   }
 }
-

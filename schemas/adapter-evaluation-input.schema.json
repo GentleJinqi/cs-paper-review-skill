@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/cs-paper-review/adapter-evaluation-input.schema.json",
+  "title": "Adapter evaluation case input",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "fixture_id",
+    "dimension",
+    "scenario",
+    "assertion_ids",
+    "payload"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "fixture_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "dimension": {
+      "enum": [
+        "quality",
+        "lifecycle"
+      ]
+    },
+    "scenario": {
+      "type": "string",
+      "minLength": 20,
+      "pattern": "\\S"
+    },
+    "assertion_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      }
+    },
+    "payload": {
+      "type": "object"
+    }
+  }
+}

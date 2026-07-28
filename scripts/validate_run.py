@@ -24,6 +24,9 @@ def load_json_object(path: pathlib.Path) -> dict:
         value = json.loads(
             path.read_text(encoding="utf-8"),
             object_pairs_hook=no_duplicates,
+            parse_constant=lambda value: (_ for _ in ()).throw(
+                ValueError(f"non-JSON numeric constant {value}")
+            ),
         )
     except (OSError, UnicodeDecodeError, json.JSONDecodeError, ValueError) as exc:
         raise ValueError(f"{path.as_posix()}: {exc}") from exc
@@ -36,10 +39,12 @@ def parser() -> argparse.ArgumentParser:
     result = argparse.ArgumentParser(
         usage=(
             "python scripts/validate_run.py --bundle-root ROOT "
+            "--evidence-root RUN_ROOT "
             "RUN_MANIFEST FINDING_LEDGER"
         )
     )
     result.add_argument("--bundle-root", required=True)
+    result.add_argument("--evidence-root", required=True)
     result.add_argument("run_manifest")
     result.add_argument("finding_ledger")
     return result
@@ -49,10 +54,18 @@ def main(argv: list[str]) -> int:
     args = parser().parse_args(argv[1:])
     root = pathlib.Path(args.bundle_root)
     try:
-        run = load_json_object(pathlib.Path(args.run_manifest))
-        ledger = load_json_object(pathlib.Path(args.finding_ledger))
+        run_path = pathlib.Path(args.run_manifest).resolve()
+        ledger_path = pathlib.Path(args.finding_ledger).resolve()
+        run = load_json_object(run_path)
+        ledger = load_json_object(ledger_path)
         coverage = load_review_coverage(root)
-        errors = validate_run_pair(run, ledger, coverage, root)
+        errors = validate_run_pair(
+            run,
+            ledger,
+            coverage,
+            root,
+            evidence_root=pathlib.Path(args.evidence_root),
+        )
     except ValueError as exc:
         errors = [f"run-validation: {exc}"]
     if errors:

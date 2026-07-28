@@ -3,7 +3,9 @@
 ## Provenance
 
 - Run ID:
+- Completion: complete / partial / blocked
 - Reviewer/task ID:
+- Canonical JSON task-report locator and SHA-256:
 - Review kind:
 - Frozen artifact IDs and hashes:
 - Target profile ID or `unknown`:
@@ -41,10 +43,24 @@ Candidates are not yet canonical obligations.
 Record evidence-backed strengths and the material checks that produced no
 finding. Do not use generic praise.
 
+## Target-native fields
+
+Complete only fields defined for reviewer role by the validated exact-target
+profile. Record each value first in the structured `venue_assessment`; this
+table is a nonauthoritative view of that machine record.
+
+| Field ID | Role | Required | Type and allowed scale/labels | Recorded value | Anchor and source IDs |
+|---|---|---|---|---|---|
+
 ## Limitations and non-claims
 
 - Unreadable or unavailable evidence:
 - Criteria not completed:
 - External checks not authorised or not performed:
 - No acceptance prediction:
-- No manuscript changes:
+- Mutation-verification evidence or limitation:
+
+This file is a structural reference, not a fillable valid output. Generate the
+complete document, including its exact machine-binding object, with
+`scripts/render_human_binding.py`. Hand editing a generated view invalidates
+its bound digest.

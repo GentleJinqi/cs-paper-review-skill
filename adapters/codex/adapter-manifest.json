@@ -1,16 +1,1 @@
-{
-  "schema_version": "1.0.0",
-  "selected_candidate_id": null,
-  "selected_lifecycle_implementation": null,
-  "promotion_record_locator": null,
-  "candidate_implementations": {
-    "minimal-settled-set": "adapters/codex/candidates/minimal-settled-set.md",
-    "persisted-task-registry": "adapters/codex/candidates/persisted-task-registry.md"
-  },
-  "active_files": [
-    "adapters/codex-gpt-5.6-sol-ultra.md",
-    "adapters/codex/agents/cs-paper-reviewer.toml",
-    "adapters/codex/agents/cs-paper-ae.toml"
-  ],
-  "adapter_payload_sha256": "62bad87655a7233862af6ef0a12649846d6e9a9ad11453ca6a0610db10dc2413"
-}
+{"active_files":["adapters/codex-gpt-5.6-sol-ultra.md","adapters/codex/agents/cs-paper-reviewer.toml","adapters/codex/agents/cs-paper-ae.toml"],"adapter_payload_sha256":"7b5c2df5b59428a591a9360c3c290f0146830c5c480c7767f2a203c2d317866c","candidate_implementations":{"minimal-settled-set":"adapters/codex/candidates/minimal-settled-set.md","persisted-task-registry":"adapters/codex/candidates/persisted-task-registry.md"},"compatibility_payload_sha256":"4ac0eaa9542e27f5672bb198395ed4df8b2d8b4c9ecacba3c4f0ff7848c35ade","promotion_record_locator":null,"promotion_record_sha256":null,"schema_version":"1.0.0","selected_candidate_id":null,"selected_lifecycle_implementation":null}

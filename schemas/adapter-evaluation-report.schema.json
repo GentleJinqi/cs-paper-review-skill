@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/cs-paper-review/adapter-evaluation-report.schema.json",
+  "title": "Adapter evaluation report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "fixture_set",
+    "candidate_id",
+    "candidate_implementation_sha256",
+    "adapter_sha256",
+    "compatibility_payload_sha256",
+    "evaluated_at",
+    "runner",
+    "runner_locator",
+    "runner_sha256",
+    "runner_version",
+    "quality_result",
+    "lifecycle_result",
+    "cases"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "fixture_set": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_id": {
+      "enum": [
+        "minimal-settled-set",
+        "persisted-task-registry"
+      ]
+    },
+    "candidate_implementation_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "adapter_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "compatibility_payload_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "evaluated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "runner": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*$"
+    },
+    "runner_locator": {
+      "type": "string",
+      "minLength": 1
+    },
+    "runner_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "runner_version": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "quality_result": {
+      "enum": [
+        "pass",
+        "fail"
+      ]
+    },
+    "lifecycle_result": {
+      "enum": [
+        "pass",
+        "fail"
+      ]
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "fixture_id",
+          "dimension",
+          "result",
+          "output_locator",
+          "output_sha256"
+        ],
+        "properties": {
+          "fixture_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "dimension": {
+            "enum": [
+              "quality",
+              "lifecycle"
+            ]
+          },
+          "result": {
+            "enum": [
+              "pass",
+              "fail"
+            ]
+          },
+          "output_locator": {
+            "type": "string",
+            "minLength": 1
+          },
+          "output_sha256": {
+            "$ref": "#/$defs/sha256"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

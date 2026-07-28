@@ -9,9 +9,11 @@
     "selected_candidate_id",
     "selected_lifecycle_implementation",
     "promotion_record_locator",
+    "promotion_record_sha256",
     "candidate_implementations",
     "active_files",
-    "adapter_payload_sha256"
+    "adapter_payload_sha256",
+    "compatibility_payload_sha256"
   ],
   "properties": {
     "schema_version": {
@@ -39,6 +41,13 @@
         "string",
         "null"
       ]
+    },
+    "promotion_record_sha256": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9a-f]{64}$"
     },
     "candidate_implementations": {
       "type": "object",
@@ -68,6 +77,10 @@
     "adapter_payload_sha256": {
       "type": "string",
       "pattern": "^[0-9a-f]{64}$"
+    },
+    "compatibility_payload_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
     }
   },
   "oneOf": [
@@ -80,6 +93,9 @@
           "const": null
         },
         "promotion_record_locator": {
+          "const": null
+        },
+        "promotion_record_sha256": {
           "const": null
         }
       }
@@ -95,6 +111,10 @@
         "promotion_record_locator": {
           "type": "string",
           "minLength": 1
+        },
+        "promotion_record_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
         }
       }
     },
@@ -109,9 +129,12 @@
         "promotion_record_locator": {
           "type": "string",
           "minLength": 1
+        },
+        "promotion_record_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
         }
       }
     }
   ]
 }
-

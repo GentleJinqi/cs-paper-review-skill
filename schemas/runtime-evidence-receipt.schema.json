@@ -1,0 +1,498 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/cs-paper-review/runtime-evidence-receipt.schema.json",
+  "title": "Runtime configuration and control-validation receipt",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/configuration"
+    },
+    {
+      "$ref": "#/$defs/control_validation"
+    },
+    {
+      "$ref": "#/$defs/delegation_terminal_inventory"
+    }
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "subject_kind": {
+      "enum": [
+        "root",
+        "task"
+      ]
+    },
+    "configuration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "receipt_kind",
+        "recorded_at",
+        "subject_kind",
+        "subject_id",
+        "proof_kind",
+        "surface",
+        "host_build",
+        "configuration_source",
+        "requested_model",
+        "requested_mode",
+        "requested_sandbox",
+        "agent_or_task_identifier",
+        "fork_policy",
+        "leaf_only",
+        "input_artifact_ids",
+        "dependency_task_ids",
+        "bundle_input_artifacts",
+        "inputs",
+        "input_snapshot_sha256",
+        "task_effects",
+        "report_contract",
+        "stop_condition",
+        "configured_model",
+        "configured_mode",
+        "configured_sandbox",
+        "adapter_sha256",
+        "compatibility_payload_sha256",
+        "selected_candidate_id",
+        "promotion_record_sha256",
+        "trigger",
+        "assigned_criterion_ids",
+        "fallback_policy"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "1.0.0"
+        },
+        "receipt_kind": {
+          "const": "configuration"
+        },
+        "recorded_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "subject_kind": {
+          "$ref": "#/$defs/subject_kind"
+        },
+        "subject_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "proof_kind": {
+          "enum": [
+            "adapter_dispatch_record",
+            "host_loaded_profile_receipt"
+          ]
+        },
+        "surface": {
+          "const": "Codex"
+        },
+        "host_build": {
+          "type": "string",
+          "minLength": 1
+        },
+        "configuration_source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "requested_model": {
+          "const": "gpt-5.6-sol"
+        },
+        "requested_mode": {
+          "const": "ultra"
+        },
+        "requested_sandbox": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "agent_or_task_identifier": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "\\S"
+        },
+        "fork_policy": {
+          "enum": [
+            null,
+            "none"
+          ]
+        },
+        "leaf_only": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "input_artifact_ids": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        },
+        "dependency_task_ids": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        },
+        "bundle_input_artifacts": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "locator",
+              "sha256"
+            ],
+            "properties": {
+              "locator": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "$ref": "#/$defs/sha256"
+              }
+            }
+          }
+        },
+        "inputs": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/input_record"
+          }
+        },
+        "input_snapshot_sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "task_effects": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        },
+        "report_contract": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "\\S"
+        },
+        "stop_condition": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "\\S"
+        },
+        "configured_model": {
+          "type": "string",
+          "minLength": 1
+        },
+        "configured_mode": {
+          "type": "string",
+          "minLength": 1
+        },
+        "configured_sandbox": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "adapter_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "compatibility_payload_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "selected_candidate_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "promotion_record_sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "trigger": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "\\S"
+        },
+        "assigned_criterion_ids": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^RC-[A-Z0-9-]+$"
+          }
+        },
+        "fallback_policy": {
+          "const": "prohibited_and_checked"
+        }
+      }
+    },
+    "input_record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "input_id",
+        "kind",
+        "source_id",
+        "locator",
+        "sha256",
+        "lineage_id",
+        "source_kind",
+        "state"
+      ],
+      "properties": {
+        "input_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "kind": {
+          "enum": [
+            "run_input",
+            "task_report",
+            "bundle_file"
+          ]
+        },
+        "source_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "locator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "lineage_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_kind": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "\\S"
+        },
+        "state": {
+          "enum": [
+            null,
+            "frozen"
+          ]
+        }
+      }
+    },
+    "control_validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "receipt_kind",
+        "recorded_at",
+        "subject_kind",
+        "subject_id",
+        "control",
+        "expected_value",
+        "configured_value",
+        "result",
+        "configuration_receipt_locator",
+        "configuration_receipt_sha256",
+        "validator"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "1.0.0"
+        },
+        "receipt_kind": {
+          "const": "control_validation"
+        },
+        "recorded_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "subject_kind": {
+          "$ref": "#/$defs/subject_kind"
+        },
+        "subject_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "control": {
+          "enum": [
+            "model",
+            "mode",
+            "sandbox"
+          ]
+        },
+        "expected_value": {
+          "type": "string",
+          "minLength": 1
+        },
+        "configured_value": {
+          "type": "string",
+          "minLength": 1
+        },
+        "result": {
+          "enum": [
+            "passed",
+            "failed"
+          ]
+        },
+        "configuration_receipt_locator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "configuration_receipt_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "validator": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "delegation_terminal_inventory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "receipt_kind",
+        "recorded_at",
+        "run_id",
+        "tasks"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "1.0.0"
+        },
+        "receipt_kind": {
+          "const": "delegation_terminal_inventory"
+        },
+        "recorded_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "run_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "tasks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "task_id",
+              "agent_or_task_identifier",
+              "status",
+              "report_artifact",
+              "report_sha256",
+              "descendant_state",
+              "terminal_reason"
+            ],
+            "properties": {
+              "task_id": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "agent_or_task_identifier": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "status": {
+                "enum": [
+                  "completed",
+                  "failed",
+                  "cancelled"
+                ]
+              },
+              "report_artifact": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "report_sha256": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "descendant_state": {
+                "enum": [
+                  "none",
+                  "unknown",
+                  "present"
+                ]
+              },
+              "terminal_reason": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "\\S"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

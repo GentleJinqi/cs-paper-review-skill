@@ -14,7 +14,6 @@
       "conditional_specialist_trigger": null,
       "applicability_states": [
         "applicable",
-        "inapplicable",
         "uncertain"
       ],
       "required_when_inapplicable": "A rationale showing why no protected or externally governed material is involved.",
@@ -104,7 +103,6 @@
       "conditional_specialist_trigger": null,
       "applicability_states": [
         "applicable",
-        "inapplicable",
         "uncertain"
       ],
       "required_when_inapplicable": "Not permitted; coverage accounting is always applicable.",
@@ -527,7 +525,6 @@
       "conditional_specialist_trigger": null,
       "applicability_states": [
         "applicable",
-        "inapplicable",
         "uncertain"
       ],
       "required_when_inapplicable": "No candidate findings were produced; the empty candidate set is recorded.",

@@ -7,7 +7,13 @@
 - Completion: complete / partial / blocked
 - Target profile ID or `unknown`:
 - Portable overall assessment:
-- Native recommendation or score, only when defined by a current profile:
+
+The following is a human view only. Complete it only from fields defined by
+the validated exact-target profile and recorded in the structured
+`venue_assessment`; do not create a value only in Markdown.
+
+| Native field ID | Role | Required | Type and allowed scale/labels | Recorded value | Anchor and source IDs |
+|---|---|---|---|---|---|
 
 ## Most decision-relevant findings
 
@@ -25,7 +31,7 @@ List only evidence-backed strengths that survived adjudication.
 - Justified inapplicable criteria:
 - Uncertain or blocked criteria:
 - Preserved dissent:
-- Rejected or downgraded candidate rationale:
+- Rejected candidate or retained lower-impact rationale:
 
 ## Author and readiness gates
 
@@ -44,9 +50,14 @@ Separate:
 - Runtime/configuration limitations:
 - No acceptance probability:
 - No fabricated facts, citations, or results:
-- No manuscript edits:
+- Mutation-verification evidence or limitation:
 
 ## Next boundary
 
 This review does not authorise revision. A later task must explicitly select
 which findings to act on and what edits or experiments are permitted.
+
+This file is a structural reference, not a fillable valid output. Generate the
+complete document, including its exact machine-binding object, with
+`scripts/render_human_binding.py`. Hand editing a generated view invalidates
+its bound digest.

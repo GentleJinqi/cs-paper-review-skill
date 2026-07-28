@@ -1,0 +1,362 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/cs-paper-review/task-report.schema.json",
+  "title": "Settled adapter task report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "reported_at",
+    "run_id",
+    "task_id",
+    "agent_or_task_identifier",
+    "status",
+    "task_effects",
+    "input_snapshot_sha256",
+    "configuration_receipt_sha256",
+    "evidence",
+    "coverage_assessments",
+    "finding_contributions",
+    "finding_ids",
+    "summary",
+    "limitations"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "reported_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "agent_or_task_identifier": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "status": {
+      "const": "completed"
+    },
+    "task_effects": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "add_finding",
+          "verify_finding",
+          "remove_finding",
+          "adjudicate_finding",
+          "rank_finding",
+          "synthesise_findings",
+          "alter_completion",
+          "extract_noncanonical_evidence",
+          "format_report"
+        ]
+      }
+    },
+    "input_snapshot_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "configuration_receipt_sha256": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/task_evidence"
+      }
+    },
+    "coverage_assessments": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/coverage_assessment"
+      }
+    },
+    "finding_contributions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/finding_contribution"
+      }
+    },
+    "finding_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^F-[0-9a-f]{16}$"
+      }
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 40,
+      "pattern": "\\S"
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "task_evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "input_id",
+        "artifact_id",
+        "source_anchor",
+        "semantic_anchor",
+        "observation"
+      ],
+      "properties": {
+        "input_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "artifact_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "source_anchor": {
+          "type": "string",
+          "minLength": 3,
+          "pattern": "\\S"
+        },
+        "semantic_anchor": {
+          "type": "string",
+          "minLength": 3,
+          "pattern": "\\S"
+        },
+        "observation": {
+          "type": "string",
+          "minLength": 3,
+          "pattern": "\\S"
+        }
+      }
+    },
+    "coverage_assessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "criterion_id",
+        "applicability",
+        "disposition",
+        "evidence",
+        "finding_ids",
+        "rationale"
+      ],
+      "properties": {
+        "criterion_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "applicability": {
+          "enum": [
+            "applicable",
+            "inapplicable",
+            "uncertain"
+          ]
+        },
+        "disposition": {
+          "enum": [
+            "assessed_no_finding",
+            "finding_linked",
+            "not_applicable",
+            "needs_verification",
+            "blocked"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/task_evidence"
+          }
+        },
+        "finding_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^F-[0-9a-f]{16}$"
+          }
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      }
+    },
+    "finding_contribution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "effect",
+        "finding_id",
+        "criterion",
+        "claim",
+        "artifact_id",
+        "source_anchor",
+        "semantic_anchor",
+        "observation",
+        "evidence_state",
+        "decision_impact",
+        "adjudication_status",
+        "rationale",
+        "dissent"
+      ],
+      "properties": {
+        "effect": {
+          "enum": [
+            "add_finding",
+            "verify_finding",
+            "remove_finding",
+            "adjudicate_finding",
+            "rank_finding",
+            "synthesise_findings"
+          ]
+        },
+        "finding_id": {
+          "type": "string",
+          "pattern": "^F-[0-9a-f]{16}$"
+        },
+        "criterion": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "claim": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "artifact_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "source_anchor": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "semantic_anchor": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "observation": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "evidence_state": {
+          "enum": [
+            "verified",
+            "needs_verification",
+            "blocked"
+          ]
+        },
+        "decision_impact": {
+          "enum": [
+            "fundamental",
+            "material",
+            "limited",
+            "advisory",
+            "none"
+          ]
+        },
+        "adjudication_status": {
+          "enum": [
+            "candidate",
+            "retained",
+            "merged",
+            "rejected",
+            "unresolved"
+          ]
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "dissent": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "state",
+            "summary"
+          ],
+          "properties": {
+            "state": {
+              "enum": [
+                "none",
+                "recorded",
+                "unresolved"
+              ]
+            },
+            "summary": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "state": {
+                    "const": "none"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "summary": {
+                    "const": null
+                  }
+                }
+              },
+              "else": {
+                "properties": {
+                  "summary": {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "\\S"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

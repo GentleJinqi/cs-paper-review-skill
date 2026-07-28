@@ -21,6 +21,10 @@ Stop before external transmission unless the user has authority, explicitly
 authorises that transmission, and the applicable policy permits the intended
 use. Stop the intended workflow when the policy prohibits it. When the policy
 is unknown and material, mark the run blocked rather than guessing.
+This is a preflight stop: retain only the administrative blocked record and
+limitation. Do not inspect or freeze protected manuscript bytes, dispatch
+review tasks, mark substantive stages complete or partial, settle scientific
+coverage, create findings, or produce scientific review outputs.
 
 Author-side pre-submission review and official confidential reviewing are
 different capacities. Do not reuse an author-side permission statement as
@@ -43,4 +47,3 @@ Keep reports within the authorised output boundary. Minimise excerpts, avoid
 unnecessary manuscript reproduction, and record any authorised external
 destination. At completion, preserve only the artifacts required by the
 declared retention and provenance contract.
-
