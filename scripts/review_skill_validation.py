@@ -52,6 +52,51 @@ _ACTIVE_DIRECTORIES = (
     "scripts",
 )
 _ACTIVE_SUFFIXES = {".md", ".yaml", ".yml", ".json", ".toml", ".py"}
+_MODEL_INDEPENDENT_CORE = (
+    "references/scientific-core.md",
+    "references/review-coverage.md",
+    "references/review-coverage.json",
+    "references/review-workflow.md",
+    "references/finding-contract.md",
+    "references/delta-review.md",
+    "references/privacy-and-authorisation.md",
+)
+_CANONICAL_CRITERIA = (
+    "RC-AUTHORISATION",
+    "RC-INPUT-LINEAGE",
+    "RC-INPUT-ALIGNMENT",
+    "RC-INPUT-VERIFIABILITY",
+    "RC-CRITERIA-AUTHORITY",
+    "RC-COVERAGE-ACCOUNTING",
+    "RC-DELTA-LINEAGE",
+    "RC-PROBLEM-FORMULATION",
+    "RC-CONTRIBUTION-IDENTITY",
+    "RC-CLAIM-EVIDENCE",
+    "RC-RELATED-WORK",
+    "RC-FORMAL-CORRECTNESS",
+    "RC-METHOD-SOUNDNESS",
+    "RC-DATA-VALIDITY",
+    "RC-MEASUREMENT-VALIDITY",
+    "RC-EXPERIMENT-DESIGN",
+    "RC-STATISTICAL-VALIDITY",
+    "RC-COMPARISON-FAIRNESS",
+    "RC-ROBUSTNESS-SCOPE",
+    "RC-REPRODUCIBILITY",
+    "RC-RESOURCE-CLAIMS",
+    "RC-WRITING-CLARITY",
+    "RC-VISUAL-INTEGRITY",
+    "RC-LIMITATIONS",
+    "RC-RESPONSIBLE-RESEARCH",
+    "RC-CITATION-SUPPORT",
+    "RC-FINDING-EVIDENCE",
+    "RC-CONFLICT-VERIFICATION",
+    "RC-DEDUP-DISPOSITION",
+    "RC-DISSENT-PRESERVATION",
+    "RC-REQUIREMENT-LEGITIMACY",
+    "RC-RISK-CLASS-SEPARATION",
+    "RC-COMPLETION-TRUTH",
+    "RC-LEDGER-CONSISTENCY",
+)
 
 
 def _normalise_root(root: pathlib.Path) -> pathlib.Path:
@@ -198,10 +243,83 @@ def validate_json_files(root: pathlib.Path) -> list[str]:
         if path.suffix.lower() != ".json":
             continue
         try:
-            json.loads(path.read_text(encoding="utf-8"))
-        except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+            def no_duplicate_pairs(pairs: list[tuple[str, Any]]) -> dict:
+                result: dict = {}
+                for key, value in pairs:
+                    if key in result:
+                        raise ValueError(f"duplicate object key {key!r}")
+                    result[key] = value
+                return result
+
+            json.loads(
+                path.read_text(encoding="utf-8"),
+                object_pairs_hook=no_duplicate_pairs,
+            )
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError, ValueError) as exc:
             relative = path.relative_to(root).as_posix()
             errors.append(f"json: invalid {relative}: {exc}")
+    return errors
+
+
+def _validate_core_boundaries(root: pathlib.Path) -> list[str]:
+    root = _normalise_root(root)
+    errors: list[str] = []
+    forbidden = (
+        "gpt-",
+        "ultra",
+        "codex",
+        "subagent",
+        "work1-paper",
+    )
+    for relative in _MODEL_INDEPENDENT_CORE:
+        path = root / relative
+        if not path.is_file():
+            continue
+        lowered = path.read_text(encoding="utf-8").lower()
+        for token in forbidden:
+            if token in lowered:
+                errors.append(
+                    f"core-boundary: runtime or project token {token!r} in {relative}"
+                )
+        if re.search(r"\bdefault\s+(?:publication\s+)?(?:venue|target)\b", lowered):
+            errors.append(f"core-boundary: fixed target default in {relative}")
+        if re.search(
+            r"\b(?:fixed|required|minimum|maximum)\s+(?:reviewer|agent|task|role)"
+            r"(?:s|\s+count)?\b",
+            lowered,
+        ):
+            errors.append(f"core-boundary: fixed execution topology in {relative}")
+    return errors
+
+
+def _validate_coverage_bundle(root: pathlib.Path) -> list[str]:
+    root = _normalise_root(root)
+    try:
+        matrix = load_review_coverage(root)
+    except ValueError as exc:
+        return [f"coverage-bundle: {exc}"]
+    ids = tuple(_coverage_ids(matrix))
+    errors: list[str] = []
+    if ids != _CANONICAL_CRITERIA:
+        errors.append(
+            "coverage-bundle: canonical criterion IDs or order changed without "
+            "a contract migration"
+        )
+    markdown_path = root / "references/review-coverage.md"
+    if not markdown_path.is_file():
+        errors.append("coverage-bundle: missing Markdown companion")
+    else:
+        text = markdown_path.read_text(encoding="utf-8")
+        markdown_ids = re.findall(r"`(RC-[A-Z0-9-]+)`", text)
+        unique_markdown_ids = tuple(dict.fromkeys(markdown_ids))
+        if unique_markdown_ids != _CANONICAL_CRITERIA:
+            errors.append(
+                "coverage-bundle: Markdown criterion IDs differ from canonical JSON"
+            )
+        if len(markdown_ids) != len(set(markdown_ids)):
+            errors.append(
+                "coverage-bundle: Markdown repeats a canonical criterion definition"
+            )
     return errors
 
 
@@ -213,6 +331,8 @@ def validate_bundle(root: pathlib.Path) -> list[str]:
         validate_no_count_based_rigor,
         validate_adapter_profile,
         validate_json_files,
+        _validate_core_boundaries,
+        _validate_coverage_bundle,
     )
     errors: list[str] = []
     for validator in validators:

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import pathlib
+import re
 import tempfile
 import unittest
 
@@ -14,6 +15,7 @@ from scripts.review_skill_validation import (
     validate_reference_boundaries,
     validate_required_tree,
     validate_skill_frontmatter,
+    load_review_coverage,
 )
 
 
@@ -65,6 +67,55 @@ class BundleContractTests(unittest.TestCase):
             lowered = path.read_text(encoding="utf-8").lower()
             for token in forbidden:
                 self.assertNotIn(token, lowered, f"{relative}: {token}")
+
+    def test_canonical_coverage_has_34_aligned_owned_criteria(self) -> None:
+        matrix = load_review_coverage(ROOT)
+        rows = matrix["criteria"]
+        ids = [row["criterion_id"] for row in rows]
+        self.assertEqual(34, len(ids))
+        self.assertEqual(len(ids), len(set(ids)))
+        self.assertTrue(all(row["primary_stage_owner"] for row in rows))
+        markdown = (ROOT / "references/review-coverage.md").read_text(
+            encoding="utf-8"
+        )
+        markdown_ids = re.findall(r"`(RC-[A-Z0-9-]+)`", markdown)
+        self.assertEqual(ids, markdown_ids)
+
+    def test_scientific_core_covers_material_review_responsibilities(self) -> None:
+        text = " ".join(
+            (ROOT / "references/scientific-core.md")
+            .read_text(encoding="utf-8")
+            .casefold()
+            .split()
+        )
+        for token in (
+            "input",
+            "source",
+            "rendered",
+            "authorisation",
+            "confidential",
+            "problem",
+            "contribution",
+            "prior work",
+            "formal",
+            "method",
+            "data provenance",
+            "metric",
+            "experiment",
+            "statistical",
+            "effect size",
+            "multiple comparisons",
+            "robustness",
+            "generalisation",
+            "reproducibility",
+            "compute",
+            "figures",
+            "limitations",
+            "ethics",
+            "partial",
+            "blocked",
+        ):
+            self.assertIn(token, text, token)
 
     def test_skill_is_a_lean_router_with_intake_and_stopping_logic(self) -> None:
         text = (ROOT / "SKILL.md").read_text(encoding="utf-8")
@@ -131,6 +182,17 @@ class ValidatorNegativeFixtureTests(unittest.TestCase):
                 ],
                 validate_reference_boundaries(root),
             )
+
+    def test_duplicate_json_key_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            (root / "schemas").mkdir()
+            (root / "schemas" / "duplicate.json").write_text(
+                '{"value": 1, "value": 2}\n', encoding="utf-8"
+            )
+            errors = validate_json_files(root)
+            self.assertTrue(errors)
+            self.assertIn("duplicate object key", errors[0])
 
 
 if __name__ == "__main__":

@@ -1,0 +1,631 @@
+{
+  "schema_version": "1.0.0",
+  "criteria": [
+    {
+      "criterion_id": "RC-AUTHORISATION",
+      "review_question": "Is the review authorised, policy-permitted, confidentially bounded, and review-only?",
+      "required_evidence": [
+        "review capacity and authority",
+        "confidentiality class",
+        "processing and retention boundary",
+        "governing-policy state"
+      ],
+      "primary_stage_owner": "scope-and-authorisation",
+      "conditional_specialist_trigger": null,
+      "applicability_states": [
+        "applicable",
+        "inapplicable",
+        "uncertain"
+      ],
+      "required_when_inapplicable": "A rationale showing why no protected or externally governed material is involved.",
+      "required_when_uncertain": "The unresolved authority or policy fact and the operation it blocks."
+    },
+    {
+      "criterion_id": "RC-INPUT-LINEAGE",
+      "review_question": "Are all binding artifacts, versions, hashes, and lineage relationships unambiguous?",
+      "required_evidence": [
+        "artifact identifiers",
+        "content hashes",
+        "version or lineage relationship"
+      ],
+      "primary_stage_owner": "input-freeze",
+      "conditional_specialist_trigger": "Several plausible manuscript versions or archives exist.",
+      "applicability_states": [
+        "applicable",
+        "inapplicable",
+        "uncertain"
+      ],
+      "required_when_inapplicable": "A rationale tied to an input-free review goal.",
+      "required_when_uncertain": "The ambiguous artifact choice and the conclusions that cannot be trusted."
+    },
+    {
+      "criterion_id": "RC-INPUT-ALIGNMENT",
+      "review_question": "Do source and rendered artifacts represent the same scientific version and their proper evidentiary roles?",
+      "required_evidence": [
+        "source/rendering title and structure comparison",
+        "build or lineage evidence",
+        "recorded content-versus-layout authority"
+      ],
+      "primary_stage_owner": "input-freeze",
+      "conditional_specialist_trigger": "A rendered artifact is stale, absent, malformed, or visually inconsistent.",
+      "applicability_states": [
+        "applicable",
+        "inapplicable",
+        "uncertain"
+      ],
+      "required_when_inapplicable": "The focused review excludes rendered properties and records that limitation.",
+      "required_when_uncertain": "The missing alignment evidence and the affected content or layout conclusions."
+    },
+    {
+      "criterion_id": "RC-INPUT-VERIFIABILITY",
+      "review_question": "Are required artifacts readable and sufficient for the requested review scope?",
+      "required_evidence": [
+        "read-integrity result",
+        "required-component inventory",
+        "capability limitations"
+      ],
+      "primary_stage_owner": "input-freeze",
+      "conditional_specialist_trigger": "An archive, supplement, equation, figure, or table cannot be inspected reliably.",
+      "applicability_states": [
+        "applicable",
+        "inapplicable",
+        "uncertain"
+      ],
+      "required_when_inapplicable": "The requested scope does not depend on manuscript artifacts.",
+      "required_when_uncertain": "The unreadable or absent evidence and whether completion is partial or blocked."
+    },
+    {
+      "criterion_id": "RC-CRITERIA-AUTHORITY",
+      "review_question": "Are external requirements current, first-party, correctly scoped, and distinct from field norms?",
+      "required_evidence": [
+        "source identity",
+        "effective date or version",
+        "requirement-versus-calibration classification"
+      ],
+      "primary_stage_owner": "criteria-freeze",
+      "conditional_specialist_trigger": "The target, year, track, or governing requirements are disputed or recently changed.",
+      "applicability_states": [
+        "applicable",
+        "inapplicable",
+        "uncertain"
+      ],
+      "required_when_inapplicable": "No external target was selected; only portable scientific criteria are applied.",
+      "required_when_uncertain": "The unresolved source or date and which native assessment is disabled."
+    },
+    {
+      "criterion_id": "RC-COVERAGE-ACCOUNTING",
+      "review_question": "Does every canonical responsibility have one explicit, evidence-bounded disposition?",
+      "required_evidence": [
+        "complete criterion-ID set",
+        "applicability and disposition",
+        "stage, evidence, task, and finding links"
+      ],
+      "primary_stage_owner": "coverage-map",
+      "conditional_specialist_trigger": null,
+      "applicability_states": [
+        "applicable",
+        "inapplicable",
+        "uncertain"
+      ],
+      "required_when_inapplicable": "Not permitted; coverage accounting is always applicable.",
+      "required_when_uncertain": "The missing disposition and its completion consequence."
+    },
+    {
+      "criterion_id": "RC-DELTA-LINEAGE",
+      "review_question": "For a revision review, are prior findings and changed artifacts frozen and traceable?",
+      "required_evidence": [
+        "prior ledger hash",
+        "earlier and revised lineage",
+        "prior-finding accounting"
+      ],
+      "primary_stage_owner": "coverage-map",
+      "conditional_specialist_trigger": "The review kind is delta or prior findings are supplied.",
+      "applicability_states": [
+        "applicable",
+        "inapplicable",
+        "uncertain"
+      ],
+      "required_when_inapplicable": "The review is initial and no prior finding set is being assessed.",
+      "required_when_uncertain": "The missing prior or revised evidence and why delta claims are limited."
+    },
+    {
+      "criterion_id": "RC-PROBLEM-FORMULATION",
+      "review_question": "Is the problem well defined with appropriate assumptions, scope, and task identity?",
+      "required_evidence": [
+        "problem statement anchor",
+        "assumption and scope anchors",
+        "task-to-evaluation mapping"
+      ],
+      "primary_stage_owner": "scientific-assessment",
+      "conditional_specialist_trigger": "The stated task differs from the evaluated task or depends on hidden assumptions.",
+      "applicability_states": [
+        "applicable",
+        "inapplicable",
+        "uncertain"
+      ],
+      "required_when_inapplicable": "A paper-specific rationale showing there is no problem claim.",
+      "required_when_uncertain": "The missing definition or assumption and the affected conclusion."
+    },
+    {
+      "criterion_id": "RC-CONTRIBUTION-IDENTITY",
+      "review_question": "Are the contribution type, distinctness, and importance accurately characterised?",
+      "required_evidence": [
+        "contribution statement",
+        "method, evidence, analysis, resource, or synthesis anchor",
+        "importance justification"
+      ],
+      "primary_stage_owner": "scientific-assessment",
+      "conditional_specialist_trigger": "Several contribution types are conflated or novelty rests on presentation.",
+      "applicability_states": [
+        "applicable",
+        "inapplicable",
+        "uncertain"
+      ],
+      "required_when_inapplicable": "A rationale for material that makes no contribution claim.",
+      "required_when_uncertain": "The ambiguous contribution identity and its assessment effect."
+    },
+    {
+      "criterion_id": "RC-CLAIM-EVIDENCE",
+      "review_question": "Does each material claim have matching evidence at the stated scope and strength?",
+      "required_evidence": [
+        "claim anchor",
+        "supporting result or argument",
+        "scope and limitation comparison"
+      ],
+      "primary_stage_owner": "scientific-assessment",
+      "conditional_specialist_trigger": "A causal, mechanistic, universal, safety, or state-of-the-art claim is made.",
+      "applicability_states": [
+        "applicable",
+        "inapplicable",
+        "uncertain"
+      ],
+      "required_when_inapplicable": "A rationale showing no material scientific claim is assessed.",
+      "required_when_uncertain": "The evidence gap and the claim language that remains unverified."
+    },
+    {
+      "criterion_id": "RC-RELATED-WORK",
+      "review_question": "Are originality, prior-work positioning, and citation coverage accurate for material claims?",
+      "required_evidence": [
+        "positioning claim anchors",
+        "identified prior-work metadata or supplied texts",
+        "distinction analysis"
+      ],
+      "primary_stage_owner": "scientific-assessment",
+      "conditional_specialist_trigger": "Novelty, priority, or missing close work is material to the assessment.",
+      "applicability_states": [
+        "applicable",
+        "inapplicable",
+        "uncertain"
+      ],
+      "required_when_inapplicable": "A focused scope that explicitly excludes prior-work assessment.",
+      "required_when_uncertain": "The unavailable source or metadata and the originality conclusion withheld."
+    },
+    {
+      "criterion_id": "RC-FORMAL-CORRECTNESS",
+      "review_question": "Are material definitions, assumptions, equations, derivations, and formal claims correct?",
+      "required_evidence": [
+        "formal claim anchor",
+        "dependency trace",
+        "derivation or counterexample check"
+      ],
+      "primary_stage_owner": "scientific-assessment",
+      "conditional_specialist_trigger": "The contribution depends on nontrivial mathematics, proofs, or formal guarantees.",
+      "applicability_states": [
+        "applicable",
+        "inapplicable",
+        "uncertain"
+      ],
+      "required_when_inapplicable": "The paper makes no material formal claim.",
+      "required_when_uncertain": "The unverified derivation and the guarantee or conclusion affected."
+    },
+    {
+      "criterion_id": "RC-METHOD-SOUNDNESS",
+      "review_question": "Is the method or algorithm coherent with its objective and reported implementation?",
+      "required_evidence": [
+        "method specification",
+        "objective-to-operation trace",
+        "training and inference procedure"
+      ],
+      "primary_stage_owner": "scientific-assessment",
+      "conditional_specialist_trigger": "An underspecified component, hidden choice, or method/task mismatch is material.",
+      "applicability_states": [
+        "applicable",
+        "inapplicable",
+        "uncertain"
+      ],
+      "required_when_inapplicable": "The work has no method or algorithm claim.",
+      "required_when_uncertain": "The missing method detail and the soundness conclusion withheld."
+    },
+    {
+      "criterion_id": "RC-DATA-VALIDITY",
+      "review_question": "Are data provenance, quality, sampling, preprocessing, splits, leakage, and representativeness defensible?",
+      "required_evidence": [
+        "data provenance",
+        "sampling and exclusion rules",
+        "preprocessing and split construction",
+        "leakage analysis"
+      ],
+      "primary_stage_owner": "scientific-assessment",
+      "conditional_specialist_trigger": "Custom, sensitive, weakly documented, filtered, or benchmark-contaminated data are used.",
+      "applicability_states": [
+        "applicable",
+        "inapplicable",
+        "uncertain"
+      ],
+      "required_when_inapplicable": "No empirical data support a material conclusion.",
+      "required_when_uncertain": "The unavailable data fact and the affected validity claim."
+    },
+    {
+      "criterion_id": "RC-MEASUREMENT-VALIDITY",
+      "review_question": "Do metrics, aggregation, thresholds, and comparison units measure the claimed property?",
+      "required_evidence": [
+        "metric definition",
+        "aggregation and direction",
+        "claim-to-measure mapping"
+      ],
+      "primary_stage_owner": "scientific-assessment",
+      "conditional_specialist_trigger": "A proxy metric, composite score, threshold, or subjective measure drives the conclusion.",
+      "applicability_states": [
+        "applicable",
+        "inapplicable",
+        "uncertain"
+      ],
+      "required_when_inapplicable": "No quantitative or qualitative measurement supports a material claim.",
+      "required_when_uncertain": "The missing measurement definition and the comparison withheld."
+    },
+    {
+      "criterion_id": "RC-EXPERIMENT-DESIGN",
+      "review_question": "Can the experimental design answer the research question without material confounds?",
+      "required_evidence": [
+        "experimental unit and controls",
+        "treatment or intervention logic",
+        "confound analysis",
+        "ablation rationale"
+      ],
+      "primary_stage_owner": "scientific-assessment",
+      "conditional_specialist_trigger": "The main conclusion depends on causal interpretation, ablations, or complex controls.",
+      "applicability_states": [
+        "applicable",
+        "inapplicable",
+        "uncertain"
+      ],
+      "required_when_inapplicable": "The paper makes no empirical experiment claim.",
+      "required_when_uncertain": "The missing protocol detail and the research question left unanswered."
+    },
+    {
+      "criterion_id": "RC-STATISTICAL-VALIDITY",
+      "review_question": "Are sampling, dependence, uncertainty, effect size, tests, and multiplicity handled correctly?",
+      "required_evidence": [
+        "sampling unit and repeat count",
+        "estimator and uncertainty",
+        "effect size",
+        "testing and selection procedure"
+      ],
+      "primary_stage_owner": "scientific-assessment",
+      "conditional_specialist_trigger": "Small samples, repeated selection, dependent observations, or significance claims are present.",
+      "applicability_states": [
+        "applicable",
+        "inapplicable",
+        "uncertain"
+      ],
+      "required_when_inapplicable": "No statistical inference or empirical variability claim is made.",
+      "required_when_uncertain": "The missing sample or analysis detail and the statistical conclusion withheld."
+    },
+    {
+      "criterion_id": "RC-COMPARISON-FAIRNESS",
+      "review_question": "Are baselines and comparisons relevant, consistently tuned, and resource-fair?",
+      "required_evidence": [
+        "baseline selection rationale",
+        "configuration and tuning parity",
+        "data, metric, and resource parity"
+      ],
+      "primary_stage_owner": "scientific-assessment",
+      "conditional_specialist_trigger": "A superiority or state-of-the-art claim depends on uneven protocols or missing baselines.",
+      "applicability_states": [
+        "applicable",
+        "inapplicable",
+        "uncertain"
+      ],
+      "required_when_inapplicable": "The paper makes no comparative empirical claim.",
+      "required_when_uncertain": "The unavailable baseline fact and the ranking conclusion withheld."
+    },
+    {
+      "criterion_id": "RC-ROBUSTNESS-SCOPE",
+      "review_question": "Are robustness, generalisation, failure cases, and stated scope calibrated to tested conditions?",
+      "required_evidence": [
+        "tested conditions",
+        "failure or sensitivity evidence",
+        "scope and generalisation claim comparison"
+      ],
+      "primary_stage_owner": "scientific-assessment",
+      "conditional_specialist_trigger": "The work claims broad transfer, robustness, safety, or invariance.",
+      "applicability_states": [
+        "applicable",
+        "inapplicable",
+        "uncertain"
+      ],
+      "required_when_inapplicable": "No robustness or generalisation conclusion is made.",
+      "required_when_uncertain": "The untested condition and the bounded conclusion that remains."
+    },
+    {
+      "criterion_id": "RC-REPRODUCIBILITY",
+      "review_question": "Are methods, data processing, configurations, protocols, and artefacts sufficient to reproduce material results?",
+      "required_evidence": [
+        "algorithm and configuration detail",
+        "data and preprocessing detail",
+        "evaluation protocol",
+        "artifact availability statement"
+      ],
+      "primary_stage_owner": "scientific-assessment",
+      "conditional_specialist_trigger": "A material result depends on omitted implementation or evaluation choices.",
+      "applicability_states": [
+        "applicable",
+        "inapplicable",
+        "uncertain"
+      ],
+      "required_when_inapplicable": "A paper-specific rationale for work without reproducible empirical or computational claims.",
+      "required_when_uncertain": "The missing reproduction detail and the result that cannot be independently reconstructed."
+    },
+    {
+      "criterion_id": "RC-RESOURCE-CLAIMS",
+      "review_question": "Are efficiency, memory, latency, energy, hardware, cost, and compute claims supported and fairly measured?",
+      "required_evidence": [
+        "resource definition and measurement",
+        "hardware and software context",
+        "comparison conditions"
+      ],
+      "primary_stage_owner": "scientific-assessment",
+      "conditional_specialist_trigger": "Efficiency or resource advantage is a stated contribution.",
+      "applicability_states": [
+        "applicable",
+        "inapplicable",
+        "uncertain"
+      ],
+      "required_when_inapplicable": "No material resource or efficiency claim is made.",
+      "required_when_uncertain": "The missing measurement context and the resource conclusion withheld."
+    },
+    {
+      "criterion_id": "RC-WRITING-CLARITY",
+      "review_question": "Does prose structure and terminology permit correct scientific interpretation?",
+      "required_evidence": [
+        "claim and definition anchors",
+        "argument-flow trace",
+        "identified ambiguity and its scientific consequence"
+      ],
+      "primary_stage_owner": "scientific-assessment",
+      "conditional_specialist_trigger": "An ambiguity, undefined term, or broken argument flow changes scientific meaning.",
+      "applicability_states": [
+        "applicable",
+        "inapplicable",
+        "uncertain"
+      ],
+      "required_when_inapplicable": "The requested scope contains no prose or terminology assessment.",
+      "required_when_uncertain": "The unreadable or ambiguous passage and the interpretation withheld."
+    },
+    {
+      "criterion_id": "RC-VISUAL-INTEGRITY",
+      "review_question": "Do figures, tables, captions, reading order, and rendered layout communicate the science accurately?",
+      "required_evidence": [
+        "matching rendered artifact",
+        "figure or table anchor",
+        "content-to-visual comparison",
+        "legibility and reading-order check"
+      ],
+      "primary_stage_owner": "scientific-assessment",
+      "conditional_specialist_trigger": "Visual encoding, clipping, scale, typography, or layout may alter interpretation.",
+      "applicability_states": [
+        "applicable",
+        "inapplicable",
+        "uncertain"
+      ],
+      "required_when_inapplicable": "A source-only focused review explicitly excludes rendered properties.",
+      "required_when_uncertain": "The missing or mismatched rendering and the visual conclusion withheld."
+    },
+    {
+      "criterion_id": "RC-LIMITATIONS",
+      "review_question": "Are material limitations, boundary conditions, and negative evidence accurately disclosed?",
+      "required_evidence": [
+        "limitation statement",
+        "observed failure or scope evidence",
+        "claim-to-limitation comparison"
+      ],
+      "primary_stage_owner": "scientific-assessment",
+      "conditional_specialist_trigger": "Known failures or scope boundaries are absent from the stated limitations.",
+      "applicability_states": [
+        "applicable",
+        "inapplicable",
+        "uncertain"
+      ],
+      "required_when_inapplicable": "A paper-specific rationale showing no material limitation obligation.",
+      "required_when_uncertain": "The missing negative evidence and the limitation conclusion withheld."
+    },
+    {
+      "criterion_id": "RC-RESPONSIBLE-RESEARCH",
+      "review_question": "Are applicable ethics, safety, privacy, consent, licensing, dual-use, societal-impact, and integrity obligations addressed?",
+      "required_evidence": [
+        "triggering research activity",
+        "applicable obligation",
+        "consent, approval, licence, mitigation, or disclosure evidence"
+      ],
+      "primary_stage_owner": "scientific-assessment",
+      "conditional_specialist_trigger": "Human data, sensitive attributes, harmful capability, dual-use risk, protected data, or consequential deployment is involved.",
+      "applicability_states": [
+        "applicable",
+        "inapplicable",
+        "uncertain"
+      ],
+      "required_when_inapplicable": "A paper-specific rationale that no listed responsibility is triggered.",
+      "required_when_uncertain": "The unknown approval, consent, licence, risk, or mitigation fact and its effect."
+    },
+    {
+      "criterion_id": "RC-CITATION-SUPPORT",
+      "review_question": "Do citations and identifiable sources support the specific material claims attributed to them?",
+      "required_evidence": [
+        "claim context",
+        "bibliographic identity",
+        "authorised source text or metadata",
+        "support assessment with confidence"
+      ],
+      "primary_stage_owner": "evidence-verification",
+      "conditional_specialist_trigger": "A material finding depends on what a cited source establishes.",
+      "applicability_states": [
+        "applicable",
+        "inapplicable",
+        "uncertain"
+      ],
+      "required_when_inapplicable": "No material assessment depends on external citation support.",
+      "required_when_uncertain": "The unavailable source and the claim-support conclusion withheld."
+    },
+    {
+      "criterion_id": "RC-FINDING-EVIDENCE",
+      "review_question": "Has every material candidate finding been verified or explicitly left unresolved against exact evidence?",
+      "required_evidence": [
+        "candidate finding ID",
+        "artifact and semantic anchor",
+        "verification observation",
+        "adjudication result"
+      ],
+      "primary_stage_owner": "evidence-verification",
+      "conditional_specialist_trigger": "A candidate finding is material, disputed, or depends on a specialised check.",
+      "applicability_states": [
+        "applicable",
+        "inapplicable",
+        "uncertain"
+      ],
+      "required_when_inapplicable": "No material candidate finding exists after assessment.",
+      "required_when_uncertain": "The unverified finding and the completion limitation."
+    },
+    {
+      "criterion_id": "RC-CONFLICT-VERIFICATION",
+      "review_question": "Are conflicting observations resolved by targeted evidence without manufacturing consensus?",
+      "required_evidence": [
+        "conflicting positions",
+        "shared artifact anchor",
+        "targeted verification result",
+        "remaining uncertainty"
+      ],
+      "primary_stage_owner": "evidence-verification",
+      "conditional_specialist_trigger": "Assessments disagree on a material factual or scientific point.",
+      "applicability_states": [
+        "applicable",
+        "inapplicable",
+        "uncertain"
+      ],
+      "required_when_inapplicable": "No material evidence conflict exists.",
+      "required_when_uncertain": "The unresolved conflict and why it remains visible."
+    },
+    {
+      "criterion_id": "RC-DEDUP-DISPOSITION",
+      "review_question": "Are semantically duplicate findings merged and every candidate given an auditable disposition?",
+      "required_evidence": [
+        "candidate set",
+        "semantic comparison",
+        "canonical target and merge lineage",
+        "adjudication rationale"
+      ],
+      "primary_stage_owner": "adjudication",
+      "conditional_specialist_trigger": null,
+      "applicability_states": [
+        "applicable",
+        "inapplicable",
+        "uncertain"
+      ],
+      "required_when_inapplicable": "No candidate findings were produced; the empty candidate set is recorded.",
+      "required_when_uncertain": "The unsettled candidate or merge and the completion consequence."
+    },
+    {
+      "criterion_id": "RC-DISSENT-PRESERVATION",
+      "review_question": "Is evidence-backed minority concern preserved without treating repetition as consensus?",
+      "required_evidence": [
+        "distinct positions",
+        "evidence for each position",
+        "adjudication and residual dissent"
+      ],
+      "primary_stage_owner": "adjudication",
+      "conditional_specialist_trigger": "A material assessment conflict or minority concern exists.",
+      "applicability_states": [
+        "applicable",
+        "inapplicable",
+        "uncertain"
+      ],
+      "required_when_inapplicable": "No material dissent exists.",
+      "required_when_uncertain": "The unresolved dissent and its effect on the conclusion."
+    },
+    {
+      "criterion_id": "RC-REQUIREMENT-LEGITIMACY",
+      "review_question": "Are proposed obligations scientifically or externally justified rather than generic extra work?",
+      "required_evidence": [
+        "finding-to-criterion link",
+        "paper-specific necessity",
+        "phase-aware gate classification",
+        "rejection or downgrade rationale for illegitimate demands"
+      ],
+      "primary_stage_owner": "adjudication",
+      "conditional_specialist_trigger": "A candidate demands a theorem, benchmark, experiment, citation, or presentation change not established by the paper or current requirements.",
+      "applicability_states": [
+        "applicable",
+        "inapplicable",
+        "uncertain"
+      ],
+      "required_when_inapplicable": "No candidate obligation requires legitimacy screening.",
+      "required_when_uncertain": "The disputed requirement and why it is not promoted."
+    },
+    {
+      "criterion_id": "RC-RISK-CLASS-SEPARATION",
+      "review_question": "Are scientific defects, author gates, verification gaps, and submission-readiness gates kept distinct?",
+      "required_evidence": [
+        "finding action type",
+        "closure owner and gate",
+        "phase-aware placeholder or markup assessment",
+        "portable decision impact"
+      ],
+      "primary_stage_owner": "synthesis",
+      "conditional_specialist_trigger": "Missing data, placeholders, markup, packaging, or author judgement affects readiness.",
+      "applicability_states": [
+        "applicable",
+        "inapplicable",
+        "uncertain"
+      ],
+      "required_when_inapplicable": "No finding or gate requires risk classification.",
+      "required_when_uncertain": "The unresolved class and why no repair is claimed."
+    },
+    {
+      "criterion_id": "RC-COMPLETION-TRUTH",
+      "review_question": "Does complete, partial, or blocked accurately reflect all evidence obligations and limitations?",
+      "required_evidence": [
+        "criterion dispositions",
+        "unresolved and blocked evidence",
+        "artifact and capability limitations",
+        "settled output inventory"
+      ],
+      "primary_stage_owner": "completion",
+      "conditional_specialist_trigger": null,
+      "applicability_states": [
+        "applicable",
+        "inapplicable",
+        "uncertain"
+      ],
+      "required_when_inapplicable": "Not permitted; completion truth is always applicable.",
+      "required_when_uncertain": "The unsettled evidence that prevents complete status."
+    },
+    {
+      "criterion_id": "RC-LEDGER-CONSISTENCY",
+      "review_question": "Do run, coverage, finding, dissent, and output records agree without silent loss or fabrication?",
+      "required_evidence": [
+        "run and ledger kind match",
+        "coverage-to-finding links",
+        "merge and delta lineage",
+        "output reconciliation"
+      ],
+      "primary_stage_owner": "completion",
+      "conditional_specialist_trigger": null,
+      "applicability_states": [
+        "applicable",
+        "inapplicable",
+        "uncertain"
+      ],
+      "required_when_inapplicable": "Not permitted; ledger consistency is always applicable.",
+      "required_when_uncertain": "The inconsistent or missing record and the completion consequence."
+    }
+  ]
+}
