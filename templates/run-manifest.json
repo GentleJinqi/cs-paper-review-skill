@@ -1,0 +1,145 @@
+{
+  "authorisation": {
+    "authorised": false,
+    "capacity": "unknown",
+    "policy_status": "unknown",
+    "rationale": "Administrative template only; authority and policy have not been established."
+  },
+  "completion": "blocked",
+  "confidentiality": {
+    "classification": "unknown",
+    "external_destination": null,
+    "external_transmission_authorised": false,
+    "processing": "local_only",
+    "retention": "run_only",
+    "untrusted_content_acknowledged": true
+  },
+  "coverage": {
+    "criteria": [
+      {"applicability": "uncertain", "criterion_id": "RC-AUTHORISATION", "disposition": "blocked", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scope-and-authorisation", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-INPUT-LINEAGE", "disposition": "blocked", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "input-freeze", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-INPUT-ALIGNMENT", "disposition": "blocked", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "input-freeze", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-INPUT-VERIFIABILITY", "disposition": "blocked", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "input-freeze", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-CRITERIA-AUTHORITY", "disposition": "blocked", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "criteria-freeze", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-COVERAGE-ACCOUNTING", "disposition": "blocked", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "coverage-map", "task_ids": []},
+      {"applicability": "inapplicable", "criterion_id": "RC-DELTA-LINEAGE", "disposition": "not_applicable", "evidence": [], "finding_ids": [], "rationale": "This template declares an initial review; no prior ledger applies.", "stage_id": "coverage-map", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-PROBLEM-FORMULATION", "disposition": "blocked", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scientific-assessment", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-CONTRIBUTION-IDENTITY", "disposition": "blocked", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scientific-assessment", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-CLAIM-EVIDENCE", "disposition": "blocked", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scientific-assessment", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-RELATED-WORK", "disposition": "blocked", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scientific-assessment", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-FORMAL-CORRECTNESS", "disposition": "blocked", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scientific-assessment", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-METHOD-SOUNDNESS", "disposition": "blocked", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scientific-assessment", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-DATA-VALIDITY", "disposition": "blocked", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scientific-assessment", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-MEASUREMENT-VALIDITY", "disposition": "blocked", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scientific-assessment", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-EXPERIMENT-DESIGN", "disposition": "blocked", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scientific-assessment", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-STATISTICAL-VALIDITY", "disposition": "blocked", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scientific-assessment", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-COMPARISON-FAIRNESS", "disposition": "blocked", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scientific-assessment", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-ROBUSTNESS-SCOPE", "disposition": "blocked", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scientific-assessment", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-REPRODUCIBILITY", "disposition": "blocked", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scientific-assessment", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-RESOURCE-CLAIMS", "disposition": "blocked", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scientific-assessment", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-WRITING-CLARITY", "disposition": "blocked", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scientific-assessment", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-VISUAL-INTEGRITY", "disposition": "blocked", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scientific-assessment", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-LIMITATIONS", "disposition": "blocked", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scientific-assessment", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-RESPONSIBLE-RESEARCH", "disposition": "blocked", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scientific-assessment", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-CITATION-SUPPORT", "disposition": "blocked", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "evidence-verification", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-FINDING-EVIDENCE", "disposition": "blocked", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "evidence-verification", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-CONFLICT-VERIFICATION", "disposition": "blocked", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "evidence-verification", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-DEDUP-DISPOSITION", "disposition": "blocked", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "adjudication", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-DISSENT-PRESERVATION", "disposition": "blocked", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "adjudication", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-REQUIREMENT-LEGITIMACY", "disposition": "blocked", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "adjudication", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-RISK-CLASS-SEPARATION", "disposition": "blocked", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "synthesis", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-COMPLETION-TRUTH", "disposition": "blocked", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "completion", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-LEDGER-CONSISTENCY", "disposition": "blocked", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "completion", "task_ids": []}
+    ],
+    "matrix_sha256": "09a202e281f84c8643beed5a233b93ff0a94981292f7d8083e022f18f8efe2fb"
+  },
+  "created_at": "2026-07-28T00:00:00Z",
+  "finalized_at": "2026-07-28T00:00:00Z",
+  "delegation": {
+    "coverage_risk_map": [],
+    "owner": "root",
+    "task_count_as_runtime_observation": 0,
+    "tasks": [],
+    "terminal_inventory": {
+      "locator": "templates/delegation-terminal-inventory.json",
+      "sha256": "0e3cb7b00f4d8c70cd63bf5431a671563d36c9a0f14df3b670ea55a75d7ffdd0"
+    }
+  },
+  "input_artifacts": [],
+  "limitations": [
+    "Administrative template only: no authority, protected input, task, or scientific output has been established."
+  ],
+  "output_artifacts": {
+    "ae_assessment": {
+      "locator": null,
+      "sha256": null,
+      "status": "not_produced"
+    },
+    "finding_ledger": {
+      "locator": null,
+      "sha256": null,
+      "status": "not_produced"
+    },
+    "review_summary": {
+      "locator": null,
+      "sha256": null,
+      "status": "not_produced"
+    },
+    "reviewer_report": {
+      "locator": null,
+      "sha256": null,
+      "status": "not_produced"
+    }
+  },
+  "review_goal": "Administrative preflight before any scientific review.",
+  "review_kind": "initial",
+  "review_only": true,
+  "run_id": "replace-with-run-id",
+  "runtime_profile": null,
+  "schema_version": "1.0.0",
+  "source_pdf_alignment": {
+    "evidence": "Authority and protected-input access have not been established.",
+    "pdf_artifact_id": null,
+    "receipt_locator": null,
+    "receipt_sha256": null,
+    "source_artifact_id": null,
+    "status": "blocked",
+    "verified": false
+  },
+  "stages": [
+    {"evidence": [], "stage_id": "scope-and-authorisation", "status": "blocked"},
+    {"evidence": [], "stage_id": "input-freeze", "status": "blocked"},
+    {"evidence": [], "stage_id": "criteria-freeze", "status": "blocked"},
+    {"evidence": [], "stage_id": "coverage-map", "status": "blocked"},
+    {"evidence": [], "stage_id": "scientific-assessment", "status": "blocked"},
+    {"evidence": [], "stage_id": "evidence-verification", "status": "blocked"},
+    {"evidence": [], "stage_id": "adjudication", "status": "blocked"},
+    {"evidence": [], "stage_id": "synthesis", "status": "blocked"},
+    {"evidence": [], "stage_id": "completion", "status": "blocked"}
+  ],
+  "target": {
+    "track": null,
+    "venue": "unknown",
+    "year": null
+  },
+  "venue_profile": {
+    "blocked_reason": null,
+    "profile_id": null,
+    "profile_version": null,
+    "profile_locator": null,
+    "profile_sha256": null,
+    "source_manifest_locator": null,
+    "source_sha256": null,
+    "status": "unknown",
+    "track": null,
+    "venue": null,
+    "year": null
+  },
+  "venue_assessment": {
+    "criteria": [],
+    "limitations": [],
+    "native_fields": [],
+    "profile_id": null,
+    "status": "not_applicable"
+  }
+}

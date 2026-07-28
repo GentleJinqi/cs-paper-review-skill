@@ -1,0 +1,1 @@
+{"assertions":[{"assertion_id":"Q-A1","expected":true},{"assertion_id":"Q-A2","expected":false}],"dimension":"quality","fixture_id":"quality-claim-evidence","schema_version":"1.0.0"}

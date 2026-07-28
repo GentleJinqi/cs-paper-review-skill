@@ -1,0 +1,106 @@
+{
+  "schema_version": "1.0.0",
+  "corpus_id": "synthetic-venue-background",
+  "purpose": "venue-background",
+  "target": {
+    "venue": "ExampleConf",
+    "year": 2026,
+    "track": "main"
+  },
+  "inclusion_boundary": {
+    "decision_statuses": [
+      "accepted"
+    ],
+    "topic_dimensions": [
+      "problem_family",
+      "contribution_type",
+      "mechanism_family",
+      "claim_types",
+      "evidence_structures",
+      "modality_applications"
+    ],
+    "notes": "Synthetic metadata used only to exercise the public contract."
+  },
+  "rights_boundary": {
+    "metadata_only": true,
+    "manuscript_bytes_stored": false,
+    "notes": "No paper, review, or decision text is stored."
+  },
+  "search": {
+    "queries": [
+      "synthetic official programme query"
+    ],
+    "sources": [
+      {
+        "url": "https://example.invalid/programme",
+        "source_type": "official-program"
+      }
+    ],
+    "deduplication_key": "official-paper-id-or-title-year",
+    "screened_count": 1,
+    "included_count": 1
+  },
+  "saturation": {
+    "status": "not-saturated",
+    "stopping_rule": "Stop only when the latest independently specified batch adds no eligible paper and no new declared topic cell.",
+    "latest_batch": {
+      "batch_id": "synthetic-batch-1",
+      "query_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "screened_count": 1,
+      "included_count": 1,
+      "marginal_additions": {
+        "eligible_papers": 1,
+        "problem_family": 1,
+        "contribution_type": 1,
+        "mechanism_family": 1,
+        "claim_types": 1,
+        "evidence_structures": 1,
+        "modality_applications": 1
+      },
+      "evidence_artifact_ids": [
+        "synthetic-programme-capture"
+      ]
+    },
+    "limitations": [
+      "Synthetic fixture; it makes no claim about a real venue."
+    ]
+  },
+  "items": [
+    {
+      "paper_id": "exampleconf-2026-synthetic-1",
+      "title": "Synthetic accepted paper metadata",
+      "status": "accepted",
+      "status_source_url": "https://example.invalid/programme/paper-1",
+      "status_source_type": "official-program",
+      "evidence_grade": "A",
+      "eligible_for_material_inference": true,
+      "topic_signature": {
+        "problem_family": "synthetic classification",
+        "contribution_type": "method",
+        "mechanism_family": "synthetic representation learning",
+        "claim_types": [
+          "comparative"
+        ],
+        "evidence_structures": [
+          "benchmark"
+        ],
+        "modality_applications": [
+          "synthetic vision"
+        ]
+      },
+      "similarity_assessment": {
+        "state": "not-assessed",
+        "axis_comparison": {
+          "problem_family": "not-assessed",
+          "contribution_type": "not-assessed",
+          "mechanism_family": "not-assessed",
+          "claim_types": "not-assessed",
+          "evidence_structures": "not-assessed",
+          "modality_applications": "not-assessed"
+        },
+        "rationale": "Venue-background records need no manuscript similarity claim."
+      },
+      "metadata_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    }
+  ]
+}

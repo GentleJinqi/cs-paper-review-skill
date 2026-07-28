@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0.0",
+  "fixture_id": "unknown-venue",
+  "capability_tags": [
+    "unknown-target",
+    "no-native-score"
+  ],
+  "clean_control": false,
+  "required_findings": [],
+  "prohibited_semantic_keys": [],
+  "required_native_fields": [],
+  "hard_expectations": {
+    "completion": "complete",
+    "target_state": "unknown",
+    "native_fields_allowed": false
+  }
+}

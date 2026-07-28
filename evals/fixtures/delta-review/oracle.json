@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0.0",
+  "fixture_id": "delta-review",
+  "capability_tags": [
+    "delta-identity",
+    "five-way-delta-state"
+  ],
+  "clean_control": false,
+  "required_findings": [],
+  "prohibited_semantic_keys": [],
+  "delta_outcomes": {
+    "F-1": "resolved",
+    "F-2": "partially_resolved",
+    "F-3": "still_open",
+    "F-4": "made_worse",
+    "F-5": "new"
+  },
+  "hard_expectations": {
+    "completion": "partial",
+    "prior_snapshot_immutable": true
+  }
+}

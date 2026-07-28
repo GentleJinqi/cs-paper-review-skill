@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/cs-paper-review/adapter-evaluation-output.schema.json",
+  "title": "Adapter evaluation candidate output",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "fixture_id",
+    "dimension",
+    "candidate_id",
+    "observations"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "fixture_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "dimension": {
+      "enum": [
+        "quality",
+        "lifecycle"
+      ]
+    },
+    "candidate_id": {
+      "enum": [
+        "minimal-settled-set",
+        "persisted-task-registry"
+      ]
+    },
+    "observations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "assertion_id",
+          "observed",
+          "evidence"
+        ],
+        "properties": {
+          "assertion_id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "observed": {
+            "type": "boolean"
+          },
+          "evidence": {
+            "type": "string",
+            "minLength": 20,
+            "pattern": "\\S"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/cs-paper-review/venue-source-manifest.schema.json",
+  "title": "Venue official-source manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "venue",
+    "year",
+    "track",
+    "authority",
+    "authority_registry_locator",
+    "authority_registry_id",
+    "retrieved_at",
+    "sources"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "venue": {
+      "type": "string",
+      "minLength": 1
+    },
+    "year": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 2000
+    },
+    "track": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "authority": {
+      "const": "official-first-party"
+    },
+    "authority_registry_locator": {
+      "const": "references/venue-authorities.json"
+    },
+    "authority_registry_id": {
+      "const": "venue-authority-registry-v1"
+    },
+    "retrieved_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source_id",
+          "authority",
+          "url",
+          "content_locator",
+          "content_sha256",
+          "title",
+          "retrieved_section_anchors"
+        ],
+        "properties": {
+          "source_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "authority": {
+            "const": "first_party"
+          },
+          "url": {
+            "type": "string",
+            "pattern": "^https://\\S+$"
+          },
+          "content_locator": {
+            "type": "string",
+            "pattern": "^venues/source-evidence/[A-Za-z0-9._/-]+\\.json$"
+          },
+          "content_sha256": {
+            "$ref": "#/$defs/sha256"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "retrieved_section_anchors": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

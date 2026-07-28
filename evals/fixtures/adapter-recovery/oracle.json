@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0.0",
+  "fixture_id": "adapter-recovery",
+  "capability_tags": [
+    "compaction-recovery",
+    "late-result",
+    "single-scheduler"
+  ],
+  "clean_control": false,
+  "required_findings": [],
+  "prohibited_semantic_keys": [],
+  "lifecycle_expectations": {
+    "dispatch_count_by_task": {
+      "T-claim": 1
+    },
+    "retained_finding_ids": [
+      "F-supported"
+    ],
+    "descendant_task_count": 0,
+    "single_canonical_writer": true
+  },
+  "hard_expectations": {
+    "completion": "complete"
+  }
+}

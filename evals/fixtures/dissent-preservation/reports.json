@@ -1,0 +1,24 @@
+{
+  "reports": [
+    {
+      "report_id": "minority",
+      "semantic_key": "failure-exclusion-bias",
+      "supported": true
+    },
+    {
+      "report_id": "majority-1",
+      "semantic_key": "unsupported-novelty-vote",
+      "supported": false
+    },
+    {
+      "report_id": "majority-2",
+      "semantic_key": "unsupported-novelty-vote",
+      "supported": false
+    },
+    {
+      "report_id": "majority-3",
+      "semantic_key": "unsupported-novelty-vote",
+      "supported": false
+    }
+  ]
+}

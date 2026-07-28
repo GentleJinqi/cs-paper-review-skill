@@ -1,0 +1,1774 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/cs-paper-review/run-manifest.schema.json",
+  "title": "Scientific review run manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "run_id",
+    "created_at",
+    "finalized_at",
+    "review_goal",
+    "review_kind",
+    "authorisation",
+    "confidentiality",
+    "review_only",
+    "input_artifacts",
+    "source_pdf_alignment",
+    "target",
+    "venue_profile",
+    "venue_assessment",
+    "runtime_profile",
+    "delegation",
+    "coverage",
+    "stages",
+    "output_artifacts",
+    "completion",
+    "limitations"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "finalized_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "review_goal": {
+      "type": "string",
+      "minLength": 1
+    },
+    "review_kind": {
+      "enum": [
+        "initial",
+        "delta"
+      ]
+    },
+    "authorisation": {
+      "$ref": "#/$defs/authorisation"
+    },
+    "confidentiality": {
+      "$ref": "#/$defs/confidentiality"
+    },
+    "review_only": {
+      "const": true
+    },
+    "input_artifacts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/input_artifact"
+      }
+    },
+    "source_pdf_alignment": {
+      "$ref": "#/$defs/source_pdf_alignment"
+    },
+    "target": {
+      "$ref": "#/$defs/target"
+    },
+    "venue_profile": {
+      "$ref": "#/$defs/venue_profile"
+    },
+    "venue_assessment": {
+      "$ref": "#/$defs/venue_assessment"
+    },
+    "runtime_profile": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/runtime_profile"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "delegation": {
+      "$ref": "#/$defs/delegation"
+    },
+    "coverage": {
+      "$ref": "#/$defs/coverage"
+    },
+    "stages": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/stage"
+      }
+    },
+    "output_artifacts": {
+      "type": "object",
+      "required": [
+        "finding_ledger",
+        "reviewer_report",
+        "ae_assessment",
+        "review_summary"
+      ],
+      "properties": {
+        "finding_ledger": {
+          "$ref": "#/$defs/output_artifact"
+        },
+        "reviewer_report": {
+          "$ref": "#/$defs/output_artifact"
+        },
+        "ae_assessment": {
+          "$ref": "#/$defs/output_artifact"
+        },
+        "review_summary": {
+          "$ref": "#/$defs/output_artifact"
+        }
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/output_artifact"
+      }
+    },
+    "completion": {
+      "enum": [
+        "complete",
+        "partial",
+        "blocked"
+      ]
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "authorisation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "capacity",
+        "authorised",
+        "policy_status",
+        "rationale"
+      ],
+      "properties": {
+        "capacity": {
+          "enum": [
+            "unknown",
+            "author_side",
+            "official_reviewer"
+          ]
+        },
+        "authorised": {
+          "type": "boolean"
+        },
+        "policy_status": {
+          "enum": [
+            "permitted",
+            "unknown",
+            "prohibited"
+          ]
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      }
+    },
+    "confidentiality": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "classification",
+        "processing",
+        "external_transmission_authorised",
+        "external_destination",
+        "retention",
+        "untrusted_content_acknowledged"
+      ],
+      "properties": {
+        "classification": {
+          "enum": [
+            "unknown",
+            "public",
+            "author_owned_draft",
+            "official_confidential_submission"
+          ]
+        },
+        "processing": {
+          "enum": [
+            "local_only",
+            "authorised_external"
+          ]
+        },
+        "external_transmission_authorised": {
+          "type": "boolean"
+        },
+        "external_destination": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "retention": {
+          "enum": [
+            "run_only",
+            "authorised_persistent",
+            "unspecified"
+          ]
+        },
+        "untrusted_content_acknowledged": {
+          "const": true
+        }
+      }
+    },
+    "input_artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifact_id",
+        "kind",
+        "lineage_id",
+        "state",
+        "locator",
+        "sha256"
+      ],
+      "properties": {
+        "artifact_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "enum": [
+            "source",
+            "pdf",
+            "supplement",
+            "data",
+            "prior_ledger",
+            "prior_run",
+            "prior_source",
+            "author_response"
+          ]
+        },
+        "lineage_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "state": {
+          "enum": [
+            "declared",
+            "frozen"
+          ]
+        },
+        "locator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "state": {
+              "const": "declared"
+            },
+            "sha256": {
+              "const": null
+            }
+          }
+        },
+        {
+          "properties": {
+            "state": {
+              "const": "frozen"
+            },
+            "sha256": {
+              "$ref": "#/$defs/sha256"
+            }
+          }
+        }
+      ]
+    },
+    "output_artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "locator",
+        "sha256"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "produced",
+            "not_produced"
+          ]
+        },
+        "locator": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "status": {
+              "const": "produced"
+            },
+            "locator": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "$ref": "#/$defs/sha256"
+            }
+          }
+        },
+        {
+          "properties": {
+            "status": {
+              "const": "not_produced"
+            },
+            "locator": {
+              "const": null
+            },
+            "sha256": {
+              "const": null
+            }
+          }
+        }
+      ]
+    },
+    "source_pdf_alignment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "verified",
+        "evidence",
+        "source_artifact_id",
+        "pdf_artifact_id",
+        "receipt_locator",
+        "receipt_sha256"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "matched",
+            "source_only_verified",
+            "pdf_only",
+            "missing_pdf",
+            "mismatch",
+            "blocked"
+          ]
+        },
+        "verified": {
+          "type": "boolean"
+        },
+        "evidence": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_artifact_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "pdf_artifact_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "receipt_locator": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "receipt_sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "venue",
+        "year",
+        "track"
+      ],
+      "properties": {
+        "venue": {
+          "type": "string",
+          "minLength": 1
+        },
+        "year": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "track": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "venue_profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "profile_id",
+        "profile_version",
+        "venue",
+        "year",
+        "track",
+        "profile_locator",
+        "profile_sha256",
+        "source_manifest_locator",
+        "source_sha256",
+        "blocked_reason"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "unknown",
+            "loaded",
+            "blocked"
+          ]
+        },
+        "profile_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "profile_version": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?$"
+        },
+        "venue": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "year": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "track": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "profile_locator": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "profile_sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "source_manifest_locator": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "blocked_reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "venue_assessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "profile_id",
+        "criteria",
+        "native_fields",
+        "limitations"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "not_applicable",
+            "completed",
+            "blocked"
+          ]
+        },
+        "profile_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "criteria": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/venue_criterion_assessment"
+          }
+        },
+        "native_fields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/venue_native_result"
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        }
+      }
+    },
+    "venue_criterion_assessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rule_id",
+        "assessment",
+        "evidence",
+        "finding_ids"
+      ],
+      "properties": {
+        "rule_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "assessment": {
+          "enum": [
+            "satisfied",
+            "concern",
+            "needs_verification",
+            "blocked"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/venue_evidence_reference"
+          }
+        },
+        "finding_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^F-[0-9a-f]{16}$"
+          }
+        }
+      }
+    },
+    "venue_evidence_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reference_kind",
+        "criterion_id",
+        "evidence_index",
+        "finding_id"
+      ],
+      "properties": {
+        "reference_kind": {
+          "enum": [
+            "coverage_evidence",
+            "finding"
+          ]
+        },
+        "criterion_id": {
+          "type": "string",
+          "pattern": "^RC-[A-Z0-9-]+$"
+        },
+        "evidence_index": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "finding_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^F-[0-9a-f]{16}$"
+        }
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "reference_kind": {
+              "const": "coverage_evidence"
+            },
+            "evidence_index": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "finding_id": {
+              "const": null
+            }
+          }
+        },
+        {
+          "properties": {
+            "reference_kind": {
+              "const": "finding"
+            },
+            "evidence_index": {
+              "const": null
+            },
+            "finding_id": {
+              "type": "string",
+              "pattern": "^F-[0-9a-f]{16}$"
+            }
+          }
+        }
+      ]
+    },
+    "venue_native_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "field_id",
+        "role",
+        "status",
+        "value",
+        "rationale",
+        "basis",
+        "reported_in"
+      ],
+      "properties": {
+        "field_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "role": {
+          "enum": [
+            "reviewer",
+            "area_chair",
+            "meta_reviewer"
+          ]
+        },
+        "status": {
+          "enum": [
+            "provided",
+            "not_applicable",
+            "blocked"
+          ]
+        },
+        "value": {
+          "type": [
+            "string",
+            "number",
+            "null"
+          ]
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 20,
+          "pattern": "\\S"
+        },
+        "basis": {
+          "$ref": "#/$defs/venue_native_basis"
+        },
+        "reported_in": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "reviewer_report",
+              "ae_assessment",
+              "review_summary"
+            ]
+          }
+        }
+      }
+    },
+    "venue_native_basis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "criterion_ids",
+        "finding_ids"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "portable_evidence",
+            "bounded_judgement",
+            "not_applicable",
+            "blocked"
+          ]
+        },
+        "criterion_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^RC-[A-Z0-9-]+$"
+          }
+        },
+        "finding_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^F-[0-9a-f]{16}$"
+          }
+        }
+      }
+    },
+    "proof": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "subject_kind",
+        "subject_id",
+        "proof_kind",
+        "locator",
+        "sha256"
+      ],
+      "properties": {
+        "subject_kind": {
+          "enum": [
+            "root",
+            "task"
+          ]
+        },
+        "subject_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "proof_kind": {
+          "enum": [
+            "adapter_dispatch_record",
+            "host_loaded_profile_receipt"
+          ]
+        },
+        "locator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "validation_state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "evidence_locator",
+        "sha256"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "passed",
+            "failed",
+            "not_run"
+          ]
+        },
+        "evidence_locator": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "status": {
+              "enum": [
+                "passed",
+                "failed"
+              ]
+            },
+            "evidence_locator": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "$ref": "#/$defs/sha256"
+            }
+          }
+        },
+        {
+          "properties": {
+            "status": {
+              "const": "not_run"
+            },
+            "evidence_locator": {
+              "const": null
+            },
+            "sha256": {
+              "const": null
+            }
+          }
+        }
+      ]
+    },
+    "promotion_reference": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "record_id",
+        "record_locator",
+        "sha256",
+        "candidate_id",
+        "adapter_sha256",
+        "compatibility_payload_sha256",
+        "result",
+        "promotion_decision"
+      ],
+      "properties": {
+        "record_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_locator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "candidate_id": {
+          "enum": [
+            "minimal-settled-set",
+            "persisted-task-registry"
+          ]
+        },
+        "adapter_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "compatibility_payload_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "result": {
+          "enum": [
+            "pass",
+            "fail"
+          ]
+        },
+        "promotion_decision": {
+          "enum": [
+            "selected",
+            "not_selected",
+            "rejected"
+          ]
+        }
+      }
+    },
+    "runtime_profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "surface",
+        "host_build",
+        "requested_model",
+        "requested_mode",
+        "configuration_source",
+        "configuration_proof",
+        "adapter_controlled_fallback",
+        "selected_candidate_id",
+        "adapter_sha256",
+        "compatibility_payload_sha256",
+        "promotion_record_sha256",
+        "model_validation",
+        "mode_validation",
+        "promotion_evaluation_record",
+        "effective_telemetry",
+        "resolved_model",
+        "resolved_mode",
+        "compatibility_claim"
+      ],
+      "properties": {
+        "surface": {
+          "const": "Codex"
+        },
+        "host_build": {
+          "type": "string",
+          "minLength": 1
+        },
+        "requested_model": {
+          "enum": [
+            null,
+            "gpt-5.6-sol"
+          ]
+        },
+        "requested_mode": {
+          "enum": [
+            null,
+            "ultra"
+          ]
+        },
+        "configuration_source": {
+          "enum": [
+            null,
+            "adapter-controlled root dispatch"
+          ]
+        },
+        "configuration_proof": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/proof"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "adapter_controlled_fallback": {
+          "enum": [
+            "prohibited_and_checked",
+            "blocked"
+          ]
+        },
+        "selected_candidate_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "adapter_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "compatibility_payload_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "promotion_record_sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "model_validation": {
+          "$ref": "#/$defs/validation_state"
+        },
+        "mode_validation": {
+          "$ref": "#/$defs/validation_state"
+        },
+        "promotion_evaluation_record": {
+          "$ref": "#/$defs/promotion_reference"
+        },
+        "effective_telemetry": {
+          "enum": [
+            "not_surfaced",
+            "surfaced_unverified",
+            "surfaced_and_verified"
+          ]
+        },
+        "resolved_model": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "resolved_mode": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "compatibility_claim": {
+          "enum": [
+            "blocked",
+            "evaluation_pending",
+            "configured-and-evaluated",
+            "runtime-attested"
+          ]
+        }
+      }
+    },
+    "delegation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "owner",
+        "coverage_risk_map",
+        "task_count_as_runtime_observation",
+        "tasks",
+        "terminal_inventory"
+      ],
+      "properties": {
+        "owner": {
+          "const": "root"
+        },
+        "coverage_risk_map": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "criterion_id",
+              "risk",
+              "delegation_decision",
+              "task_ids",
+              "rationale"
+            ],
+            "properties": {
+              "criterion_id": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "risk": {
+                "enum": [
+                  "low",
+                  "material",
+                  "critical",
+                  "unknown"
+                ]
+              },
+              "delegation_decision": {
+                "enum": [
+                  "root_covers",
+                  "delegate",
+                  "blocked"
+                ]
+              },
+              "task_ids": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                }
+              },
+              "rationale": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              }
+            }
+          }
+        },
+        "task_count_as_runtime_observation": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "tasks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/task"
+          }
+        },
+        "terminal_inventory": {
+          "$ref": "#/$defs/bound_receipt"
+        }
+      }
+    },
+    "bound_receipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "locator",
+        "sha256"
+      ],
+      "properties": {
+        "locator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "bundle_input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "locator",
+        "sha256"
+      ],
+      "properties": {
+        "locator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "task": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "task_id",
+        "substantive",
+        "trigger",
+        "assigned_criterion_ids",
+        "task_effects",
+        "input_artifact_ids",
+        "dependency_task_ids",
+        "bundle_input_artifacts",
+        "input_snapshot_sha256",
+        "report_contract",
+        "stop_condition",
+        "requested_model",
+        "requested_mode",
+        "requested_sandbox",
+        "configuration_source",
+        "configuration_proof",
+        "adapter_controlled_fallback",
+        "model_validation",
+        "mode_validation",
+        "sandbox_validation",
+        "fork_policy",
+        "leaf_only",
+        "descendant_state",
+        "agent_or_task_identifier",
+        "status",
+        "terminal_reason",
+        "report_artifact",
+        "report_sha256"
+      ],
+      "properties": {
+        "task_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "substantive": {
+          "type": "boolean"
+        },
+        "trigger": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "assigned_criterion_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^RC-[A-Z0-9-]+$"
+          }
+        },
+        "task_effects": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "add_finding",
+              "verify_finding",
+              "remove_finding",
+              "adjudicate_finding",
+              "rank_finding",
+              "synthesise_findings",
+              "alter_completion",
+              "extract_noncanonical_evidence",
+              "format_report"
+            ]
+          }
+        },
+        "input_artifact_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        },
+        "dependency_task_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        },
+        "bundle_input_artifacts": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/bundle_input"
+          }
+        },
+        "input_snapshot_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "report_contract": {
+          "const": "schemas/task-report.schema.json"
+        },
+        "stop_condition": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "requested_model": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "requested_mode": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "requested_sandbox": {
+          "enum": [
+            null,
+            "read-only"
+          ]
+        },
+        "configuration_source": {
+          "enum": [
+            null,
+            "adapter-controlled dispatch"
+          ]
+        },
+        "configuration_proof": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/proof"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "adapter_controlled_fallback": {
+          "enum": [
+            "prohibited_and_checked",
+            "not_applicable"
+          ]
+        },
+        "model_validation": {
+          "$ref": "#/$defs/validation_state"
+        },
+        "mode_validation": {
+          "$ref": "#/$defs/validation_state"
+        },
+        "sandbox_validation": {
+          "$ref": "#/$defs/validation_state"
+        },
+        "fork_policy": {
+          "enum": [
+            "none",
+            "bounded_positive_history",
+            "full_history",
+            "not_applicable"
+          ]
+        },
+        "leaf_only": {
+          "type": "boolean"
+        },
+        "descendant_state": {
+          "enum": [
+            "none",
+            "unknown",
+            "present"
+          ]
+        },
+        "agent_or_task_identifier": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "\\S"
+        },
+        "status": {
+          "enum": [
+            "pending",
+            "running",
+            "completed",
+            "failed",
+            "cancelled"
+          ]
+        },
+        "terminal_reason": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "\\S"
+        },
+        "report_artifact": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "report_sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "matrix_sha256",
+        "criteria"
+      ],
+      "properties": {
+        "matrix_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "criteria": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/coverage_row"
+          }
+        }
+      }
+    },
+    "coverage_row": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "criterion_id",
+        "applicability",
+        "disposition",
+        "evidence",
+        "stage_id",
+        "task_ids",
+        "finding_ids",
+        "rationale"
+      ],
+      "properties": {
+        "criterion_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "applicability": {
+          "enum": [
+            "applicable",
+            "inapplicable",
+            "uncertain"
+          ]
+        },
+        "disposition": {
+          "enum": [
+            "assessed_no_finding",
+            "finding_linked",
+            "not_applicable",
+            "needs_verification",
+            "blocked"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "artifact_id",
+              "source_anchor",
+              "semantic_anchor",
+              "observation",
+              "evidence_kind",
+              "verification_method",
+              "excerpt",
+              "excerpt_sha256"
+            ],
+            "properties": {
+              "artifact_id": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "source_anchor": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "semantic_anchor": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "observation": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "evidence_kind": {
+                "enum": [
+                  "text_exact",
+                  "rendered",
+                  "run_record",
+                  "alignment_receipt",
+                  "prior_record"
+                ]
+              },
+              "verification_method": {
+                "enum": [
+                  "utf8_exact_excerpt",
+                  "rendered_receipt",
+                  "canonical_run_field",
+                  "alignment_receipt",
+                  "prior_record_binding"
+                ]
+              },
+              "excerpt": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "excerpt_sha256": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "start_byte": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "end_byte": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "occurrence": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 1
+              },
+              "rendered_receipt_locator": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "rendered_receipt_sha256": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            }
+          }
+        },
+        "stage_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "task_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "finding_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "task_reconciliations": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "task_id",
+              "task_applicability",
+              "task_disposition",
+              "task_finding_ids",
+              "canonical_applicability",
+              "canonical_disposition",
+              "canonical_finding_ids",
+              "outcome",
+              "dissent_state",
+              "rationale"
+            ],
+            "properties": {
+              "task_id": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "task_applicability": {
+                "enum": [
+                  "applicable",
+                  "inapplicable",
+                  "uncertain"
+                ]
+              },
+              "task_disposition": {
+                "enum": [
+                  "assessed_no_finding",
+                  "finding_linked",
+                  "not_applicable",
+                  "needs_verification",
+                  "blocked"
+                ]
+              },
+              "task_finding_ids": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "pattern": "^F-[0-9a-f]{16}$"
+                }
+              },
+              "canonical_applicability": {
+                "enum": [
+                  "applicable",
+                  "inapplicable",
+                  "uncertain"
+                ]
+              },
+              "canonical_disposition": {
+                "enum": [
+                  "assessed_no_finding",
+                  "finding_linked",
+                  "not_applicable",
+                  "needs_verification",
+                  "blocked"
+                ]
+              },
+              "canonical_finding_ids": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "pattern": "^F-[0-9a-f]{16}$"
+                }
+              },
+              "outcome": {
+                "enum": [
+                  "canonical_overrides",
+                  "dissent_preserved",
+                  "unresolved"
+                ]
+              },
+              "dissent_state": {
+                "enum": [
+                  "recorded",
+                  "unresolved"
+                ]
+              },
+              "rationale": {
+                "type": "string",
+                "minLength": 20,
+                "pattern": "\\S"
+              }
+            }
+          }
+        },
+        "delta_applicability_reconciliation": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "prior_applicability",
+                "current_applicability",
+                "author_response_id",
+                "evidence_artifact_ids",
+                "rationale"
+              ],
+              "properties": {
+                "prior_applicability": {
+                  "enum": [
+                    "applicable",
+                    "inapplicable",
+                    "uncertain"
+                  ]
+                },
+                "current_applicability": {
+                  "enum": [
+                    "applicable",
+                    "inapplicable",
+                    "uncertain"
+                  ]
+                },
+                "author_response_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                "evidence_artifact_ids": {
+                  "type": "array",
+                  "minItems": 1,
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "\\S"
+                  }
+                },
+                "rationale": {
+                  "type": "string",
+                  "minLength": 20,
+                  "pattern": "\\S"
+                }
+              }
+            }
+          ]
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      }
+    },
+    "stage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stage_id",
+        "status",
+        "evidence"
+      ],
+      "properties": {
+        "stage_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "pending",
+            "complete",
+            "partial",
+            "blocked"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "reference",
+              "source_anchor"
+            ],
+            "properties": {
+              "kind": {
+                "enum": [
+                  "input_artifact",
+                  "output_artifact",
+                  "task_report",
+                  "run_field"
+                ]
+              },
+              "reference": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "source_anchor": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,366 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/cs-paper-review/venue-source-evidence.schema.json",
+  "title": "Bounded local evidence for one official venue source",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "source_id",
+    "url",
+    "title",
+    "retrieved_at",
+    "capture_locator",
+    "capture_sha256",
+    "sections"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "source_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "url": {
+      "type": "string",
+      "pattern": "^https://\\S+$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "retrieved_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "capture_locator": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^venues/source-captures/[A-Za-z0-9._/-]+\\.json$"
+    },
+    "capture_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "sections": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "section_anchor",
+          "extracted_fact",
+          "source_verification",
+          "verbatim_excerpts",
+          "claims"
+        ],
+        "properties": {
+          "section_anchor": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "extracted_fact": {
+            "type": "string",
+            "minLength": 20,
+            "maxLength": 600,
+            "pattern": "\\S"
+          },
+          "source_verification": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "status",
+              "method",
+              "verified_at",
+              "semantic_projection_review",
+              "offline_nonclaim"
+            ],
+            "properties": {
+              "status": {
+                "const": "verified"
+              },
+              "method": {
+                "const": "manual_browser_text_comparison"
+              },
+              "verified_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "semantic_projection_review": {
+                "const": "human_release_reviewed"
+              },
+              "offline_nonclaim": {
+                "const": "does_not_attest_live_official_page_truth"
+              }
+            }
+          },
+          "verbatim_excerpts": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/$defs/verbatim_excerpt"
+            }
+          },
+          "claims": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/$defs/claim"
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "verbatim_excerpt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "excerpt_id",
+        "source_locator",
+        "text",
+        "sha256",
+        "capture_start_byte",
+        "capture_end_byte",
+        "capture_occurrence"
+      ],
+      "properties": {
+        "excerpt_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "source_locator": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 300,
+          "pattern": "\\S"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 500,
+          "pattern": "\\S"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "capture_start_byte": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "capture_end_byte": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "capture_occurrence": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "claim_id",
+        "claim_kind",
+        "projection_basis",
+        "projection",
+        "excerpt_ids",
+        "support_terms"
+      ],
+      "properties": {
+        "claim_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "claim_kind": {
+          "enum": [
+            "criterion",
+            "native_field"
+          ]
+        },
+        "projection_basis": {
+          "enum": [
+            "source_bounded_interpretation",
+            "source_bounded_native_semantics"
+          ]
+        },
+        "projection": {
+          "type": "object"
+        },
+        "excerpt_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        },
+        "support_terms": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "claim_kind": {
+                "const": "criterion"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "projection_basis": {
+                "const": "source_bounded_interpretation"
+              },
+              "projection": {
+                "$ref": "#/$defs/criterion_projection"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "projection_basis": {
+                "const": "source_bounded_native_semantics"
+              },
+              "projection": {
+                "$ref": "#/$defs/native_field_projection"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "criterion_projection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rule_id",
+        "statement"
+      ],
+      "properties": {
+        "rule_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      }
+    },
+    "native_field_projection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "field_id",
+        "role",
+        "field_type",
+        "minimum",
+        "maximum",
+        "allowed_labels",
+        "anchors",
+        "direction"
+      ],
+      "properties": {
+        "field_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "role": {
+          "enum": [
+            "reviewer",
+            "area_chair",
+            "meta_reviewer"
+          ]
+        },
+        "field_type": {
+          "enum": [
+            "categorical",
+            "integer_scale",
+            "numeric_scale",
+            "text"
+          ]
+        },
+        "minimum": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "maximum": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "allowed_labels": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        },
+        "anchors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "value",
+              "label"
+            ],
+            "properties": {
+              "value": {
+                "type": [
+                  "number",
+                  "string"
+                ]
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              }
+            }
+          }
+        },
+        "direction": {
+          "enum": [
+            "higher_better",
+            "higher_worse",
+            "higher_more_favourable",
+            "higher_more_certain",
+            "not_ordered",
+            "not_applicable"
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "fixture_id": "source-pdf-mismatch",
+  "capability_tags": [
+    "input-alignment",
+    "rendering-authority"
+  ],
+  "clean_control": false,
+  "required_findings": [
+    {
+      "finding_id": "O-MISMATCH",
+      "criterion_id": "RC-INPUT-ALIGNMENT",
+      "artifact_id": "paper-source",
+      "source_anchor": "Version B",
+      "semantic_key": "source-pdf-version-mismatch",
+      "decision_impact": "material"
+    }
+  ],
+  "prohibited_semantic_keys": [],
+  "hard_expectations": {
+    "completion": "partial",
+    "layout_state": "unavailable-or-stale"
+  }
+}

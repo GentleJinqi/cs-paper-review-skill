@@ -1,0 +1,275 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/cs-paper-review/adapter-semantic-review-receipt.schema.json",
+  "title": "Independent semantic comparison of adapter candidates",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "receipt_kind",
+    "review_id",
+    "reviewed_at",
+    "reviewer",
+    "independent_review_performed",
+    "executor_ids",
+    "fixture_set",
+    "fixture_manifest_locator",
+    "fixture_manifest_sha256",
+    "candidate_evaluations",
+    "dimensions",
+    "selected_candidate_id",
+    "verdict",
+    "selection_rule",
+    "rationale",
+    "limitations"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "receipt_kind": {
+      "const": "adapter_semantic_review"
+    },
+    "review_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "reviewed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "reviewer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reviewer_id",
+        "requested_model",
+        "requested_mode",
+        "configuration_state",
+        "effective_telemetry",
+        "resolved_model",
+        "resolved_mode",
+        "independent"
+      ],
+      "properties": {
+        "reviewer_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._-]*$"
+        },
+        "requested_model": {
+          "const": "gpt-5.6-sol"
+        },
+        "requested_mode": {
+          "const": "ultra"
+        },
+        "configuration_state": {
+          "const": "requested_and_recorded"
+        },
+        "effective_telemetry": {
+          "enum": [
+            "not_surfaced",
+            "surfaced_unverified"
+          ]
+        },
+        "resolved_model": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "resolved_mode": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "independent": {
+          "const": true
+        }
+      }
+    },
+    "independent_review_performed": {
+      "const": true
+    },
+    "executor_ids": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      }
+    },
+    "fixture_set": {
+      "type": "string",
+      "minLength": 1
+    },
+    "fixture_manifest_locator": {
+      "type": "string",
+      "minLength": 1
+    },
+    "fixture_manifest_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "candidate_evaluations": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "$ref": "#/$defs/candidate_evaluation"
+      }
+    },
+    "dimensions": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {
+        "$ref": "#/$defs/dimension"
+      }
+    },
+    "selected_candidate_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "minimal-settled-set",
+        "persisted-task-registry",
+        null
+      ]
+    },
+    "verdict": {
+      "enum": [
+        "selected",
+        "no_selection"
+      ]
+    },
+    "selection_rule": {
+      "const": "strict_preference_majority"
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 20,
+      "pattern": "\\S"
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "candidate_id": {
+      "enum": [
+        "minimal-settled-set",
+        "persisted-task-registry"
+      ]
+    },
+    "candidate_evaluation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidate_id",
+        "candidate_implementation_sha256",
+        "execution_receipt_locator",
+        "execution_receipt_sha256",
+        "evaluation_report_locator",
+        "evaluation_report_sha256"
+      ],
+      "properties": {
+        "candidate_id": {
+          "$ref": "#/$defs/candidate_id"
+        },
+        "candidate_implementation_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "execution_receipt_locator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "execution_receipt_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "evaluation_report_locator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evaluation_report_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "dimension": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dimension",
+        "assessments",
+        "preferred_candidate_id"
+      ],
+      "properties": {
+        "dimension": {
+          "enum": [
+            "compaction_recovery",
+            "late_result_handling",
+            "duplicate_dispatch",
+            "evidence_retention",
+            "complexity",
+            "review_quality"
+          ]
+        },
+        "assessments": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "candidate_id",
+              "rating",
+              "evidence"
+            ],
+            "properties": {
+              "candidate_id": {
+                "$ref": "#/$defs/candidate_id"
+              },
+              "rating": {
+                "enum": [
+                  "preferred",
+                  "acceptable",
+                  "weaker"
+                ]
+              },
+              "evidence": {
+                "type": "string",
+                "minLength": 20,
+                "pattern": "\\S"
+              }
+            }
+          }
+        },
+        "preferred_candidate_id": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/candidate_id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

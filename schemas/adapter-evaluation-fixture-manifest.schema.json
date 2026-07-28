@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/cs-paper-review/adapter-evaluation-fixture-manifest.schema.json",
+  "title": "Adapter evaluation fixture manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "fixture_set",
+    "fixtures"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "fixture_set": {
+      "type": "string",
+      "minLength": 1
+    },
+    "fixtures": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "fixture_id",
+          "dimension",
+          "description",
+          "input_locator",
+          "input_sha256",
+          "oracle_locator",
+          "oracle_sha256"
+        ],
+        "properties": {
+          "fixture_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "dimension": {
+            "enum": [
+              "quality",
+              "lifecycle"
+            ]
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1
+          },
+          "input_locator": {
+            "type": "string",
+            "minLength": 1
+          },
+          "input_sha256": {
+            "$ref": "#/$defs/sha256"
+          },
+          "oracle_locator": {
+            "type": "string",
+            "minLength": 1
+          },
+          "oracle_sha256": {
+            "$ref": "#/$defs/sha256"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

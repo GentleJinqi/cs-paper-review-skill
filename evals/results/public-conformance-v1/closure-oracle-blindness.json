@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0.0",
+  "closure_id": "public-conformance-v1-oracle-blindness",
+  "domain": "oracle-blindness",
+  "status": "pass",
+  "evaluated_payload_sha256": "988cc13155c13ab6975c3983a708d336a6c89f88dbb188861333f585bc4d0d1a",
+  "evidence_ids": [
+    "base-candidate-output",
+    "venue-native-supplemental-output",
+    "final-semantic-adjudication"
+  ],
+  "limitations": [
+    "Candidate outputs were frozen before oracle access; the independent semantic judge necessarily received the oracle only after the output boundary had closed.",
+    "The venue-native supplemental run received the corrected public profile but not the oracle."
+  ]
+}

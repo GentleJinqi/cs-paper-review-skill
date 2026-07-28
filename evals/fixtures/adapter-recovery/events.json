@@ -1,0 +1,34 @@
+{
+  "events": [
+    {
+      "event_id": "E1",
+      "type": "dispatch",
+      "task_id": "T-claim",
+      "scheduler": "root"
+    },
+    {
+      "event_id": "E2",
+      "type": "compaction-boundary"
+    },
+    {
+      "event_id": "E3",
+      "type": "late-report",
+      "task_id": "T-claim",
+      "finding_id": "F-supported"
+    },
+    {
+      "event_id": "E4",
+      "type": "attempted-duplicate-dispatch",
+      "task_id": "T-claim"
+    },
+    {
+      "event_id": "E5",
+      "type": "attempted-child-dispatch",
+      "parent_task_id": "T-claim"
+    },
+    {
+      "event_id": "E6",
+      "type": "final-reconciliation"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0.0",
+  "fixture_id": "placeholder-and-markup",
+  "capability_tags": [
+    "author-gate",
+    "packaging-gate",
+    "risk-class-separation"
+  ],
+  "clean_control": false,
+  "required_findings": [],
+  "prohibited_semantic_keys": [
+    "placeholder-as-fabricated-data",
+    "placeholder-as-scientific-defect",
+    "declared-markup-as-intrinsic-scientific-defect"
+  ],
+  "author_gates": [
+    "Supply or remove the explicitly author-owned result."
+  ],
+  "packaging_gates": [
+    "Disable revision markup for the clean submission artifact."
+  ],
+  "hard_expectations": {
+    "completion": "partial"
+  }
+}

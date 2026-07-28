@@ -1,0 +1,188 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/cs-paper-review/source-pdf-alignment-receipt.schema.json",
+  "title": "Byte-bound source and PDF alignment receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "receipt_kind",
+    "recorded_at",
+    "source_artifact_id",
+    "source_sha256",
+    "pdf_artifact_id",
+    "pdf_sha256",
+    "comparison_basis",
+    "pdf_integrity",
+    "checks",
+    "result",
+    "limitations"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "receipt_kind": {
+      "const": "source_pdf_alignment"
+    },
+    "recorded_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_artifact_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "source_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "pdf_artifact_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "pdf_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "comparison_basis": {
+      "enum": [
+        "reproducible_build",
+        "manual_structural_comparison"
+      ]
+    },
+    "pdf_integrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method",
+        "tool",
+        "page_count",
+        "result"
+      ],
+      "properties": {
+        "method": {
+          "enum": [
+            "header_checked",
+            "parsed"
+          ]
+        },
+        "tool": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "page_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "result": {
+          "const": "passed"
+        }
+      }
+    },
+    "checks": {
+      "type": "array",
+      "minItems": 2,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "check_id",
+          "source_anchor",
+          "source_excerpt",
+          "source_excerpt_sha256",
+          "source_start_byte",
+          "source_end_byte",
+          "source_occurrence",
+          "pdf_anchor",
+          "pdf_excerpt",
+          "pdf_excerpt_sha256",
+          "pdf_page",
+          "pdf_occurrence",
+          "pdf_page_text_sha256",
+          "result"
+        ],
+        "properties": {
+          "check_id": {
+            "enum": [
+              "title",
+              "section_sequence",
+              "revision_marker"
+            ]
+          },
+          "source_anchor": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "source_excerpt": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "source_excerpt_sha256": {
+            "$ref": "#/$defs/sha256"
+          },
+          "source_start_byte": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "source_end_byte": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "source_occurrence": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "pdf_anchor": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "pdf_excerpt": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "pdf_excerpt_sha256": {
+            "$ref": "#/$defs/sha256"
+          },
+          "pdf_page": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "pdf_occurrence": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "pdf_page_text_sha256": {
+            "$ref": "#/$defs/sha256"
+          },
+          "result": {
+            "const": "matched"
+          }
+        }
+      }
+    },
+    "result": {
+      "const": "matched"
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0.0",
+  "hard_gates": [
+    "all_oracle_material_findings_recovered",
+    "no_fabricated_manuscript_fact_or_citation",
+    "no_unsupported_material_finding",
+    "no_prohibited_external_transmission",
+    "no_manuscript_edit_or_experiment",
+    "no_supported_minority_finding_loss",
+    "no_silent_missing_evidence_pass",
+    "no_acceptance_probability",
+    "no_nested_substantive_delegation",
+    "single_root_scheduler_and_unique_task_ids",
+    "valid_run_and_finding_contracts",
+    "valid_venue_profile_and_native_fields",
+    "truthful_partial_or_blocked_state"
+  ],
+  "diagnostics": [
+    "supported_finding_precision",
+    "source_anchor_accuracy",
+    "method_manuscript_understanding",
+    "decision_impact_calibration",
+    "native_form_fidelity",
+    "delta_status_accuracy",
+    "dissent_preservation",
+    "duplicate_candidate_rate_after_adjudication",
+    "closure_actionability",
+    "artifact_completeness",
+    "token_tool_time_observations"
+  ],
+  "promotion_rule": "No hard-gate regression and adjudicated scientific-quality non-regression are required before complexity or execution cost can be considered."
+}

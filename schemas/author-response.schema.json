@@ -1,0 +1,238 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/cs-paper-review/author-response.schema.json",
+  "title": "Delta-review author response binding",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "response_id",
+    "recorded_at",
+    "prior_run_id",
+    "prior_run_sha256",
+    "prior_ledger_sha256",
+    "prior_source_sha256",
+    "revised_source_sha256",
+    "summary",
+    "transitions"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "response_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "recorded_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "prior_run_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "prior_run_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "prior_ledger_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "prior_source_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "revised_source_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "transitions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "prior_finding_id",
+          "criterion_id",
+          "prior_claim_sha256",
+          "disposition",
+          "summary",
+          "successor_evidence"
+        ],
+        "properties": {
+          "prior_finding_id": {
+            "type": "string",
+            "pattern": "^F-[0-9a-f]{16}$"
+          },
+          "criterion_id": {
+            "type": "string",
+            "pattern": "^RC-[A-Z0-9-]+$"
+          },
+          "prior_claim_sha256": {
+            "$ref": "#/$defs/sha256"
+          },
+          "disposition": {
+            "enum": [
+              "addressed",
+              "partially_addressed",
+              "not_addressed",
+              "disputed"
+            ]
+          },
+          "summary": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "successor_evidence": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/successor_evidence"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "disposition": {
+                  "enum": [
+                    "addressed",
+                    "partially_addressed"
+                  ]
+                }
+              },
+              "required": [
+                "disposition"
+              ]
+            },
+            "then": {
+              "properties": {
+                "successor_evidence": {
+                  "$ref": "#/$defs/successor_evidence"
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "successor_evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifact_id",
+        "source_anchor",
+        "semantic_anchor",
+        "observation",
+        "anchor_verification"
+      ],
+      "properties": {
+        "artifact_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "source_anchor": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "semantic_anchor": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "observation": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "anchor_verification": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "method",
+            "excerpt",
+            "excerpt_sha256",
+            "start_byte",
+            "end_byte",
+            "occurrence",
+            "rendered_receipt_locator",
+            "rendered_receipt_sha256"
+          ],
+          "properties": {
+            "method": {
+              "enum": [
+                "utf8_exact_excerpt",
+                "rendered_receipt"
+              ]
+            },
+            "excerpt": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "excerpt_sha256": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "start_byte": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "end_byte": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "occurrence": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 1
+            },
+            "rendered_receipt_locator": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "rendered_receipt_sha256": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          }
+        }
+      }
+    }
+  }
+}

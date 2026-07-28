@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0.0",
+  "closure_id": "public-conformance-v1-scientific-quality",
+  "domain": "scientific-quality",
+  "status": "pass",
+  "evaluated_payload_sha256": "988cc13155c13ab6975c3983a708d336a6c89f88dbb188861333f585bc4d0d1a",
+  "evidence_ids": [
+    "final-semantic-adjudication",
+    "adapter-promotion"
+  ],
+  "limitations": [
+    "The public suite is synthetic; project-manuscript review is outside this release evaluation.",
+    "Passing these bounded checks does not establish universal review accuracy."
+  ]
+}

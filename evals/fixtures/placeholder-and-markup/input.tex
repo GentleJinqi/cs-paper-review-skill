@@ -1,0 +1,8 @@
+\newif\ifshowrevisionmarkup
+\showrevisionmarkuptrue
+\newcommand{\revadd}[1]{\ifshowrevisionmarkup\textcolor{blue}{#1}\else#1\fi}
+\begin{tabular}{lc}
+Method & Author-supplied result\\
+Ours & --\\
+\end{tabular}
+\revadd{This synthetic revision marker is intentionally visible.}

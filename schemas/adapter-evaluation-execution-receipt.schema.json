@@ -1,0 +1,229 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/cs-paper-review/adapter-evaluation-execution-receipt.schema.json",
+  "title": "Adapter candidate execution receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "receipt_kind",
+    "execution_id",
+    "executed_at",
+    "candidate_id",
+    "candidate_implementation_sha256",
+    "adapter_sha256",
+    "compatibility_payload_sha256",
+    "executor",
+    "runner",
+    "runner_locator",
+    "runner_sha256",
+    "runner_version",
+    "fixture_set",
+    "fixture_manifest_locator",
+    "fixture_manifest_sha256",
+    "evaluation_report_locator",
+    "evaluation_report_sha256",
+    "status",
+    "execution_performed",
+    "raw_output_produced",
+    "oracle_access_record",
+    "oracle_boundary_verification",
+    "dispatch_input_snapshot_sha256",
+    "cases",
+    "limitations"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "receipt_kind": {
+      "const": "adapter_candidate_execution"
+    },
+    "execution_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*$"
+    },
+    "executed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "candidate_id": {
+      "enum": [
+        "minimal-settled-set",
+        "persisted-task-registry"
+      ]
+    },
+    "candidate_implementation_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "adapter_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "compatibility_payload_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "executor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "executor_id",
+        "requested_model",
+        "requested_mode",
+        "configuration_state",
+        "effective_telemetry",
+        "resolved_model",
+        "resolved_mode",
+        "role"
+      ],
+      "properties": {
+        "executor_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._-]*$"
+        },
+        "requested_model": {
+          "const": "gpt-5.6-sol"
+        },
+        "requested_mode": {
+          "const": "ultra"
+        },
+        "configuration_state": {
+          "const": "requested_and_recorded"
+        },
+        "effective_telemetry": {
+          "enum": [
+            "not_surfaced",
+            "surfaced_unverified"
+          ]
+        },
+        "resolved_model": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "resolved_mode": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "role": {
+          "const": "candidate_executor"
+        }
+      }
+    },
+    "runner": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*$"
+    },
+    "runner_locator": {
+      "type": "string",
+      "minLength": 1
+    },
+    "runner_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "runner_version": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "fixture_set": {
+      "type": "string",
+      "minLength": 1
+    },
+    "fixture_manifest_locator": {
+      "type": "string",
+      "minLength": 1
+    },
+    "fixture_manifest_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "evaluation_report_locator": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evaluation_report_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "status": {
+      "const": "completed"
+    },
+    "execution_performed": {
+      "const": true
+    },
+    "raw_output_produced": {
+      "const": true
+    },
+    "oracle_access_record": {
+      "const": "declared_withheld_until_output_frozen"
+    },
+    "oracle_boundary_verification": {
+      "const": "dispatch_snapshot_excludes_oracle"
+    },
+    "dispatch_input_snapshot_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "fixture_id",
+          "input_locator",
+          "input_sha256",
+          "output_locator",
+          "output_sha256",
+          "output_frozen_at",
+          "result"
+        ],
+        "properties": {
+          "fixture_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "input_locator": {
+            "type": "string",
+            "minLength": 1
+          },
+          "input_sha256": {
+            "$ref": "#/$defs/sha256"
+          },
+          "output_locator": {
+            "type": "string",
+            "minLength": 1
+          },
+          "output_sha256": {
+            "$ref": "#/$defs/sha256"
+          },
+          "output_frozen_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "result": {
+            "enum": [
+              "pass",
+              "fail"
+            ]
+          }
+        }
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}
