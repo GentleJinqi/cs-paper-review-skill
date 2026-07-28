@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/cs-paper-review/adapter-promotion.schema.json",
+  "title": "Adapter promotion record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "record_id",
+    "evaluated_at",
+    "candidate_id",
+    "adapter_sha256",
+    "result",
+    "promotion_decision",
+    "evaluation_summary"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "record_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evaluated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "candidate_id": {
+      "enum": [
+        "minimal-settled-set",
+        "persisted-task-registry"
+      ]
+    },
+    "adapter_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "result": {
+      "enum": [
+        "pass",
+        "fail"
+      ]
+    },
+    "promotion_decision": {
+      "enum": [
+        "selected",
+        "not_selected",
+        "rejected"
+      ]
+    },
+    "evaluation_summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fixture_set",
+        "quality_result",
+        "lifecycle_result"
+      ],
+      "properties": {
+        "fixture_set": {
+          "type": "string",
+          "minLength": 1
+        },
+        "quality_result": {
+          "type": "string",
+          "minLength": 1
+        },
+        "lifecycle_result": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}
+

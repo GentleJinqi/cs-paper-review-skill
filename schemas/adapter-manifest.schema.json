@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/cs-paper-review/adapter-manifest.schema.json",
+  "title": "Active adapter manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "selected_candidate_id",
+    "selected_lifecycle_implementation",
+    "promotion_record_locator",
+    "candidate_implementations",
+    "active_files",
+    "adapter_payload_sha256"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "selected_candidate_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        null,
+        "minimal-settled-set",
+        "persisted-task-registry"
+      ]
+    },
+    "selected_lifecycle_implementation": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "promotion_record_locator": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "candidate_implementations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "minimal-settled-set",
+        "persisted-task-registry"
+      ],
+      "properties": {
+        "minimal-settled-set": {
+          "const": "adapters/codex/candidates/minimal-settled-set.md"
+        },
+        "persisted-task-registry": {
+          "const": "adapters/codex/candidates/persisted-task-registry.md"
+        }
+      }
+    },
+    "active_files": {
+      "type": "array",
+      "minItems": 3,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^adapters/[A-Za-z0-9._/-]+$"
+      }
+    },
+    "adapter_payload_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "oneOf": [
+    {
+      "properties": {
+        "selected_candidate_id": {
+          "const": null
+        },
+        "selected_lifecycle_implementation": {
+          "const": null
+        },
+        "promotion_record_locator": {
+          "const": null
+        }
+      }
+    },
+    {
+      "properties": {
+        "selected_candidate_id": {
+          "const": "minimal-settled-set"
+        },
+        "selected_lifecycle_implementation": {
+          "const": "adapters/codex/candidates/minimal-settled-set.md"
+        },
+        "promotion_record_locator": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    {
+      "properties": {
+        "selected_candidate_id": {
+          "const": "persisted-task-registry"
+        },
+        "selected_lifecycle_implementation": {
+          "const": "adapters/codex/candidates/persisted-task-registry.md"
+        },
+        "promotion_record_locator": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  ]
+}
+

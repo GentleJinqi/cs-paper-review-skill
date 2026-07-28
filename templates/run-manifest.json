@@ -1,0 +1,96 @@
+{
+  "authorisation": {
+    "authorised": true,
+    "capacity": "author_side",
+    "policy_status": "permitted"
+  },
+  "completion": "partial",
+  "confidentiality": {
+    "classification": "author_owned_draft",
+    "external_transmission_authorised": false,
+    "processing": "local_only"
+  },
+  "coverage": {
+    "criteria": [],
+    "matrix_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "created_at": "2026-07-28T00:00:00Z",
+  "delegation": {
+    "coverage_risk_map": [],
+    "owner": "root",
+    "task_count_as_runtime_observation": 0,
+    "tasks": []
+  },
+  "input_artifacts": [
+    {
+      "artifact_id": "paper-source",
+      "kind": "source",
+      "lineage_id": "replace-with-frozen-lineage",
+      "locator": "replace-with-authorised-source-path",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  ],
+  "limitations": [
+    "Template values must be replaced with evidence from the actual run."
+  ],
+  "output_artifacts": {
+    "ae_assessment": "ae-assessment.md",
+    "finding_ledger": "finding-ledger.json",
+    "review_summary": "review-summary.md",
+    "reviewer_report": "reviewer-report.md"
+  },
+  "review_goal": "Author-side pre-submission scientific review.",
+  "review_kind": "initial",
+  "review_only": true,
+  "run_id": "replace-with-run-id",
+  "runtime_profile": {
+    "adapter_controlled_fallback": "prohibited_and_checked",
+    "adapter_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "compatibility_claim": "evaluation_pending",
+    "configuration_proof": {
+      "locator": "replace-with-root-configuration-proof",
+      "proof_kind": "host_loaded_profile_receipt",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "subject_id": "replace-with-run-id",
+      "subject_kind": "root"
+    },
+    "configuration_source": "adapter-controlled root configuration",
+    "effective_telemetry": "not_surfaced",
+    "host_build": "not_surfaced",
+    "mode_validation": {
+      "evidence_locator": null,
+      "sha256": null,
+      "status": "not_run"
+    },
+    "model_validation": {
+      "evidence_locator": null,
+      "sha256": null,
+      "status": "not_run"
+    },
+    "promotion_evaluation_record": null,
+    "requested_mode": "ultra",
+    "requested_model": "gpt-5.6-sol",
+    "resolved_mode": null,
+    "resolved_model": null,
+    "selected_candidate_id": null,
+    "surface": "Codex"
+  },
+  "schema_version": "1.0.0",
+  "source_pdf_alignment": {
+    "evidence": "No matching rendered artifact has yet been frozen.",
+    "status": "missing_pdf",
+    "verified": false
+  },
+  "stages": [],
+  "target": {
+    "track": null,
+    "venue": "unknown",
+    "year": null
+  },
+  "venue_profile": {
+    "profile_id": null,
+    "source_sha256": null,
+    "status": "unknown"
+  }
+}
+
