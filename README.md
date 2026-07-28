@@ -37,6 +37,56 @@ authority, and compares topic proximity across six scientific axes. Corpus
 size and resemblance never determine acceptance or waive a core criterion.
 See [venue conditioning](references/venue-conditioning.md).
 
+## Review pipeline
+
+This is the per-paper workflow. Repository refresh, adapter evaluation, and
+release work are maintenance activities and do not run inside this pipeline.
+
+```mermaid
+flowchart TD
+    S(["Start initial or delta review"]) --> A{"Authority, privacy, and policy allow review?"}
+
+    A -- "No" --> B["Blocked preflight<br/>Do not inspect protected content"]
+    B --> END
+    A -- "Yes" --> F["Freeze exact source, PDF, supplements, and lineage<br/>Delta also binds the prior run and typed author response"]
+
+    F --> G{"Scientific source and pre-review delta continuity valid?"}
+    G -- "No or unresolved" --> P["Partial or blocked<br/>Record the exact unresolved dependency"]
+    G -- "Source valid; delta continuity valid or not applicable" --> C["Record PDF alignment and target venue/profile state<br/>Build the portable criteria and coverage map<br/>Keep rendering or venue-overlay gaps as explicit limitations"]
+
+    C --> R["Root portable scientific assessment<br/>Codex adapter active: request Sol Ultra"]
+    R --> D{"Would a bounded independent or specialist check add material evidence?"}
+    D -- "Yes" --> L["Optional isolated leaf task with canonical JSON<br/>Persist, recover, and reconcile late results<br/>Codex adapter active: request Sol Ultra"]
+    L --> D
+
+    D -- "No or no more" --> E["Verify evidence and adjudicate one canonical ledger<br/>Delta: verify successor evidence and inspect introduced risk"]
+    E --> Q{"All criteria, delta transitions, tasks, conflicts, and limitations settled?"}
+
+    Q -- "A targeted check can resolve the gap" --> T["Acquire bounded targeted evidence<br/>Root check or the same verified task contract"]
+    T --> E
+    Q -- "Author evidence, authority, or an experiment is required" --> P
+    Q -- "Yes" --> O["Apply a validated venue profile if available<br/>Only then add optional corpus context"]
+
+    O --> Y["Generate canonical reviewer, AE, and summary views<br/>Run deterministic validation"]
+    P --> Y
+    Y --> Z{"Validation passes?"}
+    Z -- "No" --> Y
+    Z -- "Yes" --> OUT["Complete, partial, or blocked<br/>Stop without editing the manuscript"]
+
+    OUT --> DR{"Author later requests a delta review?"}
+    DR -- "Yes" --> S
+    DR -- "No" --> END(["End"])
+```
+
+The root is the sole canonical writer. Delegation follows uncovered evidence
+risk. Task count is an observed runtime fact, not a rigor criterion. Targeted
+verification and delta review are the only scientific feedback loops; neither
+loop authorises paper editing or experiment execution. Sol Ultra controls apply
+when the optional Codex adapter is active; corpus calibration occurs only after
+the portable assessment and any validated venue overlay. A delta review checks
+predecessor and authority continuity before assessment, then verifies current
+successor evidence and introduced risks during evidence settlement.
+
 ## Use
 
 Invoke `$cs-paper-review` and provide the manuscript source, matching PDF when
@@ -198,7 +248,8 @@ results, and effective runtime telemetry are distinct facts. A task name,
 static agent file, or self-report is not configuration proof. The current
 offline validator reserves but does not grant `runtime-attested`.
 `configured-and-evaluated` is the highest state available without trusted
-effective telemetry. Release `0.2.0` selects
+effective telemetry. Release `0.2.1` preserves the lifecycle selection made in
+`0.2.0` and changes documentation only:
 `persisted-task-registry` through the exact
 [adapter manifest](adapters/codex/adapter-manifest.json) and passing
 [promotion record](compatibility/adapter-promotion.json). Both candidates
