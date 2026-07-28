@@ -50,42 +50,24 @@ flowchart TD
     B --> END
     A -- "Yes" --> F["Freeze exact source, PDF, supplements, and lineage<br/>Delta also binds the prior run and typed author response"]
 
-    F --> H{"Initial or delta review?"}
-    H -- "Initial" --> I
-    H -- "Delta" --> G{"Pre-review delta continuity validates?<br/>Exact initial predecessor, unchanged goal/target/profile/coverage authority,<br/>chronology, and typed response bindings"}
-    G -- "No" --> P["Partial or blocked<br/>Record the exact unresolved dependency"]
-    G -- "Yes" --> I{"Authoritative scientific source readable?"}
-    I -- "No" --> BI["Blocked<br/>Record the exact source-integrity gap"]
-    I -- "Yes" --> J{"Bound PDF alignment sufficient for rendered-layout claims?"}
-    J -- "No" --> W["Continue with an explicit rendering limitation"]
-    J -- "Yes" --> V{"Target venue state"}
-    W --> V
+    F --> G{"Scientific source and pre-review delta continuity valid?"}
+    G -- "No or unresolved" --> P["Partial or blocked<br/>Record the exact unresolved dependency"]
+    G -- "Source valid; delta continuity valid or not applicable" --> C["Record PDF alignment and target venue/profile state<br/>Build the portable criteria and coverage map<br/>Keep rendering or venue-overlay gaps as explicit limitations"]
 
-    V -- "Unknown" --> C["Portable criteria and coverage map"]
-    V -- "Known profile validates" --> C
-    V -- "Known profile unavailable or invalid" --> U["Continue portable-only<br/>Record the venue-overlay limitation"]
-    U --> C
-
-    C --> R["Root portable scientific assessment<br/>If the Codex adapter is active, request Sol Ultra"]
-
+    C --> R["Root portable scientific assessment<br/>Codex adapter active: request Sol Ultra"]
     R --> D{"Would a bounded independent or specialist check add material evidence?"}
-    D -- "Yes" --> L["Optional leaf task<br/>Isolated inputs and canonical JSON receipt<br/>If the Codex adapter is active, request Sol Ultra"]
-    L --> X["Persist task state<br/>Recover interruption and reconcile late results"]
-    X --> D
+    D -- "Yes" --> L["Optional isolated leaf task with canonical JSON<br/>Persist, recover, and reconcile late results<br/>Codex adapter active: request Sol Ultra"]
+    L --> D
 
     D -- "No or no more" --> E["Verify evidence and adjudicate one canonical ledger<br/>Delta: verify successor evidence and inspect introduced risk"]
     E --> Q{"All criteria, delta transitions, tasks, conflicts, and limitations settled?"}
 
-    Q -- "A targeted check can resolve the gap" --> T["Acquire bounded targeted evidence<br/>Root check or optional isolated leaf with persisted lifecycle"]
+    Q -- "A targeted check can resolve the gap" --> T["Acquire bounded targeted evidence<br/>Root check or the same verified task contract"]
     T --> E
     Q -- "Author evidence, authority, or an experiment is required" --> P
-    Q -- "Yes" --> O["Apply a validated venue profile only after the portable conclusion"]
+    Q -- "Yes" --> O["Apply a validated venue profile if available<br/>Only then add optional corpus context"]
 
-    O --> M{"Optional comparison corpus requested?"}
-    M -- "Yes" --> K["Contextual calibration only<br/>Keep venue-background and topic-near corpora separate"]
-    M -- "No" --> Y
-    K --> Y["Generate canonical reviewer, AE, and summary views<br/>Run deterministic validation"]
-    BI --> Y
+    O --> Y["Generate canonical reviewer, AE, and summary views<br/>Run deterministic validation"]
     P --> Y
     Y --> Z{"Validation passes?"}
     Z -- "No" --> Y
@@ -101,7 +83,9 @@ risk. Task count is an observed runtime fact, not a rigor criterion. Targeted
 verification and delta review are the only scientific feedback loops; neither
 loop authorises paper editing or experiment execution. Sol Ultra controls apply
 when the optional Codex adapter is active; corpus calibration occurs only after
-the portable assessment and any validated venue overlay.
+the portable assessment and any validated venue overlay. A delta review checks
+predecessor and authority continuity before assessment, then verifies current
+successor evidence and introduced risks during evidence settlement.
 
 ## Use
 

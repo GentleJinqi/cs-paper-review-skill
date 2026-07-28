@@ -45,42 +45,24 @@ flowchart TD
     B --> END
     A -- "是" --> F["冻结准确 source、PDF、supplement 与 lineage<br/>Delta 另绑定 prior run 和 typed author response"]
 
-    F --> H{"Initial 还是 delta review？"}
-    H -- "Initial" --> I
-    H -- "Delta" --> G{"Review 前的 delta 连续性是否通过校验？<br/>精确 initial predecessor、不变的 goal/target/profile/coverage authority、<br/>chronology 与 typed response bindings"}
-    G -- "否" --> P["Partial 或 blocked<br/>准确记录未解决的依赖"]
-    G -- "是" --> I{"权威科学 source 是否可读？"}
-    I -- "否" --> BI["Blocked<br/>准确记录 source 完整性缺口"]
-    I -- "是" --> J{"绑定的 PDF 对齐是否足以支持 rendered-layout 判断？"}
-    J -- "否" --> W["继续 review，并明确记录 rendering limitation"]
-    J -- "是" --> V{"目标 venue 状态"}
-    W --> V
-
-    V -- "Unknown" --> C["Portable criteria 与 coverage map"]
-    V -- "已知且 profile 校验通过" --> C
-    V -- "已知但 profile 缺失或无效" --> U["继续 portable-only review<br/>记录 venue-overlay limitation"]
-    U --> C
+    F --> G{"科学 source 与 review 前 delta 连续性是否有效？"}
+    G -- "否或未解决" --> P["Partial 或 blocked<br/>准确记录未解决的依赖"]
+    G -- "Source 有效；delta continuity 有效或不适用" --> C["记录 PDF 对齐与目标 venue/profile 状态<br/>建立 portable criteria 与 coverage map<br/>将 rendering 或 venue-overlay 缺口保留为明确 limitation"]
 
     C --> R["root portable 科学评估<br/>启用 Codex adapter 时请求 Sol Ultra"]
-
     R --> D{"有界独立或专门核验能否增加实质证据？"}
-    D -- "是" --> L["可选叶子任务<br/>隔离输入并返回 canonical JSON receipt<br/>启用 Codex adapter 时请求 Sol Ultra"]
-    L --> X["持久化任务状态<br/>中断后恢复并对账 late result"]
-    X --> D
+    D -- "是" --> L["可选隔离叶子任务与 canonical JSON<br/>持久化、恢复并对账 late result<br/>启用 Codex adapter 时请求 Sol Ultra"]
+    L --> D
 
     D -- "否或不再需要" --> E["核验证据并裁决为唯一 canonical ledger<br/>Delta：核验 successor evidence 并检查 introduced risk"]
     E --> Q{"所有 criteria、delta transition、task、冲突和 limitation 均已结算？"}
 
-    Q -- "定向核验可以解决" --> T["获取有界定向证据<br/>由 root 核验，或使用具备持久化生命周期的可选隔离叶子任务"]
+    Q -- "定向核验可以解决" --> T["获取有界定向证据<br/>由 root 核验，或使用同一 verified task contract"]
     T --> E
     Q -- "需要作者证据、权限或新实验" --> P
-    Q -- "是" --> O["只在 portable 结论之后应用已校验的 venue profile"]
+    Q -- "是" --> O["若有则应用已校验 venue profile<br/>只在此之后添加可选 corpus context"]
 
-    O --> M{"是否请求可选 comparison corpus？"}
-    M -- "是" --> K["仅作语境校准<br/>venue-background 与 topic-near corpus 分离"]
-    M -- "否" --> Y
-    K --> Y["生成 canonical reviewer、AE 与 summary views<br/>执行确定性校验"]
-    BI --> Y
+    O --> Y["生成 canonical reviewer、AE 与 summary views<br/>执行确定性校验"]
     P --> Y
     Y --> Z{"校验通过？"}
     Z -- "否" --> Y
@@ -95,7 +77,9 @@ root 是唯一 canonical writer。是否委派只取决于尚未覆盖的证据�
 数量是运行观察值，不是严谨性指标。定向核验与 delta review 是仅有的科学
 反馈 loop；二者都不授权修改论文或运行实验。只有启用可选 Codex adapter
 时才应用 Sol Ultra 控制；corpus 校准仅发生在 portable assessment 以及任何
-已校验 venue overlay 之后。
+已校验 venue overlay 之后。Delta review 在科学评估前检查 predecessor 与
+authority 连续性，再在证据结算阶段核验当前 successor evidence 与
+introduced risk。
 
 ## 使用方式
 
