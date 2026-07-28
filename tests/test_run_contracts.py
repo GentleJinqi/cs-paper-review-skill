@@ -213,6 +213,9 @@ def run_fixture(
             "classification": "author_owned_draft",
             "processing": "local_only",
             "external_transmission_authorised": False,
+            "external_destination": None,
+            "retention": "run_only",
+            "untrusted_content_acknowledged": True,
         },
         "review_only": True,
         "input_artifacts": [
@@ -521,6 +524,12 @@ class RunContractTests(unittest.TestCase):
         self.assertErrorContains(
             validate_run_manifest(self.run, self.coverage, self.root),
             "configuration proof"
+        )
+        proof["proof_kind"] = "host_loaded_profile_receipt"
+        proof["locator"] = "../outside.json"
+        self.assertErrorContains(
+            validate_run_manifest(self.run, self.coverage, self.root),
+            "canonical and relative",
         )
         proof["proof_kind"] = "static_toml"
         self.assertErrorContains(

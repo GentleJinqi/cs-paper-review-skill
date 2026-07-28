@@ -147,7 +147,10 @@
       "required": [
         "classification",
         "processing",
-        "external_transmission_authorised"
+        "external_transmission_authorised",
+        "external_destination",
+        "retention",
+        "untrusted_content_acknowledged"
       ],
       "properties": {
         "classification": {
@@ -165,6 +168,22 @@
         },
         "external_transmission_authorised": {
           "type": "boolean"
+        },
+        "external_destination": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "retention": {
+          "enum": [
+            "run_only",
+            "authorised_persistent",
+            "unspecified"
+          ]
+        },
+        "untrusted_content_acknowledged": {
+          "const": true
         }
       }
     },

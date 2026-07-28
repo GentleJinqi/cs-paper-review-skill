@@ -188,11 +188,28 @@ class ValidatorNegativeFixtureTests(unittest.TestCase):
             )
             self.assertEqual(
                 [
-                    "reference-boundary: SKILL.md references missing file: "
-                    "references/missing.md"
+                    "reference-boundary: SKILL.md has invalid reference "
+                    "references/missing.md: locator does not resolve to a "
+                    "regular file"
                 ],
                 validate_reference_boundaries(root),
             )
+
+    def test_traversal_and_symlink_references_are_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            (root / "references").mkdir()
+            (root / "outside.md").write_text("outside\n", encoding="utf-8")
+            (root / "references" / "linked.md").symlink_to(root / "outside.md")
+            (root / "SKILL.md").write_text(
+                "---\nname: fixture\ndescription: Author-side CS paper review\n---\n"
+                "Read `references/../outside.md` and "
+                "`references/linked.md`.\n",
+                encoding="utf-8",
+            )
+            errors = validate_reference_boundaries(root)
+            self.assertTrue(any("traversal-free" in error for error in errors))
+            self.assertTrue(any("symlink" in error for error in errors))
 
     def test_duplicate_json_key_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

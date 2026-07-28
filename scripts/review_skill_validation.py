@@ -168,23 +168,35 @@ def validate_reference_boundaries(root: pathlib.Path) -> list[str]:
 
     root = _normalise_root(root)
     errors: list[str] = []
-    path_pattern = re.compile(
-        r"`((?:references|templates|schemas|adapters|scripts)/[^`\s]+)"
-        r"|(?<!\()(?<![\w/])((?:references|templates|schemas|adapters|scripts)/"
-        r"[A-Za-z0-9_./-]+\.(?:md|json|yaml|yml|toml|py))"
+    patterns = (
+        re.compile(
+            r"`((?:references|templates|schemas|adapters|scripts)/[^`\s]+)`"
+        ),
+        re.compile(
+            r"\]\(((?:references|templates|schemas|adapters|scripts)/"
+            r"[^)\s#]+)(?:#[^)]+)?\)"
+        ),
+        re.compile(
+            r"(?<![\w/(])((?:references|templates|schemas|adapters|scripts)/"
+            r"[A-Za-z0-9_./-]+\.(?:md|json|yaml|yml|toml|py))"
+        ),
     )
     for path in active_text_files(root):
         if path.suffix.lower() != ".md":
             continue
         text = path.read_text(encoding="utf-8")
-        for match in path_pattern.finditer(text):
-            raw = match.group(1) or match.group(2)
+        candidates: set[str] = set()
+        for pattern in patterns:
+            candidates.update(match.group(1) for match in pattern.finditer(text))
+        for raw in sorted(candidates):
             relative = raw.rstrip(".,;:)")
-            target = root / relative
-            if not target.is_file():
-                source = path.relative_to(root).as_posix()
+            source = path.relative_to(root).as_posix()
+            try:
+                _safe_bundle_file(root, relative)
+            except ValueError as exc:
                 errors.append(
-                    f"reference-boundary: {source} references missing file: {relative}"
+                    f"reference-boundary: {source} has invalid reference "
+                    f"{relative}: {exc}"
                 )
     return sorted(set(errors))
 
@@ -509,6 +521,18 @@ def _safe_bundle_file(root: pathlib.Path, locator: str) -> pathlib.Path:
     if not path.is_file():
         raise ValueError("locator does not resolve to a regular file")
     return path
+
+
+def _is_canonical_relative_locator(locator: Any) -> bool:
+    if not isinstance(locator, str) or not locator or "\\" in locator:
+        return False
+    pure = pathlib.PurePosixPath(locator)
+    return (
+        not pure.is_absolute()
+        and "." not in pure.parts
+        and ".." not in pure.parts
+        and pure.as_posix() == locator
+    )
 
 
 def _load_json_object(path: pathlib.Path, label: str) -> dict:
@@ -838,6 +862,13 @@ def validate_finding_ledger(data: dict) -> list[str]:
             errors.append(f"{prefix}: adjudication_rationale is required")
         if completion == "complete" and adjudication == "candidate":
             errors.append(f"{prefix}: candidate cannot remain in a complete ledger")
+        if completion == "complete" and (
+            adjudication == "unresolved"
+            or finding.get("evidence_state") in {"needs_verification", "blocked"}
+        ):
+            errors.append(
+                f"{prefix}: unresolved evidence prevents complete ledger status"
+            )
         delta_status = finding.get("delta_status")
         impact_change = finding.get("impact_change")
         prior_id = finding.get("prior_finding_id")
@@ -903,6 +934,39 @@ def validate_finding_ledger(data: dict) -> list[str]:
             state = closure.get("state")
             if state not in {"open", "closed", "not_applicable"}:
                 errors.append(f"{prefix}: closure state is invalid")
+            if closure.get("owner") not in {
+                "author",
+                "reviewer",
+                "external",
+                "none",
+            }:
+                errors.append(f"{prefix}: closure owner is invalid")
+            if closure.get("gate") not in {
+                "none",
+                "author_judgement",
+                "author_data",
+                "experiment",
+                "citation",
+                "verification",
+                "prose",
+                "method",
+                "analysis",
+                "figure_layout",
+                "packaging",
+            }:
+                errors.append(f"{prefix}: closure gate is invalid")
+            if state == "open" and not (
+                isinstance(closure.get("requirement"), str)
+                and closure.get("requirement").strip()
+            ):
+                errors.append(f"{prefix}: open closure requires a requirement")
+            if state == "not_applicable" and (
+                closure.get("owner") != "none"
+                or closure.get("gate") != "none"
+            ):
+                errors.append(
+                    f"{prefix}: inapplicable closure requires owner/gate none"
+                )
             if (
                 adjudication == "unresolved"
                 or evidence_state in {"needs_verification", "blocked"}
@@ -913,9 +977,14 @@ def validate_finding_ledger(data: dict) -> list[str]:
         if not isinstance(provenance, dict):
             errors.append(f"{prefix}: provenance must be an object")
         elif adjudication == "merged":
-            if not provenance.get("merged_from_ids"):
+            merged_from = provenance.get("merged_from_ids")
+            if not merged_from:
                 errors.append(
                     f"{prefix}: merged finding must preserve source finding IDs"
+                )
+            elif len(merged_from) != len(set(merged_from)):
+                errors.append(
+                    f"{prefix}: merged source finding IDs must be unique"
                 )
             merged_into = provenance.get("merged_into_finding_id")
             if not isinstance(merged_into, str) or not merged_into:
@@ -924,6 +993,16 @@ def validate_finding_ledger(data: dict) -> list[str]:
                 )
             elif merged_into == finding_id:
                 errors.append(f"{prefix}: merged finding cannot target itself")
+        dissent = finding.get("dissent")
+        if not isinstance(dissent, dict):
+            errors.append(f"{prefix}: dissent must be an object")
+        elif dissent.get("state") not in {"none", "recorded", "unresolved"}:
+            errors.append(f"{prefix}: dissent state is invalid")
+        elif dissent.get("state") in {"recorded", "unresolved"} and not (
+            isinstance(dissent.get("summary"), str)
+            and dissent.get("summary").strip()
+        ):
+            errors.append(f"{prefix}: recorded dissent requires a summary")
         if adjudication == "rejected":
             if decision_impact != "none" or finding.get("action_type") != "no-action":
                 errors.append(
@@ -972,8 +1051,10 @@ def _validate_configuration_proof(
         errors.append(
             f"{prefix}: configuration proof cannot be self-report or static example"
         )
-    if not isinstance(value.get("locator"), str) or not value.get("locator"):
-        errors.append(f"{prefix}: configuration proof locator is required")
+    if not _is_canonical_relative_locator(value.get("locator")):
+        errors.append(
+            f"{prefix}: configuration proof locator must be canonical and relative"
+        )
     if not _is_sha256(value.get("sha256")):
         errors.append(f"{prefix}: configuration proof SHA-256 is required")
     return errors
@@ -1030,6 +1111,19 @@ def validate_run_manifest(
     authorisation = data.get("authorisation")
     if not isinstance(authorisation, dict) or authorisation.get("authorised") is not True:
         errors.append("run-manifest: authorisation must be explicit and affirmative")
+    elif authorisation.get("policy_status") == "prohibited":
+        if completion != "blocked":
+            errors.append(
+                "run-manifest: prohibited policy requires blocked completion"
+            )
+    elif (
+        authorisation.get("capacity") == "official_reviewer"
+        and authorisation.get("policy_status") != "permitted"
+        and completion != "blocked"
+    ):
+        errors.append(
+            "run-manifest: unknown official-review policy requires blocked completion"
+        )
     confidentiality = data.get("confidentiality")
     if not isinstance(confidentiality, dict):
         errors.append("run-manifest: confidentiality must be an object")
@@ -1050,6 +1144,33 @@ def validate_run_manifest(
         ):
             errors.append(
                 "run-manifest: external processing requires transmission authority"
+            )
+        if confidentiality.get("processing") == "authorised_external" and not (
+            isinstance(confidentiality.get("external_destination"), str)
+            and confidentiality.get("external_destination").strip()
+        ):
+            errors.append(
+                "run-manifest: external processing requires a recorded destination"
+            )
+        if confidentiality.get("processing") == "local_only" and (
+            confidentiality.get("external_destination") is not None
+        ):
+            errors.append(
+                "run-manifest: local-only processing cannot name an external destination"
+            )
+        if confidentiality.get("retention") not in {
+            "run_only",
+            "authorised_persistent",
+            "unspecified",
+        }:
+            errors.append("run-manifest: retention boundary is invalid")
+        if confidentiality.get("retention") == "unspecified" and completion == "complete":
+            errors.append(
+                "run-manifest: unspecified retention prevents complete status"
+            )
+        if confidentiality.get("untrusted_content_acknowledged") is not True:
+            errors.append(
+                "run-manifest: untrusted manuscript content boundary is required"
             )
 
     alignment = data.get("source_pdf_alignment")
@@ -1161,6 +1282,16 @@ def validate_run_manifest(
                 coverage_finding_ids.update(
                     item for item in finding_ids if isinstance(item, str)
                 )
+                if disposition == "finding_linked" and not finding_ids:
+                    errors.append(
+                        f"{prefix}: finding_linked disposition requires finding IDs"
+                    )
+                if disposition in {"assessed_no_finding", "not_applicable"} and (
+                    finding_ids
+                ):
+                    errors.append(
+                        f"{prefix}: no-finding disposition cannot cite finding IDs"
+                    )
 
     runtime = data.get("runtime_profile")
     manifest: dict = {}
@@ -1439,6 +1570,27 @@ def validate_run_pair(
             for finding in ledger.get("findings", [])
             if isinstance(finding, dict)
         }
+        canonical_criteria = set(_coverage_ids(coverage_matrix))
+        for finding in ledger.get("findings", []):
+            if not isinstance(finding, dict):
+                continue
+            criterion = finding.get("criterion")
+            if criterion not in canonical_criteria:
+                errors.append(
+                    f"run-pair: finding uses unknown primary criterion: {criterion}"
+                )
+            related = finding.get("related_criteria")
+            if not isinstance(related, list):
+                errors.append("run-pair: finding related_criteria must be a list")
+            else:
+                if len(related) != len(set(related)):
+                    errors.append(
+                        "run-pair: finding related_criteria contains duplicates"
+                    )
+                for unknown in sorted(set(related) - canonical_criteria):
+                    errors.append(
+                        f"run-pair: finding uses unknown related criterion: {unknown}"
+                    )
         artifact_ids = {
             artifact.get("artifact_id")
             for artifact in run.get("input_artifacts", [])
@@ -1483,8 +1635,16 @@ def validate_run_pair(
             if isinstance(finding, dict)
             and finding.get("adjudication_status") == "merged"
         }
+        rejected_ids = {
+            finding.get("finding_id")
+            for finding in ledger.get("findings", [])
+            if isinstance(finding, dict)
+            and finding.get("adjudication_status") == "rejected"
+        }
         if coverage_ids & merged_ids:
             errors.append("run-pair: merged finding cannot satisfy coverage")
+        if coverage_ids & rejected_ids:
+            errors.append("run-pair: rejected finding cannot satisfy coverage")
         for finding in ledger.get("findings", []):
             if not isinstance(finding, dict):
                 continue

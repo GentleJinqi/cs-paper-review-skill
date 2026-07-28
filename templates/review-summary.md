@@ -1,17 +1,52 @@
 # Review Summary
 
-## Overall Readiness
+## Outcome
 
-## Venue-Aware Recommendation Context
+- Run ID:
+- Review kind:
+- Completion: complete / partial / blocked
+- Target profile ID or `unknown`:
+- Portable overall assessment:
+- Native recommendation or score, only when defined by a current profile:
 
-## Most Important Issues
+## Most decision-relevant findings
 
-## Author-Data Gates
+| Finding ID | Primary criterion | Decision impact | Evidence state | Artifact and semantic anchor | Closure owner/gate |
+|---|---|---|---|---|---|
 
-## Final Packaging Gates
+## Strengths
 
-## Accepted Strengths
+List only evidence-backed strengths that survived adjudication.
 
-## Rejected Or Downgraded Suggestions
+## Coverage and dissent
 
-## Suggested Next Step
+- Coverage-matrix hash:
+- Applicable criteria assessed:
+- Justified inapplicable criteria:
+- Uncertain or blocked criteria:
+- Preserved dissent:
+- Rejected or downgraded candidate rationale:
+
+## Author and readiness gates
+
+Separate:
+
+- scientific defects;
+- author judgement or data;
+- experiment-required items;
+- external verification;
+- submission packaging and rendered layout.
+
+## Limitations and non-claims
+
+- Missing, stale, or mismatched inputs:
+- Checks not authorised or not performed:
+- Runtime/configuration limitations:
+- No acceptance probability:
+- No fabricated facts, citations, or results:
+- No manuscript edits:
+
+## Next boundary
+
+This review does not authorise revision. A later task must explicitly select
+which findings to act on and what edits or experiments are permitted.

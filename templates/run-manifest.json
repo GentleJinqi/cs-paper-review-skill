@@ -7,12 +7,50 @@
   "completion": "partial",
   "confidentiality": {
     "classification": "author_owned_draft",
+    "external_destination": null,
     "external_transmission_authorised": false,
-    "processing": "local_only"
+    "processing": "local_only",
+    "retention": "run_only",
+    "untrusted_content_acknowledged": true
   },
   "coverage": {
-    "criteria": [],
-    "matrix_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    "criteria": [
+      {"applicability": "uncertain", "criterion_id": "RC-AUTHORISATION", "disposition": "needs_verification", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scope-and-authorisation", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-INPUT-LINEAGE", "disposition": "needs_verification", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "input-freeze", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-INPUT-ALIGNMENT", "disposition": "needs_verification", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "input-freeze", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-INPUT-VERIFIABILITY", "disposition": "needs_verification", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "input-freeze", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-CRITERIA-AUTHORITY", "disposition": "needs_verification", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "criteria-freeze", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-COVERAGE-ACCOUNTING", "disposition": "needs_verification", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "coverage-map", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-DELTA-LINEAGE", "disposition": "needs_verification", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "coverage-map", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-PROBLEM-FORMULATION", "disposition": "needs_verification", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scientific-assessment", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-CONTRIBUTION-IDENTITY", "disposition": "needs_verification", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scientific-assessment", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-CLAIM-EVIDENCE", "disposition": "needs_verification", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scientific-assessment", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-RELATED-WORK", "disposition": "needs_verification", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scientific-assessment", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-FORMAL-CORRECTNESS", "disposition": "needs_verification", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scientific-assessment", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-METHOD-SOUNDNESS", "disposition": "needs_verification", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scientific-assessment", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-DATA-VALIDITY", "disposition": "needs_verification", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scientific-assessment", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-MEASUREMENT-VALIDITY", "disposition": "needs_verification", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scientific-assessment", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-EXPERIMENT-DESIGN", "disposition": "needs_verification", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scientific-assessment", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-STATISTICAL-VALIDITY", "disposition": "needs_verification", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scientific-assessment", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-COMPARISON-FAIRNESS", "disposition": "needs_verification", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scientific-assessment", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-ROBUSTNESS-SCOPE", "disposition": "needs_verification", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scientific-assessment", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-REPRODUCIBILITY", "disposition": "needs_verification", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scientific-assessment", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-RESOURCE-CLAIMS", "disposition": "needs_verification", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scientific-assessment", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-WRITING-CLARITY", "disposition": "needs_verification", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scientific-assessment", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-VISUAL-INTEGRITY", "disposition": "needs_verification", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scientific-assessment", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-LIMITATIONS", "disposition": "needs_verification", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scientific-assessment", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-RESPONSIBLE-RESEARCH", "disposition": "needs_verification", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "scientific-assessment", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-CITATION-SUPPORT", "disposition": "needs_verification", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "evidence-verification", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-FINDING-EVIDENCE", "disposition": "needs_verification", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "evidence-verification", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-CONFLICT-VERIFICATION", "disposition": "needs_verification", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "evidence-verification", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-DEDUP-DISPOSITION", "disposition": "needs_verification", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "adjudication", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-DISSENT-PRESERVATION", "disposition": "needs_verification", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "adjudication", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-REQUIREMENT-LEGITIMACY", "disposition": "needs_verification", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "adjudication", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-RISK-CLASS-SEPARATION", "disposition": "needs_verification", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "synthesis", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-COMPLETION-TRUTH", "disposition": "needs_verification", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "completion", "task_ids": []},
+      {"applicability": "uncertain", "criterion_id": "RC-LEDGER-CONSISTENCY", "disposition": "needs_verification", "evidence": [], "finding_ids": [], "rationale": "Replace template values with run evidence.", "stage_id": "completion", "task_ids": []}
+    ],
+    "matrix_sha256": "047014da792043388d69a6cf80fef63f735370fa677f53cc7e32421414d5712b"
   },
   "created_at": "2026-07-28T00:00:00Z",
   "delegation": {
@@ -45,7 +83,7 @@
   "run_id": "replace-with-run-id",
   "runtime_profile": {
     "adapter_controlled_fallback": "prohibited_and_checked",
-    "adapter_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "adapter_sha256": "62bad87655a7233862af6ef0a12649846d6e9a9ad11453ca6a0610db10dc2413",
     "compatibility_claim": "evaluation_pending",
     "configuration_proof": {
       "locator": "replace-with-root-configuration-proof",
@@ -81,7 +119,17 @@
     "status": "missing_pdf",
     "verified": false
   },
-  "stages": [],
+  "stages": [
+    {"evidence": [], "stage_id": "scope-and-authorisation", "status": "partial"},
+    {"evidence": [], "stage_id": "input-freeze", "status": "partial"},
+    {"evidence": [], "stage_id": "criteria-freeze", "status": "partial"},
+    {"evidence": [], "stage_id": "coverage-map", "status": "partial"},
+    {"evidence": [], "stage_id": "scientific-assessment", "status": "partial"},
+    {"evidence": [], "stage_id": "evidence-verification", "status": "partial"},
+    {"evidence": [], "stage_id": "adjudication", "status": "partial"},
+    {"evidence": [], "stage_id": "synthesis", "status": "partial"},
+    {"evidence": [], "stage_id": "completion", "status": "partial"}
+  ],
   "target": {
     "track": null,
     "venue": "unknown",
@@ -93,4 +141,3 @@
     "status": "unknown"
   }
 }
-

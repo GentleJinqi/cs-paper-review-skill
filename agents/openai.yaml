@@ -1,4 +1,4 @@
 interface:
-  display_name: "CS Paper Review Protocol"
-  short_description: "Venue-aware CS paper review protocol"
-  default_prompt: "Use $cs-paper-review-protocol to run a strict venue-aware review of my CS paper from the LaTeX source and PDF."
+  display_name: "CS Paper Review"
+  short_description: "Evidence-grounded, venue-conditioned author-side paper review"
+  default_prompt: "Use $cs-paper-review to run an author-side pre-submission scientific review from my frozen source and matching PDF, recording evidence-backed findings, explicit coverage, and any partial or blocked limitations."

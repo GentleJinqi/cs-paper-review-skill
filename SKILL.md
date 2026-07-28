@@ -1,59 +1,82 @@
 ---
-name: cs-paper-review-protocol
-description: Use when reviewing CS, ML, CV, NLP, or related manuscripts before submission, especially with a target venue, LaTeX source, PDF layout, subagent-driven review, official venue rubric, issue ledger, or AE-style adjudication.
+name: cs-paper-review
+description: Use for an author-side pre-submission or delta review of a CS, ML, CV, NLP, or related paper when evidence-grounded scientific findings, venue-conditioned assessment, or source/PDF verification are needed.
 ---
 
-# CS Paper Review Protocol
+# CS Paper Review
 
-Use this skill to run a manuscript review, not a manuscript edit. Stop before changing the paper unless the user explicitly asks for a separate revision pass.
+Run a review, not a revision. The output is an evidence-bounded assessment and
+finding ledger. Do not edit the manuscript, run experiments, or invent missing
+facts unless the user separately authorises a later workflow.
+This review-only boundary remains in force through completion.
 
-## Defaults
+## Intake
 
-- Default venue: `TMLR`.
-- Default tier: `strict`.
-- Default execution: subagent-driven.
-- Default source priority: LaTeX for scientific content, PDF for layout and reading experience.
-- Default artifact root: `.paper-review/runs/<date>-<venue>-<tier>-NN/`, unless the user or repo instructions require another location.
+Before substantive review:
 
-## Required First Pass
+1. Establish the user's authority, review capacity, confidentiality class,
+   governing AI policy, permitted processing, external-transmission authority,
+   retention, and output boundary. Follow
+   `references/privacy-and-authorisation.md`. Stop if authority or policy
+   prohibits the intended use.
+2. Record the review goal and `initial` or `delta` kind. Freeze exact source,
+   PDF, supplement, prior-ledger, and response artifacts with hashes and
+   lineage. Source governs scientific content; only a matching PDF governs
+   rendered layout. Missing or mismatched evidence yields partial or blocked
+   conclusions, never a guessed pass or defect.
+3. Ask for target venue, year, and track. A target may remain `unknown`; do not
+   substitute a venue. When a current first-party profile is available, freeze
+   it as a soft assessment overlay. Do not infer acceptance probability.
+4. Create the run manifest from `templates/run-manifest.json`, bind it to
+   `references/review-coverage.json`, and keep `review_only: true`.
 
-1. Read user instructions and repo instructions such as `AGENTS.md`.
-2. Discover manuscript inputs from user paths first, then repo instructions, then likely manuscript roots such as `main.tex`, `paper.tex`, `latex/`, `overleaf/`, `paper/`, and nearby PDFs. Compare LaTeX/PDF title and section anchors when both exist, and ask the user if multiple plausible manuscripts remain.
-3. Freeze selected LaTeX and PDF inputs in `frozen-inputs.md`.
-4. Build `official-rubric.md` from official venue sources before reviewer dispatch.
-5. Generate `review-run-contract.md` as the internal spec and plan for the run.
-6. Self-check the contract. Start review only after source paths, venue, tier, placeholder policy, output directory, subagent plan, and review-only boundary are explicit.
+## Route
 
-Read `references/venue-refresh.md`, `references/review-workspace-protocol.md`, `references/subagent-architecture.md`, `references/issue-schema.md`, and `references/placeholder-policy.md` before dispatching reviewers. Read `references/tmlr-profile.md` when the venue is TMLR or unspecified. Read `references/source-influences.md` only when explaining provenance or preparing a public release.
+Read only what the run needs:
 
-Use the matching files under `templates/` when creating run artifacts such as `official-rubric.md`, `review-run-contract.md`, `frozen-inputs.md`, `issue-ledger.md`, reviewer reports, AE adjudication, rejected suggestions, review summary, and subagent cleanup.
+- always: `references/scientific-core.md`,
+  `references/review-coverage.md`, `references/review-workflow.md`,
+  `references/finding-contract.md`, and
+  `references/privacy-and-authorisation.md`;
+- delta review: `references/delta-review.md` and the frozen prior ledger;
+- Codex Sol Ultra execution: `adapters/codex-gpt-5.6-sol-ultra.md` and
+  `adapters/codex/adapter-manifest.json`;
+- human views: `templates/reviewer-report.md`,
+  `templates/ae-assessment.md`, and `templates/review-summary.md`.
 
-## Review Flow
+The adapter's lifecycle candidates remain inactive until an evaluated
+promotion record selects one. Until then, record compatibility as
+`evaluation_pending`; never turn requested configuration into runtime
+attestation.
 
-1. Dispatch blind holistic reviewers before process auditors.
-2. Keep real reviewer agents separate from process agents.
-3. Run AE-style adjudication after blind reports are frozen.
-4. Run regression, new-risk, style, terminology, layout, benchmark, or special-topic audits only when the tier and preflight warrant them.
-5. Merge findings into `issue-ledger.md`; do not silently drop supported issues.
-6. Record rejected or downgraded findings in `rejected-suggestions.md`.
-7. Write `review-summary.md` with venue-aware recommendation context.
-8. Write `subagent-cleanup.md` and close completed subagents when the host exposes a close operation.
-9. Stop without editing manuscript files.
+## Execute
 
-## Tier Selection
+1. Build the criterion-by-criterion coverage and risk map.
+2. Assess frozen inputs without prior-report contamination when independence
+   is claimed.
+3. Verify material candidates against exact artifacts and authorised sources.
+4. Adjudicate evidence, semantic duplicates, conflicts, and dissent into one
+   canonical finding ledger.
+5. Apply a valid target profile only after the portable scientific assessment;
+   keep native labels separate from portable decision impact.
+6. Reconcile every criterion, finding, report, limitation, and late result.
 
-Use strict tier unless the user requests standard tier or token limits require a smaller run.
+Delegation is optional and quality-driven. It follows uncovered evidence risk,
+not a roster or task quota. Only the root updates canonical artifacts.
 
-- Strict: 3 or 4 blind holistic reviewers plus process agents for coverage, AE adjudication, regression/new-risk when relevant, special topic, style/AI writing, terminology/math, layout/PDF, benchmark/meta calibration, and final meta-adjudication.
-- Standard: 3 blind holistic reviewers, 1 blind AE adjudicator, 1 combined regression/new-risk/meta reviewer when prior ledgers exist, and an optional style/layout reviewer when risk is detected.
+## Outputs and stopping
 
-If the subagent cap is lower than the tier asks for, batch reviewers and close completed agents before dispatching the next batch.
+Each canonical criterion receives exactly one recorded disposition, including
+justified `inapplicable` and explicit `uncertain` states. Every material
+finding needs artifact and semantic anchors, verification state, decision
+impact, action type, closure gate, dissent, and provenance.
 
-## Boundaries
+Use:
 
-- Do not edit the manuscript during review mode.
-- Do not run experiments. The review may recommend experiments or mark them as gates, but execution belongs to a separate user-approved workflow.
-- Do not invent numerical results, citations, datasets, figure contents, or author decisions.
-- Treat missing numbers, missing figure assets, and red revision markup according to `references/placeholder-policy.md`.
-- Prefer official venue guidance. Use non-official sources only as labeled field-norm calibration.
-- Respect repo artifact placement rules and never write review artifacts into manuscript source directories unless the user explicitly asks.
+- `complete` only when all applicable obligations are evidence-settled;
+- `partial` when the review remains useful but a responsibility is uncertain;
+- `blocked` when authority, policy, input integrity, or a hard capability
+  prevents a defensible review.
+
+Validate the bundle and run contracts. Then stop without modifying manuscript
+files. Revision requires a separate user-authorised task.
