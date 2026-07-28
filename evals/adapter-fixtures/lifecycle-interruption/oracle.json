@@ -1,1 +1,1 @@
-{"assertions":[{"assertion_id":"interruption-recovered","expected":true},{"assertion_id":"no-duplicate-dispatch","expected":true}],"dimension":"lifecycle","fixture_id":"lifecycle-interruption","schema_version":"1.0.0"}
+{"assertions":[{"assertion_id":"L-A1","expected":false},{"assertion_id":"L-A2","expected":false}],"dimension":"lifecycle","fixture_id":"lifecycle-interruption","schema_version":"1.0.0"}

@@ -28,7 +28,7 @@ style prompts, and code-review projects were not promoted.
 | [AgentSociety](https://github.com/tsinghua-fib-lab/AgentSociety) | `1832bcbfd657588d788263256def2e46863bf9d0` | `extension/skills/agentsociety-paper-review/v1.0.0/SKILL.md` | Apache-2.0 | full mechanism audit |
 | [academic-writing-skills](https://github.com/WenyuChiou/academic-writing-skills) | `6524dd9e204660894dcdeefebfed94d8fcdef3fa` | `skills/comprehensive-manuscript-review/references/comprehensive_manuscript_review.md` | MIT | evaluation-only hierarchical-coverage candidate |
 | [open-science-skills](https://github.com/scdenney/open-science-skills) | `4ecff193325bc9f4195d00ed8410ff63ba391ac3` | two non-identical paper-review paths | CC BY-NC 4.0 | reference only |
-| [DeerFlow](https://github.com/bytedance/deer-flow) | `6456c35675dfbfdfc25ec5346e52ed8a8de1c5ef` | `skills/public/academic-paper-review/SKILL.md` | MIT | reject: no operational mechanism |
+| [DeerFlow](https://github.com/bytedance/deer-flow) | remote `2654bc60da315ffeda9b7e15959dd0530e62f6aa`; audited path `8bb14fa1a7bf7e6ee0631db4db9168962edbc31f` | `skills/public/academic-paper-review/SKILL.md` | MIT | reject: repository drift, audited path unchanged, no operational mechanism |
 | [paper-lifecycle](https://github.com/M1n-n9/paper-lifecycle) | `da8a231892963b37fbb6d09e49ad5c3f7db22958` | `review-revision/SKILL.md` | unresolved | exclude |
 | [Ai-Review](https://github.com/NeuroDong/Ai-Review) | `a1f27cddcff4d24c2f1422f0383fd5982233e098` | `ai-review-skills/SKILL.md` | MIT | reject: duplicate/style-only |
 

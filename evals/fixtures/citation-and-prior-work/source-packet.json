@@ -1,0 +1,10 @@
+{
+  "A": {
+    "title": "Calibrated margins for ExampleTask",
+    "supported_statement": "Introduces calibrated margins for ExampleTask."
+  },
+  "B": {
+    "title": "A distinct synthetic loss",
+    "supported_statement": "Introduces a different loss."
+  }
+}

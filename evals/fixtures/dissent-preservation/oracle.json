@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0.0",
+  "fixture_id": "dissent-preservation",
+  "capability_tags": [
+    "dissent",
+    "deduplication",
+    "evidence-over-votes"
+  ],
+  "clean_control": false,
+  "required_findings": [
+    {
+      "finding_id": "O-DISSENT",
+      "criterion_id": "RC-DISSENT-PRESERVATION",
+      "artifact_id": "paper",
+      "source_anchor": "Synthetic evidence dispute",
+      "semantic_key": "failure-exclusion-bias",
+      "decision_impact": "material"
+    }
+  ],
+  "prohibited_semantic_keys": [
+    "unsupported-novelty-vote"
+  ],
+  "hard_expectations": {
+    "completion": "complete"
+  }
+}

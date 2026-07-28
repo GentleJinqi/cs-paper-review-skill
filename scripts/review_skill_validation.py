@@ -39,6 +39,7 @@ REQUIRED_TREE = (
     "references/finding-contract.md",
     "references/delta-review.md",
     "references/privacy-and-authorisation.md",
+    "references/venue-conditioning.md",
     "references/venue-authorities.json",
     "references/adapter-evaluation-authority.json",
     "evals/adapter-fixtures/manifest.json",
@@ -46,6 +47,14 @@ REQUIRED_TREE = (
     "evals/adapter-fixtures/quality-claim-evidence/oracle.json",
     "evals/adapter-fixtures/lifecycle-interruption/input.json",
     "evals/adapter-fixtures/lifecycle-interruption/oracle.json",
+    "evals/README.md",
+    "evals/criteria.json",
+    "evals/fixtures/manifest.json",
+    "evals/score_run.py",
+    "evals/output-manifest.schema.json",
+    "evals/review-closure.schema.json",
+    "evals/semantic-adjudication.schema.json",
+    "evals/validate_closure.py",
     "adapters/codex-gpt-5.6-sol-ultra.md",
     "adapters/codex/agents/cs-paper-reviewer.toml",
     "adapters/codex/agents/cs-paper-ae.toml",
@@ -75,6 +84,10 @@ REQUIRED_TREE = (
     "schemas/venue-source-evidence.schema.json",
     "schemas/venue-source-capture.schema.json",
     "schemas/venue-authority-registry.schema.json",
+    "schemas/venue-corpus-manifest.schema.json",
+    "venue-intelligence/README.md",
+    "venue-intelligence/examples/accepted-synthetic.json",
+    "venue-intelligence/examples/topic-near-synthetic.json",
     "templates/run-manifest.json",
     "templates/finding-ledger.json",
     "templates/delegation-terminal-inventory.json",
@@ -87,8 +100,18 @@ REQUIRED_TREE = (
     "scripts/build_terminal_inventory.py",
     "scripts/validate_bundle.py",
     "scripts/validate_run.py",
+    "scripts/validate_venue_corpus.py",
+    "scripts/release_manifest.py",
+    "scripts/validate_release.py",
+    "release/version-decision.json",
+    "release/release-gates.md",
+    "release/manifest.json",
     "tests/test_bundle.py",
     "tests/test_run_contracts.py",
+    "tests/test_venue_corpus.py",
+    "tests/test_evaluator.py",
+    "tests/test_closure.py",
+    "tests/test_release.py",
 )
 
 _ACTIVE_ROOT_FILES = ("README.md", "README.zh-CN.md", "SKILL.md")
@@ -99,6 +122,7 @@ _ACTIVE_DIRECTORIES = (
     "schemas",
     "templates",
     "scripts",
+    "venue-intelligence",
 )
 _ACTIVE_SUFFIXES = {".md", ".yaml", ".yml", ".json", ".toml", ".py"}
 _ADAPTER_PROMOTION_LOCATOR = "compatibility/adapter-promotion.json"
@@ -110,6 +134,7 @@ _MODEL_INDEPENDENT_CORE = (
     "references/finding-contract.md",
     "references/delta-review.md",
     "references/privacy-and-authorisation.md",
+    "references/venue-conditioning.md",
 )
 _CANONICAL_CRITERIA = (
     "RC-AUTHORISATION",
@@ -707,8 +732,31 @@ def validate_adapter_profile(root: pathlib.Path) -> list[str]:
         errors.append(
             "adapter-profile: absent telemetry cannot support runtime attestation"
         )
-    if "neither is an active default" not in normalised:
-        errors.append("adapter-profile: inactive lifecycle candidates are ambiguous")
+    manifest_path = root / "adapters/codex/adapter-manifest.json"
+    selected_candidate: Any = None
+    if manifest_path.is_file():
+        try:
+            selected_candidate = _load_json_object(
+                manifest_path,
+                "adapter manifest",
+            ).get("selected_candidate_id")
+        except ValueError as exc:
+            errors.append(f"adapter-profile: cannot read active manifest: {exc}")
+    if selected_candidate is None:
+        if "a null selection means `evaluation_pending`" not in normalised:
+            errors.append(
+                "adapter-profile: pending lifecycle selection is ambiguous"
+            )
+    else:
+        selected_statement = (
+            f"`{selected_candidate}` is the manifest-selected active "
+            "lifecycle implementation"
+        )
+        if selected_statement not in normalised:
+            errors.append(
+                "adapter-profile: selected lifecycle implementation is "
+                "ambiguous"
+            )
 
     for relative in (
         "adapters/codex/agents/cs-paper-reviewer.toml",
@@ -957,7 +1005,10 @@ def validate_bundle(root: pathlib.Path) -> list[str]:
         validate_json_files,
         validate_schema_bundle,
         validate_venue_authority_registry,
+        validate_venue_corpus_bundle,
         validate_adapter_evaluation_authority,
+        validate_public_fixture_bundle,
+        validate_release_bundle,
         _validate_core_boundaries,
         _validate_coverage_bundle,
         validate_contract_templates,
@@ -966,6 +1017,26 @@ def validate_bundle(root: pathlib.Path) -> list[str]:
     for validator in validators:
         errors.extend(validator(root))
     return sorted(set(errors))
+
+
+def validate_public_fixture_bundle(root: pathlib.Path) -> list[str]:
+    """Route public-fixture validation through its deterministic evaluator."""
+
+    try:
+        from evals.score_run import validate_fixture_bundle
+    except ModuleNotFoundError:
+        return ["fixture-bundle: evaluator module is unavailable"]
+    return validate_fixture_bundle(_normalise_root(root))
+
+
+def validate_release_bundle(root: pathlib.Path) -> list[str]:
+    """Route package-release validation through the release authority."""
+
+    try:
+        from scripts.validate_release import validate_release
+    except ModuleNotFoundError:
+        return ["release: validator module is unavailable"]
+    return validate_release(_normalise_root(root))
 
 
 _SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
@@ -2480,6 +2551,174 @@ def validate_schema_bundle(root: pathlib.Path) -> list[str]:
     return sorted(set(errors))
 
 
+_VENUE_CORPUS_TOPIC_DIMENSIONS = {
+    "problem_family",
+    "contribution_type",
+    "mechanism_family",
+    "claim_types",
+    "evidence_structures",
+    "modality_applications",
+}
+_VENUE_CORPUS_GRADE_SOURCES = {
+    "A": {
+        "official-program",
+        "official-proceedings",
+        "official-decision-record",
+    },
+    "B": {"venue-authorised-platform"},
+    "C": {"bibliographic-index", "author-record"},
+    "D": {"unverified"},
+}
+
+
+def validate_venue_corpus_document(
+    value: Any,
+    bundle_root: pathlib.Path,
+    label: str,
+) -> list[str]:
+    """Validate one corpus manifest and its evidence semantics."""
+
+    prefix = f"venue-corpus: {label}"
+    if not isinstance(value, dict):
+        return [f"{prefix}: manifest must be an object"]
+    errors = [
+        f"{prefix}: {error}"
+        for error in validate_json_schema_document(
+            value,
+            bundle_root,
+            "schemas/venue-corpus-manifest.schema.json",
+            label,
+        )
+    ]
+    rights = value.get("rights_boundary")
+    if isinstance(rights, dict) and (
+        rights.get("metadata_only") is not True
+        or rights.get("manuscript_bytes_stored") is not False
+    ):
+        errors.append(
+            f"{prefix}: corpus must contain metadata only; manuscript bytes "
+            "must not be stored"
+        )
+    if errors:
+        return sorted(set(errors))
+
+    items = value["items"]
+    search = value["search"]
+    if search["included_count"] != len(items):
+        errors.append(
+            f"{prefix}: search included_count must equal the item inventory"
+        )
+    if search["included_count"] > search["screened_count"]:
+        errors.append(
+            f"{prefix}: included_count cannot exceed screened_count"
+        )
+    paper_ids = [item["paper_id"] for item in items]
+    if len(paper_ids) != len(set(paper_ids)):
+        errors.append(f"{prefix}: paper IDs must be unique")
+
+    boundary = value["inclusion_boundary"]
+    if set(boundary["topic_dimensions"]) != _VENUE_CORPUS_TOPIC_DIMENSIONS:
+        errors.append(
+            f"{prefix}: inclusion boundary must declare exactly the six "
+            "topic-comparison dimensions"
+        )
+    allowed_statuses = set(boundary["decision_statuses"])
+    purpose = value["purpose"]
+    material_items = 0
+    for item in items:
+        item_prefix = f"{prefix}: item {item['paper_id']}"
+        status = item["status"]
+        if status not in allowed_statuses:
+            errors.append(
+                f"{item_prefix}: status is outside the declared inclusion "
+                "boundary"
+            )
+        grade = item["evidence_grade"]
+        source_type = item["status_source_type"]
+        if source_type not in _VENUE_CORPUS_GRADE_SOURCES[grade]:
+            errors.append(
+                f"{item_prefix}: grade {grade} is inconsistent with status "
+                f"source type {source_type}"
+            )
+        eligible = item["eligible_for_material_inference"]
+        if grade in {"C", "D"} and eligible:
+            errors.append(
+                f"{item_prefix}: grade {grade} is discovery/background only "
+                "and cannot support material inference"
+            )
+        if eligible:
+            material_items += 1
+            if status not in {"accepted", "rejected"}:
+                errors.append(
+                    f"{item_prefix}: material decision calibration requires "
+                    "a verified accepted or rejected status"
+                )
+        similarity = item["similarity_assessment"]["state"]
+        if purpose == "topic-near" and similarity == "not-assessed":
+            errors.append(
+                f"{item_prefix}: topic-near corpus requires an explicit "
+                "similarity assessment"
+            )
+        if purpose == "topic-near" and eligible and similarity != "near":
+            errors.append(
+                f"{item_prefix}: a material topic-near item must be assessed "
+                "as near across the declared axes"
+            )
+        if purpose == "venue-background" and similarity != "not-assessed":
+            errors.append(
+                f"{item_prefix}: venue-background corpus must not imply "
+                "manuscript similarity"
+            )
+
+    saturation = value["saturation"]
+    latest = saturation["latest_batch"]
+    if latest["included_count"] > latest["screened_count"]:
+        errors.append(
+            f"{prefix}: latest batch included_count cannot exceed "
+            "screened_count"
+        )
+    if saturation["status"] == "saturated":
+        marginal = latest["marginal_additions"]
+        if any(value != 0 for value in marginal.values()):
+            errors.append(
+                f"{prefix}: saturated status requires zero latest marginal "
+                "additions across eligible papers and every topic dimension"
+            )
+        if material_items == 0:
+            errors.append(
+                f"{prefix}: a materially saturated corpus requires at least "
+                "one grade A or B eligible item"
+            )
+    return sorted(set(errors))
+
+
+def validate_venue_corpus_bundle(
+    root: pathlib.Path,
+    documents: list[tuple[str, dict]] | None = None,
+) -> list[str]:
+    """Validate published examples or caller-supplied corpus documents."""
+
+    root = _normalise_root(root)
+    if documents is None:
+        examples = root / "venue-intelligence" / "examples"
+        if not examples.is_dir() or examples.is_symlink():
+            return ["venue-corpus: examples directory is missing or unsafe"]
+        documents = []
+        for path in sorted(examples.glob("*.json")):
+            relative = path.relative_to(root).as_posix()
+            if path.is_symlink() or not path.is_file():
+                return [f"venue-corpus: unsafe example: {relative}"]
+            try:
+                value = _load_json_object(path, relative)
+            except ValueError as exc:
+                return [f"venue-corpus: {exc}"]
+            documents.append((relative, value))
+    errors: list[str] = []
+    for label, value in documents:
+        errors.extend(validate_venue_corpus_document(value, root, label))
+    return sorted(set(errors))
+
+
 def validate_venue_authority_registry(root: pathlib.Path) -> list[str]:
     """Validate the release-governed venue host allowlist itself."""
 
@@ -2926,8 +3165,9 @@ def compatibility_payload_sha256(root: pathlib.Path) -> str:
         (root / "adapters", {".md", ".toml"}),
         (root / "evals", {".json", ".py", ".md"}),
         (root / "venues", {".json"}),
+        (root / "venue-intelligence", {".json", ".md"}),
     ):
-        if base.name == "venues" and not base.exists():
+        if base.name in {"venues", "venue-intelligence"} and not base.exists():
             continue
         if not base.is_dir() or base.is_symlink():
             raise ValueError(
@@ -2935,14 +3175,15 @@ def compatibility_payload_sha256(root: pathlib.Path) -> str:
                 f"{base.relative_to(root).as_posix()}"
             )
         for path in base.rglob("*"):
+            relative = path.relative_to(root).as_posix()
             if (
                 path.is_file()
                 and not path.is_symlink()
                 and path.suffix.lower() in suffixes
-                and path.relative_to(root).as_posix()
-                != "adapters/codex/adapter-manifest.json"
+                and relative != "adapters/codex/adapter-manifest.json"
+                and not relative.startswith("evals/results/")
             ):
-                relative_paths.add(path.relative_to(root).as_posix())
+                relative_paths.add(relative)
     entries: list[dict[str, str]] = []
     for locator in sorted(relative_paths):
         path = _safe_bundle_file(root, locator)
@@ -3505,6 +3746,44 @@ def _validate_fixture_authority(
             errors.append(
                 f"{prefix}: input assertion inventory mismatch: {fixture_id}"
             )
+        if isinstance(input_record, dict):
+            payload = input_record.get("payload")
+            questions = (
+                payload.get("evaluation_questions")
+                if isinstance(payload, dict)
+                else None
+            )
+            question_ids = [
+                item.get("assertion_id")
+                for item in questions
+                if isinstance(item, dict)
+            ] if isinstance(questions, list) else []
+            if (
+                not isinstance(payload, dict)
+                or "required_behavior" in payload
+                or question_ids != assertion_ids
+                or not all(
+                    isinstance(item, dict)
+                    and isinstance(item.get("question"), str)
+                    and item["question"].strip()
+                    for item in questions or []
+                )
+            ):
+                errors.append(
+                    f"{prefix}: input must expose neutral aligned questions "
+                    f"without required behavior: {fixture_id}"
+                )
+            scenario = input_record.get("scenario")
+            if isinstance(scenario, str) and re.search(
+                r"\b(?:must\s+(?:retain|avoid|not)|required\s+behavior|"
+                r"expected\s+result)\b",
+                scenario,
+                re.I,
+            ):
+                errors.append(
+                    f"{prefix}: input scenario discloses an oracle direction: "
+                    f"{fixture_id}"
+                )
         oracle_ids = [
             item.get("assertion_id")
             for item in (

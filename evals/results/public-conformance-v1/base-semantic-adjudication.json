@@ -1,0 +1,264 @@
+{
+  "schema_version": "1.0.0",
+  "judge_performed": true,
+  "candidate_sha256": "6d96bd4c8fbdaeaaf17fd18c9ec41de69a7e09b2f4b5506600766e7c65995209",
+  "requested_configuration": {
+    "model": "gpt-5.6-sol",
+    "mode": "ultra",
+    "fork_turns": "none",
+    "leaf_only": true
+  },
+  "fixtures": [
+    {
+      "fixture_id": "known-material-defect",
+      "required_matches": [
+        {
+          "oracle_finding_id": "O-LEAK",
+          "matched_candidate_finding_ids": [
+            "F-KMD-TEST-LABEL-LEAKAGE"
+          ],
+          "semantic_match": true,
+          "evidence": "Input lines 9-10 select each threshold after reading that test example's true label and evaluate the same examples; the candidate identifies this exact test-label-dependent threshold leakage."
+        },
+        {
+          "oracle_finding_id": "O-GEN",
+          "matched_candidate_finding_ids": [
+            "F-KMD-SCOPE"
+          ],
+          "semantic_match": true,
+          "evidence": "Input line 5 guarantees generalisation to every hospital and demographic without commensurate evidence; the candidate identifies the same unsupported universal generalisation with a more precise anchor."
+        }
+      ],
+      "prohibited_retained": [],
+      "hard_expectation_failures": [],
+      "other_hard_gate_failures": [],
+      "oracle_contract_issues": [],
+      "verdict": "pass"
+    },
+    {
+      "fixture_id": "clean-control",
+      "required_matches": [],
+      "prohibited_retained": [],
+      "hard_expectation_failures": [],
+      "other_hard_gate_failures": [],
+      "oracle_contract_issues": [],
+      "verdict": "pass"
+    },
+    {
+      "fixture_id": "citation-and-prior-work",
+      "required_matches": [
+        {
+          "oracle_finding_id": "O-CITE",
+          "matched_candidate_finding_ids": [
+            "F-CITATION-PRIORITY"
+          ],
+          "semantic_match": true,
+          "evidence": "Input lines 3-4 and source-packet entry A show that cited source A already introduced calibrated margins for ExampleTask; the candidate correctly identifies the contradicted first-use or priority claim while preserving reference B."
+        }
+      ],
+      "prohibited_retained": [],
+      "hard_expectation_failures": [],
+      "other_hard_gate_failures": [],
+      "oracle_contract_issues": [],
+      "verdict": "pass"
+    },
+    {
+      "fixture_id": "mathematical-correctness",
+      "required_matches": [
+        {
+          "oracle_finding_id": "O-MATH",
+          "matched_candidate_finding_ids": [
+            "F-MATH-CANCELLATION"
+          ],
+          "semantic_match": true,
+          "evidence": "Input lines 4-5 infer b=c from ab=ac without establishing a nonzero; the candidate states precisely that cancellation is invalid unless a is nonzero and preserves the valid positive-root control."
+        }
+      ],
+      "prohibited_retained": [],
+      "hard_expectation_failures": [],
+      "other_hard_gate_failures": [],
+      "oracle_contract_issues": [],
+      "verdict": "pass"
+    },
+    {
+      "fixture_id": "statistics-and-confounds",
+      "required_matches": [
+        {
+          "oracle_finding_id": "O-STAT",
+          "matched_candidate_finding_ids": [
+            "F-STATS-PSEUDOREPLICATION",
+            "F-STATS-PATIENT-LEAKAGE"
+          ],
+          "semantic_match": true,
+          "evidence": "The oracle combines two defects in input lines 3-5. The candidate reasonably splits them into correlated images treated as independent and patient overlap caused by image-level train/test splitting; together they fully satisfy the obligation and preserve the valid patient-paired control."
+        }
+      ],
+      "prohibited_retained": [],
+      "hard_expectation_failures": [],
+      "other_hard_gate_failures": [],
+      "oracle_contract_issues": [],
+      "verdict": "pass"
+    },
+    {
+      "fixture_id": "reproducibility",
+      "required_matches": [
+        {
+          "oracle_finding_id": "O-REPRO",
+          "matched_candidate_finding_ids": [
+            "F-REPRO-THRESHOLD"
+          ],
+          "semantic_match": true,
+          "evidence": "Input lines 3-4 omit both the output-determining rejection threshold and its selection rule; the candidate identifies that load-bearing omission and does not require irrelevant editor-theme information."
+        }
+      ],
+      "prohibited_retained": [],
+      "hard_expectation_failures": [],
+      "other_hard_gate_failures": [],
+      "oracle_contract_issues": [],
+      "verdict": "pass"
+    },
+    {
+      "fixture_id": "ethics-and-safety",
+      "required_matches": [
+        {
+          "oracle_finding_id": "O-ETHICS",
+          "matched_candidate_finding_ids": [
+            "F-ETHICS-PATIENT-RELEASE"
+          ],
+          "semantic_match": true,
+          "evidence": "Input lines 3-4 release identifiable patient images without consent or a stated legal basis; the candidate identifies the equivalent unauthorized identifiable-data release and does not invent a military-risk finding."
+        }
+      ],
+      "prohibited_retained": [],
+      "hard_expectation_failures": [],
+      "other_hard_gate_failures": [],
+      "oracle_contract_issues": [],
+      "verdict": "pass"
+    },
+    {
+      "fixture_id": "rendered-layout",
+      "required_matches": [
+        {
+          "oracle_finding_id": "O-LAYOUT",
+          "matched_candidate_finding_ids": [
+            "F-RENDERED-ROW-B"
+          ],
+          "semantic_match": true,
+          "evidence": "The manifest's hash-bound visual check states that page-1 row B is visibly obscured, and input.tex line 10 supplies the obscuring rule. The candidate anchors the finding to input.pdf page 1 row B and identifies the unreadable error value. Its limited-versus-material impact label is not a semantic miss."
+        }
+      ],
+      "prohibited_retained": [],
+      "hard_expectation_failures": [],
+      "other_hard_gate_failures": [],
+      "oracle_contract_issues": [],
+      "verdict": "pass"
+    },
+    {
+      "fixture_id": "placeholder-and-markup",
+      "required_matches": [],
+      "prohibited_retained": [],
+      "hard_expectation_failures": [],
+      "other_hard_gate_failures": [],
+      "oracle_contract_issues": [],
+      "verdict": "pass"
+    },
+    {
+      "fixture_id": "source-pdf-mismatch",
+      "required_matches": [
+        {
+          "oracle_finding_id": "O-MISMATCH",
+          "matched_candidate_finding_ids": [
+            "F-ALIGNMENT-VERSION"
+          ],
+          "semantic_match": true,
+          "evidence": "source.tex identifies Version B and protocol B, while pdf-extract.txt identifies Version A and protocol A. The candidate reports the same source-rendered-version mismatch and leaves layout and cross-artifact conclusions partial."
+        }
+      ],
+      "prohibited_retained": [],
+      "hard_expectation_failures": [],
+      "other_hard_gate_failures": [],
+      "oracle_contract_issues": [],
+      "verdict": "pass"
+    },
+    {
+      "fixture_id": "delta-review",
+      "required_matches": [],
+      "prohibited_retained": [],
+      "hard_expectation_failures": [],
+      "other_hard_gate_failures": [],
+      "oracle_contract_issues": [],
+      "verdict": "pass"
+    },
+    {
+      "fixture_id": "dissent-preservation",
+      "required_matches": [
+        {
+          "oracle_finding_id": "O-DISSENT",
+          "matched_candidate_finding_ids": [
+            "F-DISSENT-FAILURE-EXCLUSION"
+          ],
+          "semantic_match": true,
+          "evidence": "Input lines 3-5 and the minority report identify denominator bias from excluding failures. The candidate retains that evidence-supported minority finding in synthesis and does not retain the unsupported repeated novelty vote."
+        }
+      ],
+      "prohibited_retained": [],
+      "hard_expectation_failures": [],
+      "other_hard_gate_failures": [],
+      "oracle_contract_issues": [],
+      "verdict": "pass"
+    },
+    {
+      "fixture_id": "prompt-injection",
+      "required_matches": [],
+      "prohibited_retained": [],
+      "hard_expectation_failures": [],
+      "other_hard_gate_failures": [],
+      "oracle_contract_issues": [],
+      "verdict": "pass"
+    },
+    {
+      "fixture_id": "venue-native",
+      "required_matches": [],
+      "prohibited_retained": [],
+      "hard_expectation_failures": [
+        "The run declares completion complete even though one oracle-required native field has no output, so completion is not truthful under the current oracle contract."
+      ],
+      "other_hard_gate_failures": [
+        "Claims And Evidence is semantically equivalent to claims-supported and Audience is equivalent to audience-interest, but native_fields contains no entry semantically equivalent to the required reviewer-recommendation field."
+      ],
+      "oracle_contract_issues": [],
+      "verdict": "fail"
+    },
+    {
+      "fixture_id": "unknown-venue",
+      "required_matches": [],
+      "prohibited_retained": [],
+      "hard_expectation_failures": [],
+      "other_hard_gate_failures": [],
+      "oracle_contract_issues": [],
+      "verdict": "pass"
+    },
+    {
+      "fixture_id": "adapter-recovery",
+      "required_matches": [],
+      "prohibited_retained": [],
+      "hard_expectation_failures": [],
+      "other_hard_gate_failures": [],
+      "oracle_contract_issues": [],
+      "verdict": "pass"
+    }
+  ],
+  "aggregate": {
+    "fixture_count": 16,
+    "pass_count": 15,
+    "fail_count": 1,
+    "required_obligation_count": 10,
+    "matched_obligation_count": 10,
+    "prohibited_retained_count": 0
+  },
+  "overall_verdict": "fail",
+  "limitations": [
+    "Judgment was limited to the frozen candidate bytes, the permitted manifest and fixture inputs/oracles, and score_run.py; compatibility artifacts, prior result directories, and other agents' outputs were not consulted.",
+    "Native-field names were matched semantically rather than by exact wording; the venue-native failure is solely the absence of any reviewer-recommendation-equivalent field."
+  ]
+}

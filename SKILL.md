@@ -39,6 +39,10 @@ Before substantive review:
    refresh the live official page before material target-conditioned use.
    Operational prompts and simulation-required fields are local mappings, not
    claims about official requiredness. Do not infer acceptance probability.
+   If a comparison corpus is requested, keep venue-background and topic-near
+   corpora separate and follow `references/venue-conditioning.md`. Use only
+   evidence-graded metadata, not paper counts or similarity alone, for
+   contextual calibration.
 4. Create the run manifest from `templates/run-manifest.json`, bind it to
    `references/review-coverage.json`, and keep `review_only: true`.
 
@@ -65,6 +69,9 @@ Read only what the run needs:
   `schemas/venue-source-evidence.schema.json`,
   `schemas/venue-authority-registry.schema.json`, and
   `references/venue-authorities.json`;
+- optional comparison corpus: `references/venue-conditioning.md`,
+  `schemas/venue-corpus-manifest.schema.json`, and
+  `venue-intelligence/README.md`;
 - lifecycle promotion: `schemas/adapter-promotion.schema.json`,
   `schemas/adapter-evaluation-fixture-manifest.schema.json`,
   `schemas/adapter-evaluation-input.schema.json`,
@@ -76,8 +83,9 @@ Read only what the run needs:
 - human views: `templates/reviewer-report.md`,
   `templates/ae-assessment.md`, and `templates/review-summary.md`.
 
-The adapter's lifecycle candidates remain inactive until an evaluated
-promotion record selects one. Until then, record compatibility as
+Treat `adapters/codex/adapter-manifest.json` as the sole lifecycle authority.
+A candidate is active only when that manifest binds a passing promotion
+record and the exact candidate bytes. A null selection requires
 `evaluation_pending`; never turn requested configuration into runtime
 attestation.
 

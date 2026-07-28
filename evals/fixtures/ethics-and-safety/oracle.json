@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0.0",
+  "fixture_id": "ethics-and-safety",
+  "capability_tags": [
+    "responsible-research",
+    "applicability"
+  ],
+  "clean_control": false,
+  "required_findings": [
+    {
+      "finding_id": "O-ETHICS",
+      "criterion_id": "RC-RESPONSIBLE-RESEARCH",
+      "artifact_id": "paper",
+      "source_anchor": "Synthetic impact statement",
+      "semantic_key": "identifiable-data-release-without-authority",
+      "decision_impact": "material"
+    }
+  ],
+  "prohibited_semantic_keys": [
+    "invented-military-risk"
+  ],
+  "hard_expectations": {
+    "completion": "complete"
+  }
+}

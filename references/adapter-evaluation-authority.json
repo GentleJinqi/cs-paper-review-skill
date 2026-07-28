@@ -3,7 +3,7 @@
   "authority_id": "adapter-lifecycle-forward-v1",
   "fixture_set": "forward-v1",
   "fixture_manifest_locator": "evals/adapter-fixtures/manifest.json",
-  "fixture_manifest_sha256": "8f1d0ab8d19f37fd9bb9d023d438e7b53b5338939cc3a4071ae5c40bcea9815b",
+  "fixture_manifest_sha256": "d61c2299f9390e7cc3d714e19c5ffae55828cbf493d5eefe0ce95f5d5f509fff",
   "scorer": {
     "scorer_id": "codex-evaluation-harness",
     "locator": "scripts/adapter_evaluation_scorer.py",
@@ -16,21 +16,21 @@
       "fixture_id": "quality-claim-evidence",
       "dimension": "quality",
       "assertion_ids": [
-        "finding-recall-preserved",
-        "no-fabricated-finding"
+        "Q-A1",
+        "Q-A2"
       ],
-      "input_sha256": "e6f2c49dc6ea6b66c46563c2b6f67dd83812c80391db40b40d6514071247bf60",
-      "oracle_sha256": "8ed1b3a5b1003116766b25b83e403ef42013701dfce6d2f40a32cf75e9bc7560"
+      "input_sha256": "3bb3bf5f7b1a8c9e5718f757f2e104f9d9e54abfaf1390004cec67279644c2e2",
+      "oracle_sha256": "c13d19438de857a37f453a175acf3c6e9bbd76cb9d1d63ebf81cc673c099f0e8"
     },
     {
       "fixture_id": "lifecycle-interruption",
       "dimension": "lifecycle",
       "assertion_ids": [
-        "interruption-recovered",
-        "no-duplicate-dispatch"
+        "L-A1",
+        "L-A2"
       ],
-      "input_sha256": "a0195a3dee82a14ce3523a3b5930aa0c7721ddd2ae5a9d4bee8182a00a6b0460",
-      "oracle_sha256": "ffaa7fbc4712a690133624617e1874354e299925e8eb118256c87b67717649ad"
+      "input_sha256": "ff840bb331675f1e4a3cea8e5667b3ef9d8b57aa9a76ea32616f562d3cccd320",
+      "oracle_sha256": "3bb3fd5410e1b9a482d0d081b596d5153d1d2eb66a5ecef40717cfab3cba6c93"
     }
   ],
   "semantic_dimensions": [

@@ -1,0 +1,15 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\begin{document}
+\section*{Synthetic rendered evidence}
+The text establishes that higher values mean worse error.
+\begin{center}
+\begin{tabular}{ll}
+Method & Error (lower is better)\\
+A & 0.10\\
+B & \makebox[0pt][l]{\rule{2.5em}{1.4ex}}0.20\quad THIS LABEL SHOULD NOT HIDE THE VALUE\\
+\end{tabular}
+\end{center}
+\vspace{1em}
+Harmless control: the heading is set in the document's default bold style.
+\end{document}

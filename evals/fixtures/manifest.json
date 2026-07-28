@@ -1,0 +1,431 @@
+{
+  "schema_version": "1.0.0",
+  "fixture_set": "public-conformance-v1",
+  "fixtures": [
+    {
+      "fixture_id": "known-material-defect",
+      "version": "1.0.0",
+      "purpose": "Recover real material defects while preserving a clean boundary.",
+      "input_files": [
+        "evals/fixtures/known-material-defect/input.md"
+      ],
+      "target": "unknown",
+      "required_capabilities": [
+        "claim-scope",
+        "data-leakage",
+        "clean-boundary"
+      ],
+      "capability_tags": [
+        "claim-scope",
+        "data-leakage",
+        "clean-boundary"
+      ],
+      "coverage_criterion_ids": [
+        "RC-PROBLEM-FORMULATION",
+        "RC-CONTRIBUTION-IDENTITY",
+        "RC-CLAIM-EVIDENCE",
+        "RC-METHOD-SOUNDNESS",
+        "RC-DATA-VALIDITY",
+        "RC-MEASUREMENT-VALIDITY",
+        "RC-EXPERIMENT-DESIGN"
+      ],
+      "oracle_path": "evals/fixtures/known-material-defect/oracle.json",
+      "licence_status": "project-authored-MIT",
+      "synthetic": true,
+      "privacy": "public-synthetic"
+    },
+    {
+      "fixture_id": "clean-control",
+      "version": "1.0.0",
+      "purpose": "Reject manufactured weaknesses on a bounded clean claim.",
+      "input_files": [
+        "evals/fixtures/clean-control/input.md"
+      ],
+      "target": "unknown",
+      "required_capabilities": [
+        "negative-control",
+        "bounded-claim"
+      ],
+      "capability_tags": [
+        "negative-control",
+        "bounded-claim"
+      ],
+      "coverage_criterion_ids": [
+        "RC-INPUT-LINEAGE",
+        "RC-INPUT-VERIFIABILITY",
+        "RC-COVERAGE-ACCOUNTING"
+      ],
+      "oracle_path": "evals/fixtures/clean-control/oracle.json",
+      "licence_status": "project-authored-MIT",
+      "synthetic": true,
+      "privacy": "public-synthetic"
+    },
+    {
+      "fixture_id": "citation-and-prior-work",
+      "version": "1.0.0",
+      "purpose": "Check source support without attacking a correct citation.",
+      "input_files": [
+        "evals/fixtures/citation-and-prior-work/input.md",
+        "evals/fixtures/citation-and-prior-work/source-packet.json"
+      ],
+      "target": "unknown",
+      "required_capabilities": [
+        "citation-support",
+        "prior-work"
+      ],
+      "capability_tags": [
+        "citation-support",
+        "prior-work"
+      ],
+      "coverage_criterion_ids": [
+        "RC-RELATED-WORK",
+        "RC-CITATION-SUPPORT"
+      ],
+      "oracle_path": "evals/fixtures/citation-and-prior-work/oracle.json",
+      "licence_status": "project-authored-MIT",
+      "synthetic": true,
+      "privacy": "public-synthetic"
+    },
+    {
+      "fixture_id": "mathematical-correctness",
+      "version": "1.0.0",
+      "purpose": "Distinguish an invalid inference from a valid control.",
+      "input_files": [
+        "evals/fixtures/mathematical-correctness/input.md"
+      ],
+      "target": "unknown",
+      "required_capabilities": [
+        "formal-correctness",
+        "valid-control"
+      ],
+      "capability_tags": [
+        "formal-correctness",
+        "valid-control"
+      ],
+      "coverage_criterion_ids": [
+        "RC-FORMAL-CORRECTNESS"
+      ],
+      "oracle_path": "evals/fixtures/mathematical-correctness/oracle.json",
+      "licence_status": "project-authored-MIT",
+      "synthetic": true,
+      "privacy": "public-synthetic"
+    },
+    {
+      "fixture_id": "statistics-and-confounds",
+      "version": "1.0.0",
+      "purpose": "Detect dependence and leakage while preserving a valid comparison.",
+      "input_files": [
+        "evals/fixtures/statistics-and-confounds/input.md"
+      ],
+      "target": "unknown",
+      "required_capabilities": [
+        "statistics",
+        "confounding",
+        "clean-control"
+      ],
+      "capability_tags": [
+        "statistics",
+        "confounding",
+        "clean-control"
+      ],
+      "coverage_criterion_ids": [
+        "RC-STATISTICAL-VALIDITY",
+        "RC-COMPARISON-FAIRNESS",
+        "RC-ROBUSTNESS-SCOPE"
+      ],
+      "oracle_path": "evals/fixtures/statistics-and-confounds/oracle.json",
+      "licence_status": "project-authored-MIT",
+      "synthetic": true,
+      "privacy": "public-synthetic"
+    },
+    {
+      "fixture_id": "reproducibility",
+      "version": "1.0.0",
+      "purpose": "Separate a load-bearing omission from irrelevant detail.",
+      "input_files": [
+        "evals/fixtures/reproducibility/input.md"
+      ],
+      "target": "unknown",
+      "required_capabilities": [
+        "reproducibility",
+        "load-bearing-setting"
+      ],
+      "capability_tags": [
+        "reproducibility",
+        "load-bearing-setting"
+      ],
+      "coverage_criterion_ids": [
+        "RC-REPRODUCIBILITY",
+        "RC-RESOURCE-CLAIMS"
+      ],
+      "oracle_path": "evals/fixtures/reproducibility/oracle.json",
+      "licence_status": "project-authored-MIT",
+      "synthetic": true,
+      "privacy": "public-synthetic"
+    },
+    {
+      "fixture_id": "ethics-and-safety",
+      "version": "1.0.0",
+      "purpose": "Apply a real responsibility and preserve an inapplicable boundary.",
+      "input_files": [
+        "evals/fixtures/ethics-and-safety/input.md"
+      ],
+      "target": "unknown",
+      "required_capabilities": [
+        "responsible-research",
+        "applicability"
+      ],
+      "capability_tags": [
+        "responsible-research",
+        "applicability"
+      ],
+      "coverage_criterion_ids": [
+        "RC-RESPONSIBLE-RESEARCH",
+        "RC-LIMITATIONS"
+      ],
+      "oracle_path": "evals/fixtures/ethics-and-safety/oracle.json",
+      "licence_status": "project-authored-MIT",
+      "synthetic": true,
+      "privacy": "public-synthetic"
+    },
+    {
+      "fixture_id": "rendered-layout",
+      "version": "1.0.0",
+      "purpose": "Require rendered evidence for a layout-dependent scientific defect.",
+      "input_files": [
+        "evals/fixtures/rendered-layout/input.tex",
+        "evals/fixtures/rendered-layout/input.pdf"
+      ],
+      "target": "unknown",
+      "required_capabilities": [
+        "rendered-layout",
+        "source-pdf-separation"
+      ],
+      "capability_tags": [
+        "rendered-layout",
+        "source-pdf-separation"
+      ],
+      "coverage_criterion_ids": [
+        "RC-WRITING-CLARITY",
+        "RC-VISUAL-INTEGRITY"
+      ],
+      "oracle_path": "evals/fixtures/rendered-layout/oracle.json",
+      "licence_status": "project-authored-MIT",
+      "synthetic": true,
+      "privacy": "public-synthetic",
+      "render_evidence": {
+        "source_sha256": "569fcbe2ccac4ffd9c3efd75646b58909f4e0a738be19729077df630fb9e1507",
+        "pdf_sha256": "8aa4a973be6ededfd30cea2302deb65f5db53c2e7802c23c70c35ee2e8fec677",
+        "engine": "Tectonic 0.16.9",
+        "page": 1,
+        "visual_check": "The row-B value is visibly obscured while the heading style is legible."
+      }
+    },
+    {
+      "fixture_id": "placeholder-and-markup",
+      "version": "1.0.0",
+      "purpose": "Separate author-data and packaging gates from scientific defects.",
+      "input_files": [
+        "evals/fixtures/placeholder-and-markup/input.tex"
+      ],
+      "target": "unknown",
+      "required_capabilities": [
+        "author-gate",
+        "packaging-gate",
+        "risk-class-separation"
+      ],
+      "capability_tags": [
+        "author-gate",
+        "packaging-gate",
+        "risk-class-separation"
+      ],
+      "coverage_criterion_ids": [
+        "RC-RISK-CLASS-SEPARATION",
+        "RC-REQUIREMENT-LEGITIMACY"
+      ],
+      "oracle_path": "evals/fixtures/placeholder-and-markup/oracle.json",
+      "licence_status": "project-authored-MIT",
+      "synthetic": true,
+      "privacy": "public-synthetic"
+    },
+    {
+      "fixture_id": "source-pdf-mismatch",
+      "version": "1.0.0",
+      "purpose": "Fail closed on stale or mismatched source and rendering.",
+      "input_files": [
+        "evals/fixtures/source-pdf-mismatch/source.tex",
+        "evals/fixtures/source-pdf-mismatch/pdf-extract.txt"
+      ],
+      "target": "unknown",
+      "required_capabilities": [
+        "input-alignment",
+        "rendering-authority"
+      ],
+      "capability_tags": [
+        "input-alignment",
+        "rendering-authority"
+      ],
+      "coverage_criterion_ids": [
+        "RC-INPUT-ALIGNMENT"
+      ],
+      "oracle_path": "evals/fixtures/source-pdf-mismatch/oracle.json",
+      "licence_status": "project-authored-MIT",
+      "synthetic": true,
+      "privacy": "public-synthetic"
+    },
+    {
+      "fixture_id": "delta-review",
+      "version": "1.0.0",
+      "purpose": "Preserve stable identities across all five delta outcomes.",
+      "input_files": [
+        "evals/fixtures/delta-review/before.md",
+        "evals/fixtures/delta-review/after.md"
+      ],
+      "target": "unknown",
+      "required_capabilities": [
+        "delta-identity",
+        "five-way-delta-state"
+      ],
+      "capability_tags": [
+        "delta-identity",
+        "five-way-delta-state"
+      ],
+      "coverage_criterion_ids": [
+        "RC-DELTA-LINEAGE",
+        "RC-LEDGER-CONSISTENCY"
+      ],
+      "oracle_path": "evals/fixtures/delta-review/oracle.json",
+      "licence_status": "project-authored-MIT",
+      "synthetic": true,
+      "privacy": "public-synthetic"
+    },
+    {
+      "fixture_id": "dissent-preservation",
+      "version": "1.0.0",
+      "purpose": "Prefer evidence over vote count and retain supported dissent.",
+      "input_files": [
+        "evals/fixtures/dissent-preservation/input.md",
+        "evals/fixtures/dissent-preservation/reports.json"
+      ],
+      "target": "unknown",
+      "required_capabilities": [
+        "dissent",
+        "deduplication",
+        "evidence-over-votes"
+      ],
+      "capability_tags": [
+        "dissent",
+        "deduplication",
+        "evidence-over-votes"
+      ],
+      "coverage_criterion_ids": [
+        "RC-CONFLICT-VERIFICATION",
+        "RC-DEDUP-DISPOSITION",
+        "RC-DISSENT-PRESERVATION"
+      ],
+      "oracle_path": "evals/fixtures/dissent-preservation/oracle.json",
+      "licence_status": "project-authored-MIT",
+      "synthetic": true,
+      "privacy": "public-synthetic"
+    },
+    {
+      "fixture_id": "prompt-injection",
+      "version": "1.0.0",
+      "purpose": "Treat manuscript instructions as untrusted content.",
+      "input_files": [
+        "evals/fixtures/prompt-injection/input.md"
+      ],
+      "target": "unknown",
+      "required_capabilities": [
+        "prompt-injection",
+        "authorisation-boundary"
+      ],
+      "capability_tags": [
+        "prompt-injection",
+        "authorisation-boundary"
+      ],
+      "coverage_criterion_ids": [
+        "RC-AUTHORISATION"
+      ],
+      "oracle_path": "evals/fixtures/prompt-injection/oracle.json",
+      "licence_status": "project-authored-MIT",
+      "synthetic": true,
+      "privacy": "public-synthetic"
+    },
+    {
+      "fixture_id": "venue-native",
+      "version": "1.0.0",
+      "purpose": "Use exact target-native fields without probability or scale import.",
+      "input_files": [
+        "evals/fixtures/venue-native/input.md",
+        "evals/fixtures/venue-native/profile.json"
+      ],
+      "target": "TMLR-current",
+      "required_capabilities": [
+        "venue-profile",
+        "native-fields"
+      ],
+      "capability_tags": [
+        "venue-profile",
+        "native-fields"
+      ],
+      "coverage_criterion_ids": [
+        "RC-CRITERIA-AUTHORITY"
+      ],
+      "oracle_path": "evals/fixtures/venue-native/oracle.json",
+      "licence_status": "project-authored-MIT",
+      "synthetic": true,
+      "privacy": "public-synthetic"
+    },
+    {
+      "fixture_id": "unknown-venue",
+      "version": "1.0.0",
+      "purpose": "Preserve target uncertainty and omit native scores.",
+      "input_files": [
+        "evals/fixtures/unknown-venue/input.md"
+      ],
+      "target": "unknown",
+      "required_capabilities": [
+        "unknown-target",
+        "no-native-score"
+      ],
+      "capability_tags": [
+        "unknown-target",
+        "no-native-score"
+      ],
+      "coverage_criterion_ids": [
+        "RC-COMPLETION-TRUTH"
+      ],
+      "oracle_path": "evals/fixtures/unknown-venue/oracle.json",
+      "licence_status": "project-authored-MIT",
+      "synthetic": true,
+      "privacy": "public-synthetic"
+    },
+    {
+      "fixture_id": "adapter-recovery",
+      "version": "1.0.0",
+      "purpose": "Check compaction recovery, late result retention, and root-only scheduling.",
+      "input_files": [
+        "evals/fixtures/adapter-recovery/events.json"
+      ],
+      "target": "unknown",
+      "required_capabilities": [
+        "compaction-recovery",
+        "late-result",
+        "single-scheduler"
+      ],
+      "capability_tags": [
+        "compaction-recovery",
+        "late-result",
+        "single-scheduler"
+      ],
+      "coverage_criterion_ids": [
+        "RC-FINDING-EVIDENCE"
+      ],
+      "oracle_path": "evals/fixtures/adapter-recovery/oracle.json",
+      "licence_status": "project-authored-MIT",
+      "synthetic": true,
+      "privacy": "public-synthetic"
+    }
+  ]
+}

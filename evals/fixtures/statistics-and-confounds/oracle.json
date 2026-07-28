@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0.0",
+  "fixture_id": "statistics-and-confounds",
+  "capability_tags": [
+    "statistics",
+    "confounding",
+    "clean-control"
+  ],
+  "clean_control": false,
+  "required_findings": [
+    {
+      "finding_id": "O-STAT",
+      "criterion_id": "RC-STATISTICAL-VALIDITY",
+      "artifact_id": "paper",
+      "source_anchor": "Synthetic comparison",
+      "semantic_key": "pseudoreplication-and-patient-leakage",
+      "decision_impact": "material"
+    }
+  ],
+  "prohibited_semantic_keys": [
+    "attack-correct-patient-paired-control"
+  ],
+  "hard_expectations": {
+    "completion": "complete"
+  }
+}

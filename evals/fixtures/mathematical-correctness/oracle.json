@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0.0",
+  "fixture_id": "mathematical-correctness",
+  "capability_tags": [
+    "formal-correctness",
+    "valid-control"
+  ],
+  "clean_control": false,
+  "required_findings": [
+    {
+      "finding_id": "O-MATH",
+      "criterion_id": "RC-FORMAL-CORRECTNESS",
+      "artifact_id": "paper",
+      "source_anchor": "Synthetic derivation",
+      "semantic_key": "invalid-cancellation-without-nonzero-assumption",
+      "decision_impact": "material"
+    }
+  ],
+  "prohibited_semantic_keys": [
+    "attack-valid-positive-square-root-step"
+  ],
+  "hard_expectations": {
+    "completion": "complete"
+  }
+}

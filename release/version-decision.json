@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0.0",
+  "observed_remote_main": "2810ea62cdc24bed48b8079fab02b4cb684c0238",
+  "observed_tags_and_releases": {
+    "tags": [],
+    "github_releases": []
+  },
+  "previous_released_version_or_none": null,
+  "change_class": "minor-pre-1.0-breaking",
+  "selected_version": "0.2.0",
+  "selected_tag": "v0.2.0",
+  "rationale": "This is the first licensed tagged release. It replaces historical fixed-count and default-target behaviour with a portable evidence contract; under pre-1.0 SemVer that breaking capability redesign advances the minor version.",
+  "decided_at": "2026-07-28T10:50:00+01:00"
+}

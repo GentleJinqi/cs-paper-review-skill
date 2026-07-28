@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.0.0",
+  "profile_id": "tmlr-current-general",
+  "venue": "TMLR",
+  "track": null,
+  "year": null,
+  "native_assessment_fields": [
+    {
+      "field_id": "claims-supported-answer",
+      "role": "reviewer",
+      "required": true,
+      "field_type": "categorical",
+      "allowed_labels": [
+        "Yes",
+        "No"
+      ],
+      "prompt": "Record whether the main claims are supported by accurate, convincing, and clearly presented evidence."
+    },
+    {
+      "field_id": "audience-interest-answer",
+      "role": "reviewer",
+      "required": true,
+      "field_type": "categorical",
+      "allowed_labels": [
+        "Yes",
+        "No"
+      ],
+      "prompt": "Record whether some individuals in the TMLR audience would be interested in the findings."
+    },
+    {
+      "field_id": "official-recommendation",
+      "role": "reviewer",
+      "required": true,
+      "field_type": "categorical",
+      "allowed_labels": [
+        "accept",
+        "leaning accept",
+        "leaning reject",
+        "reject"
+      ],
+      "prompt": "Record one categorical reviewer recommendation after the bounded review; this is not an outcome probability."
+    }
+  ]
+}

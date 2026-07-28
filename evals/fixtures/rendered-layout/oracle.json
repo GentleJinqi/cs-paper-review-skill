@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0.0",
+  "fixture_id": "rendered-layout",
+  "capability_tags": [
+    "rendered-layout",
+    "source-pdf-separation"
+  ],
+  "clean_control": false,
+  "required_findings": [
+    {
+      "finding_id": "O-LAYOUT",
+      "criterion_id": "RC-VISUAL-INTEGRITY",
+      "artifact_id": "paper-pdf",
+      "source_anchor": "Page 1 table row B",
+      "semantic_key": "rendered-row-value-obscured",
+      "decision_impact": "material"
+    }
+  ],
+  "prohibited_semantic_keys": [
+    "default-bold-heading-is-a-defect"
+  ],
+  "hard_expectations": {
+    "completion": "complete",
+    "rendered_evidence_required": true
+  }
+}

@@ -1,0 +1,1 @@
+Version A. The rendered artifact states that the evaluated method uses protocol A.

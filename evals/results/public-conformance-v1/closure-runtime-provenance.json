@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0.0",
+  "closure_id": "public-conformance-v1-runtime-provenance",
+  "domain": "runtime-provenance",
+  "status": "unknown",
+  "evaluated_payload_sha256": "988cc13155c13ab6975c3983a708d336a6c89f88dbb188861333f585bc4d0d1a",
+  "evidence_ids": [
+    "adapter-promotion"
+  ],
+  "limitations": [
+    "Requested gpt-5.6-sol ultra configuration and context-isolation controls were recorded, but host-effective resolved model and effort telemetry was not surfaced.",
+    "The release therefore claims configured-and-evaluated compatibility, not runtime-attested compatibility."
+  ]
+}

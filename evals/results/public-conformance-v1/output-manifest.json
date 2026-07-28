@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0.0",
+  "evaluation_id": "public-conformance-v1-20260728",
+  "compatibility_payload_sha256": "988cc13155c13ab6975c3983a708d336a6c89f88dbb188861333f585bc4d0d1a",
+  "fixture_set": "public-conformance-v1",
+  "outputs": [
+    {
+      "artifact_id": "aggregate-result",
+      "locator": "evals/results/public-conformance-v1/aggregate-result.json",
+      "sha256": "205875ecbe51dd95512b921a20d4271b15c948f3bc3e2a149fc149570071cde5",
+      "privacy": "public",
+      "role": "aggregate-result"
+    },
+    {
+      "artifact_id": "adapter-promotion",
+      "locator": "compatibility/adapter-promotion.json",
+      "sha256": "5896edae5e3d0562ae27a833302bc2416a7bd11b3afeed01970419e6b56a49fc",
+      "privacy": "public",
+      "role": "adapter-selection"
+    },
+    {
+      "artifact_id": "closure-oracle-blindness",
+      "locator": "evals/results/public-conformance-v1/closure-oracle-blindness.json",
+      "sha256": "e638a5c480b122586df1979d26010cdcb48a14ac769e748ca01831c1b3652caa",
+      "privacy": "public",
+      "role": "closure-record"
+    },
+    {
+      "artifact_id": "closure-scientific-quality",
+      "locator": "evals/results/public-conformance-v1/closure-scientific-quality.json",
+      "sha256": "7a555ab52fadd4bf83c4a00294c19c6c5d8d3ddf1f4a5afd81910d660141f9b4",
+      "privacy": "public",
+      "role": "closure-record"
+    },
+    {
+      "artifact_id": "closure-runtime-provenance",
+      "locator": "evals/results/public-conformance-v1/closure-runtime-provenance.json",
+      "sha256": "8eeee2e279f6a243f834fd875e20a73e5cc79a9282f7196e0eece67978fc8ff3",
+      "privacy": "public",
+      "role": "closure-record"
+    }
+  ]
+}

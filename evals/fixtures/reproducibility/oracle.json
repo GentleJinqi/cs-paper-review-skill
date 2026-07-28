@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0.0",
+  "fixture_id": "reproducibility",
+  "capability_tags": [
+    "reproducibility",
+    "load-bearing-setting"
+  ],
+  "clean_control": false,
+  "required_findings": [
+    {
+      "finding_id": "O-REPRO",
+      "criterion_id": "RC-REPRODUCIBILITY",
+      "artifact_id": "paper",
+      "source_anchor": "Synthetic reproducibility statement",
+      "semantic_key": "load-bearing-threshold-omitted",
+      "decision_impact": "material"
+    }
+  ],
+  "prohibited_semantic_keys": [
+    "irrelevant-editor-theme-requirement"
+  ],
+  "hard_expectations": {
+    "completion": "complete"
+  }
+}

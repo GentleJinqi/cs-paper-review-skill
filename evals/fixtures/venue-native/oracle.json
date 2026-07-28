@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "fixture_id": "venue-native",
+  "capability_tags": [
+    "venue-profile",
+    "native-fields"
+  ],
+  "clean_control": false,
+  "required_findings": [],
+  "prohibited_semantic_keys": [],
+  "required_native_fields": [
+    "claims-supported-answer",
+    "audience-interest-answer",
+    "official-recommendation"
+  ],
+  "forbidden_outputs": [
+    "acceptance-probability",
+    "cross-venue-numeric-score"
+  ],
+  "hard_expectations": {
+    "completion": "complete",
+    "target_state": "known"
+  }
+}

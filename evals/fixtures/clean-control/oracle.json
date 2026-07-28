@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0.0",
+  "fixture_id": "clean-control",
+  "capability_tags": [
+    "negative-control",
+    "bounded-claim"
+  ],
+  "clean_control": true,
+  "required_findings": [],
+  "prohibited_semantic_keys": [
+    "invented-novelty-weakness",
+    "invented-significance-weakness",
+    "invented-missing-experiment"
+  ],
+  "hard_expectations": {
+    "completion": "complete"
+  }
+}

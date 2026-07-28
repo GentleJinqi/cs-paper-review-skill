@@ -26,6 +26,12 @@ finding、裁决和如实完成的共同责任。主要入口是
 [Codex GPT-5.6 Sol Ultra adapter](adapters/codex-gpt-5.6-sol-ultra.md)。
 它只约束一种执行环境，不改变、更不能豁免 scientific core。
 
+前两层之后还可以加载可选的 corpus intelligence。venue-background 与
+topic-near 数据集必须分开，决策状态要有证据等级，方向相近性要沿问题、
+贡献类型、机制、claim、证据结构、模态/应用六个轴记录。论文数量和相似性
+本身既不能预测录用，也不能豁免 core criterion。详见
+[venue conditioning](references/venue-conditioning.md)。
+
 ## 使用方式
 
 调用 `$cs-paper-review`，并说明稿件 source、与之匹配的 PDF、supplement、
@@ -150,6 +156,7 @@ profile 中的 prompt 与 simulation-required 字段是本地执行映射，不�
 [venue source evidence](schemas/venue-source-evidence.schema.json)、
 [venue source capture](schemas/venue-source-capture.schema.json)、
 [venue authority registry schema](schemas/venue-authority-registry.schema.json)、
+[venue corpus manifest](schemas/venue-corpus-manifest.schema.json)、
 [adapter manifest](adapters/codex/adapter-manifest.json) 和
 [promotion record schema](schemas/adapter-promotion.schema.json)；promotion
 fixtures 使用同目录的 typed evaluation schemas，包括
@@ -170,15 +177,28 @@ task）请求 `gpt-5.6-sol` 与 Codex `ultra`。root 根据独立评估或专业
 请求配置、经过字节校验的配置 receipt、控制验证结果和真实运行 telemetry
 是四类不同事实。任务名称、静态 agent 文件或子任务自述都不能证明实际
 配置。当前离线 validator 会保留但不会授予 `runtime-attested`。
-`configured-and-evaluated` 是 schema 为未来保留的无可信 telemetry 上限；
-本 release 尚未选择 lifecycle candidate，所以当前最高的 non-blocked
-compatibility claim 是 `evaluation_pending`。
+`configured-and-evaluated` 是没有可信 effective telemetry 时可用的最高
+状态。`0.2.0` release 通过精确的
+[adapter manifest](adapters/codex/adapter-manifest.json) 与通过的
+[promotion record](compatibility/adapter-promotion.json) 选择了
+`persisted-task-registry`。两个候选在同一套 oracle-blind fixtures 上分别
+生成了配置为 Sol Ultra 的 execution receipt，独立、同样配置的 semantic
+review 保留真实平手，并以二比一的严格偏好多数选择持久化实现。这支持
+`configured-and-evaluated`，但不支持 `runtime-attested`。
 
-两个 lifecycle candidates 目前都不是默认实现，所以当前 release 最高只
-能声明 `evaluation_pending`。以后只有经过对比评测并将 promotion record
-绑定到 [adapter manifest](adapters/codex/adapter-manifest.json) 后，某一
-候选才会生效；两套候选必须在同一 fixtures 上分别有 completed Sol Ultra
-execution receipt，再由独立 Sol Ultra semantic review 比较六个公开维度。
+## 评估证据
+
+冻结后的公开 conformance run 在第一次独立语义裁决中通过 16 项中的 15
+项。唯一失败暴露的是 harness 输入缺陷：venue-native dispatch 当时没有收到
+精确的 TMLR profile，因此不能正当地输出 complete 的目标会议评估。原始输出
+与失败记录均被保留。补入该公开 profile 后，只重跑了因此失效的 venue
+fixture，并继续保持相同的 oracle 隔离边界。最终裁决通过 16/16 项，匹配全部
+10 个必需科学义务，且没有保留任何禁止 finding。
+
+完整结果、哈希、修正历史与限制见
+[evaluation aggregate](evals/results/public-conformance-v1/aggregate-result.json)。
+这些有界 synthetic 结果不代表已经证明对任意论文都能准确 review。本 release
+任务不包含项目论文 review、论文修改或实验执行，也不把它们作为发布证据。
 
 ## 离线校验
 

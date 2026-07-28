@@ -1,0 +1,108 @@
+{
+  "schema_version": "1.0.0",
+  "corpus_id": "synthetic-topic-near",
+  "purpose": "topic-near",
+  "target": {
+    "venue": "ExampleConf",
+    "year": 2026,
+    "track": "main"
+  },
+  "inclusion_boundary": {
+    "decision_statuses": [
+      "accepted",
+      "rejected",
+      "unknown"
+    ],
+    "topic_dimensions": [
+      "problem_family",
+      "contribution_type",
+      "mechanism_family",
+      "claim_types",
+      "evidence_structures",
+      "modality_applications"
+    ],
+    "notes": "Synthetic topic-near metadata used only to exercise the contract."
+  },
+  "rights_boundary": {
+    "metadata_only": true,
+    "manuscript_bytes_stored": false,
+    "notes": "No paper, review, or decision text is stored."
+  },
+  "search": {
+    "queries": [
+      "synthetic problem mechanism evidence query"
+    ],
+    "sources": [
+      {
+        "url": "https://example.invalid/author-record",
+        "source_type": "discovery-only"
+      }
+    ],
+    "deduplication_key": "doi-or-title-year",
+    "screened_count": 1,
+    "included_count": 1
+  },
+  "saturation": {
+    "status": "unknown",
+    "stopping_rule": "Stop only when the latest independently specified batch adds no eligible paper and no new declared topic cell.",
+    "latest_batch": {
+      "batch_id": "synthetic-topic-batch-1",
+      "query_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "screened_count": 1,
+      "included_count": 1,
+      "marginal_additions": {
+        "eligible_papers": 0,
+        "problem_family": 1,
+        "contribution_type": 1,
+        "mechanism_family": 1,
+        "claim_types": 1,
+        "evidence_structures": 1,
+        "modality_applications": 1
+      },
+      "evidence_artifact_ids": [
+        "synthetic-discovery-record"
+      ]
+    },
+    "limitations": [
+      "Status evidence is unverified and cannot support material inference."
+    ]
+  },
+  "items": [
+    {
+      "paper_id": "synthetic-topic-near-1",
+      "title": "Synthetic topic-near discovery record",
+      "status": "unknown",
+      "status_source_url": "https://example.invalid/author-record/paper-1",
+      "status_source_type": "unverified",
+      "evidence_grade": "D",
+      "eligible_for_material_inference": false,
+      "topic_signature": {
+        "problem_family": "synthetic classification",
+        "contribution_type": "method",
+        "mechanism_family": "synthetic representation learning",
+        "claim_types": [
+          "comparative"
+        ],
+        "evidence_structures": [
+          "benchmark"
+        ],
+        "modality_applications": [
+          "synthetic vision"
+        ]
+      },
+      "similarity_assessment": {
+        "state": "near",
+        "axis_comparison": {
+          "problem_family": "match",
+          "contribution_type": "match",
+          "mechanism_family": "partial",
+          "claim_types": "match",
+          "evidence_structures": "match",
+          "modality_applications": "partial"
+        },
+        "rationale": "The synthetic record overlaps on declared scientific axes; title similarity is not used."
+      },
+      "metadata_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+    }
+  ]
+}

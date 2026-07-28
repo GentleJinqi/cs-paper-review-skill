@@ -1,9 +1,11 @@
 # External Mechanism Adoption Matrix
 
-Observed 2026-07-28. Every retained mechanism is routed, where eligible, to a
-future independent reimplementation; `copied_bytes: 0`. None was implemented
-or adopted in this source-audit stage. “Adopt after redesign” means eligible
-for incremental conformance testing, not accepted into the release.
+Observed 2026-07-28. Every retained mechanism uses a project-authored
+implementation route; `copied_bytes: 0`. The initial source-audit disposition
+was “adopt after redesign”; the status below distinguishes mechanisms now
+implemented in the portable contracts from candidates that remain
+evaluation-only. External repository layout, prompts, personas, and style are
+not the implementation authority.
 
 | Capability gap | Source mechanisms | Plan-1 disposition | Release condition |
 |---|---|---|---|
@@ -23,13 +25,14 @@ for incremental conformance testing, not accepted into the release.
 
 ## Current Integration Status
 
-The refreshed core independently implements the retained input-lineage,
+The refreshed core independently implements and unit-tests the retained input-lineage,
 source/PDF, canonical-ledger, evidence-falsification, dissent, closure, and
-stable-delta mechanisms through its own schemas, validator, and tests. No
-external pipeline or expression was copied. The lifecycle candidates and the
-new hierarchical-coverage candidate remain inactive because the current
-bounded comparison does not justify promotion; absence of a promotion is not
-paper-review incompleteness.
+stable-delta mechanisms through its own schemas, validator, and synthetic
+hard-gate fixtures. No external pipeline or expression was copied. The
+hierarchical-coverage candidate remains inactive because current evidence
+does not show an incremental scientific-review gain beyond the criterion and
+rendered-evidence coverage already present. Lifecycle selection is governed
+separately by the oracle-blind Sol Ultra comparison record.
 
 ## Rejected Or Deferred Patterns
 

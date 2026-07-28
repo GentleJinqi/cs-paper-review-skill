@@ -31,6 +31,12 @@ The release has three deliberately separate layers:
    controls one execution environment. It cannot weaken or replace the
    scientific core.
 
+An optional corpus-intelligence input sits behind the first two layers. It
+keeps venue-background and topic-near sets separate, verifies decision-status
+authority, and compares topic proximity across six scientific axes. Corpus
+size and resemblance never determine acceptance or waive a core criterion.
+See [venue conditioning](references/venue-conditioning.md).
+
 ## Use
 
 Invoke `$cs-paper-review` and provide the manuscript source, matching PDF when
@@ -165,6 +171,7 @@ Machine-contract entry points include the
 [venue source evidence](schemas/venue-source-evidence.schema.json),
 [venue source capture](schemas/venue-source-capture.schema.json),
 [venue authority registry schema](schemas/venue-authority-registry.schema.json),
+[venue corpus manifest](schemas/venue-corpus-manifest.schema.json),
 [adapter manifest](adapters/codex/adapter-manifest.json), and
 [promotion record schema](schemas/adapter-promotion.schema.json). Promotion
 fixtures use the adjacent typed evaluation schemas, including separate
@@ -190,17 +197,34 @@ Requested configuration, byte-verified configuration receipts, validation
 results, and effective runtime telemetry are distinct facts. A task name,
 static agent file, or self-report is not configuration proof. The current
 offline validator reserves but does not grant `runtime-attested`.
-`configured-and-evaluated` is the schema's future upper state without trusted
-telemetry. In this release no lifecycle candidate is selected, so the highest
-non-blocked compatibility claim is `evaluation_pending`.
+`configured-and-evaluated` is the highest state available without trusted
+effective telemetry. Release `0.2.0` selects
+`persisted-task-registry` through the exact
+[adapter manifest](adapters/codex/adapter-manifest.json) and passing
+[promotion record](compatibility/adapter-promotion.json). Both candidates
+produced distinct configured Sol Ultra execution receipts over the same
+oracle-blind fixtures; an independent configured Sol Ultra semantic comparison
+selected persistence by a two-to-one strict-preference majority, with genuine
+ties retained. This supports `configured-and-evaluated`, not
+`runtime-attested`.
 
-Both lifecycle candidates remain inactive. The current release therefore
-cannot claim more than `evaluation_pending`. A later comparative evaluation
-may select one only by binding its promotion record in the
-[adapter manifest](adapters/codex/adapter-manifest.json). Selection requires
-both candidates to have distinct completed Sol Ultra execution receipts over
-the same fixtures and an independent Sol Ultra semantic comparison across the
-six published lifecycle/quality dimensions.
+## Evaluation evidence
+
+The frozen public conformance run initially passed 15 of 16 fixtures in an
+independent semantic adjudication. The sole failure exposed a harness input
+defect: the venue-native dispatch had not supplied the exact TMLR profile, so a
+complete target-conditioned output was not justified. The original output and
+failure remain published. After adding that exact public profile, only the
+invalidated venue fixture was rerun behind the same oracle boundary. The final
+adjudication passed 16 of 16 fixtures, matched all 10 required scientific
+obligations, and retained no prohibited finding.
+
+The complete public result, hashes, correction history, and limitations are
+recorded in the
+[evaluation aggregate](evals/results/public-conformance-v1/aggregate-result.json).
+These bounded synthetic results do not establish universal review accuracy.
+Project-manuscript review, revision, and experiment execution are outside this
+release task and are not part of its evidence.
 
 ## Offline validation
 

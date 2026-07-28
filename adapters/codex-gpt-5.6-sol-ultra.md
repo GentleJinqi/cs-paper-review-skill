@@ -141,17 +141,22 @@ behavioural nonmutation. Configuration receipts establish those requested
 controls; without trusted host telemetry they do not prove effective
 permissions or historical topology.
 
-The active manifest initially selects no lifecycle candidate. The two
-inactive candidates are:
+The active manifest is the sole lifecycle-selection authority. The two
+candidate implementations are:
 
 - `adapters/codex/candidates/minimal-settled-set.md`;
 - `adapters/codex/candidates/persisted-task-registry.md`.
 
-Neither is an active default. Until comparative evaluation selects one and
-binds a canonical promotion record, compatibility is
-`evaluation_pending`. Selection must demonstrate recovery from interruption
-and compaction, no duplicate dispatch, no late-result omission, complete
-evidence retention, and no quality regression. Promotion validation
+`persisted-task-registry` is the manifest-selected active lifecycle
+implementation. It was selected by the bound release evaluation, not by file
+presence, agent count, or a style preference.
+
+Neither candidate document is active by its own presence. A candidate becomes
+active only when the manifest selects it and binds a canonical passing
+promotion record; a null selection means `evaluation_pending`. Selection must
+demonstrate recovery from interruption and compaction, no duplicate dispatch,
+no late-result omission, complete evidence retention, and no quality
+regression. Promotion validation
 deterministically compares typed, hash-bound candidate outputs with typed
 oracles. Both candidates require distinct completed Sol Ultra execution
 receipts over the same fixtures, and a third, independent Sol Ultra semantic

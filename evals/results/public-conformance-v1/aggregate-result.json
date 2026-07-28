@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0.0",
+  "evaluation_id": "public-conformance-v1-20260728",
+  "compatibility_payload_sha256": "988cc13155c13ab6975c3983a708d336a6c89f88dbb188861333f585bc4d0d1a",
+  "fixture_set": "public-conformance-v1",
+  "result": "pass",
+  "adapter_selection": {
+    "selected_candidate_id": "persisted-task-registry",
+    "promotion_record_sha256": "5896edae5e3d0562ae27a833302bc2416a7bd11b3afeed01970419e6b56a49fc",
+    "basis": "Two-to-one strict-preference majority across the declared dimensions; ties and the selected candidate's additional complexity remain explicit."
+  },
+  "public_evaluation": {
+    "base_candidate_sha256": "6d96bd4c8fbdaeaaf17fd18c9ec41de69a7e09b2f4b5506600766e7c65995209",
+    "base_semantic_adjudication_sha256": "e5bb420fe89567d2cc6992276c31a266bd0d3382bded1368886421bee238166e",
+    "base_semantic_result": {
+      "fixture_count": 16,
+      "pass_count": 15,
+      "fail_count": 1,
+      "required_obligation_count": 10,
+      "matched_obligation_count": 10,
+      "prohibited_retained_count": 0
+    },
+    "venue_profile_correction_sha256": "1d307467d1ed2404607665511b23614e191e626deffa024fe356ab6a6b062f18",
+    "venue_supplemental_output_sha256": "a1f32955de12c99dfbbe11c216f2c3f34248062b33671bad254e966526aff7cf",
+    "effective_candidate_view_sha256": "22d437834892f17cc4687bf99b339b0e005326d079ce127684daa65a03677074",
+    "final_semantic_adjudication_sha256": "97d9ec877bbed3f6de1dedce7a0ca495b3e0e5c4cb4a1e334e72aa244ce11ff2",
+    "final_semantic_result": {
+      "fixture_count": 16,
+      "pass_count": 16,
+      "fail_count": 0,
+      "required_obligation_count": 10,
+      "matched_obligation_count": 10,
+      "prohibited_retained_count": 0
+    },
+    "deterministic_exact_identity_diagnostic": {
+      "fixture_count": 16,
+      "pass_count": 6,
+      "fail_count": 10,
+      "failure_count": 13,
+      "authoritative_for_scientific_verdict": false,
+      "interpretation": "The exact-key scorer is a structural diagnostic. Free-form reviewers may split, merge, or rename an equivalent finding, so the frozen independent semantic adjudication is authoritative for scientific equivalence. The base venue-native case also lacked the exact profile later supplied in the bounded supplemental run."
+    }
+  },
+  "limitations": [
+    "Requested gpt-5.6-sol ultra configuration and byte-bound receipts are recorded, but host-effective model and effort telemetry was not surfaced; runtime provenance therefore remains unknown.",
+    "The public fixture suite is synthetic and cannot alone establish performance on arbitrary manuscripts.",
+    "Project-manuscript review, manuscript revision, and experiment execution are outside this release evaluation.",
+    "The venue correction is transparent and narrowly scoped: the original venue-native failure is retained, and only that fixture was rerun after the missing exact profile was supplied."
+  ]
+}

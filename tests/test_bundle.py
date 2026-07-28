@@ -3,6 +3,8 @@ from __future__ import annotations
 import pathlib
 import re
 import shutil
+import subprocess
+import sys
 import tempfile
 import unittest
 import json
@@ -35,10 +37,25 @@ CORE_FILES = (
     "references/finding-contract.md",
     "references/delta-review.md",
     "references/privacy-and-authorisation.md",
+    "references/venue-conditioning.md",
 )
 
 
 class BundleContractTests(unittest.TestCase):
+    def test_bundle_validator_cli_runs_from_repository_root(self) -> None:
+        completed = subprocess.run(
+            [sys.executable, "scripts/validate_bundle.py", "."],
+            cwd=ROOT,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(
+            0,
+            completed.returncode,
+            msg=completed.stdout + completed.stderr,
+        )
+
     def test_required_tree_is_complete(self) -> None:
         self.assertEqual([], validate_required_tree(ROOT))
         for relative in REQUIRED_TREE:
@@ -155,6 +172,28 @@ class BundleContractTests(unittest.TestCase):
 
     def test_bundle_aggregate_is_clean(self) -> None:
         self.assertEqual([], validate_bundle(ROOT))
+
+    def test_adapter_fixture_inputs_do_not_disclose_oracle_answers(self) -> None:
+        for path in sorted(
+            (ROOT / "evals" / "adapter-fixtures").glob("*/input.json")
+        ):
+            value = json.loads(path.read_text(encoding="utf-8"))
+            payload = value["payload"]
+            self.assertNotIn("required_behavior", payload, path.as_posix())
+            questions = payload.get("evaluation_questions")
+            self.assertIsInstance(questions, list, path.as_posix())
+            self.assertEqual(value["assertion_ids"], [
+                item["assertion_id"] for item in questions
+            ])
+            scenario = value["scenario"].casefold()
+            for answer_leak in (
+                "must retain",
+                "must avoid",
+                "must not",
+                "required behavior",
+                "expected result",
+            ):
+                self.assertNotIn(answer_leak, scenario, path.as_posix())
 
 
 class ValidatorNegativeFixtureTests(unittest.TestCase):
@@ -505,7 +544,10 @@ class ValidatorNegativeFixtureTests(unittest.TestCase):
             manifest = json.loads(
                 manifest_path.read_text(encoding="utf-8")
             )
-            self.assertIsNone(manifest["selected_candidate_id"])
+            self.assertEqual(
+                "persisted-task-registry",
+                manifest["selected_candidate_id"],
+            )
             manifest["compatibility_payload_sha256"] = (
                 compatibility_payload_sha256(root)
             )
@@ -896,6 +938,17 @@ class AdapterProfileNegativeTests(unittest.TestCase):
             any(needle in error for error in errors),
             f"{needle!r} not found in {errors!r}",
         )
+
+    def test_selected_manifest_requires_explicit_active_candidate(self) -> None:
+        text = self.adapter_text()
+        self.write_adapter(
+            text.replace(
+                "`persisted-task-registry` is the manifest-selected active "
+                "lifecycle\nimplementation.",
+                "The selected implementation is not stated here.",
+            )
+        )
+        self.assertProfileError("selected lifecycle implementation is ambiguous")
 
     def test_terra_or_max_custom_agent_fails(self) -> None:
         path = self.root / "adapters/codex/agents/cs-paper-reviewer.toml"

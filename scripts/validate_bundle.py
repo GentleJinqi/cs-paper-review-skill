@@ -6,6 +6,10 @@ from __future__ import annotations
 import pathlib
 import sys
 
+_BUNDLE_ROOT = pathlib.Path(__file__).resolve().parents[1]
+if str(_BUNDLE_ROOT) not in sys.path:
+    sys.path.insert(0, str(_BUNDLE_ROOT))
+
 from review_skill_validation import validate_bundle
 
 
@@ -24,4 +28,3 @@ def main(argv: list[str]) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main(sys.argv))
-

@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0.0",
+  "fixture_id": "known-material-defect",
+  "capability_tags": [
+    "claim-scope",
+    "data-leakage",
+    "clean-boundary"
+  ],
+  "clean_control": false,
+  "required_findings": [
+    {
+      "finding_id": "O-LEAK",
+      "criterion_id": "RC-DATA-VALIDITY",
+      "artifact_id": "paper",
+      "source_anchor": "Protocol paragraph",
+      "semantic_key": "test-label-leakage",
+      "decision_impact": "material"
+    },
+    {
+      "finding_id": "O-GEN",
+      "criterion_id": "RC-CLAIM-EVIDENCE",
+      "artifact_id": "paper",
+      "source_anchor": "Abstract",
+      "semantic_key": "unsupported-universal-generalisation",
+      "decision_impact": "material"
+    }
+  ],
+  "prohibited_semantic_keys": [
+    "invented-missing-baseline-defect"
+  ],
+  "hard_expectations": {
+    "completion": "complete"
+  }
+}
