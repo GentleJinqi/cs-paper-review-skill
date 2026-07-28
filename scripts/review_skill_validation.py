@@ -201,10 +201,23 @@ def validate_no_count_based_rigor(root: pathlib.Path) -> list[str]:
         re.compile(r"\bmax_threads\s*=", re.I),
         re.compile(r"\bdefault\s+venue\b", re.I),
         re.compile(r"\bdefault\s+(?:task|reviewer|agent|thread)\s+count\b", re.I),
+        re.compile(
+            r"\b(?:always|must|required|requiredly)\b.{0,50}\b\d+\s+"
+            r"(?:reviewers?|agents?|tasks?|threads?)\b",
+            re.I,
+        ),
     )
     for path in active_text_files(root):
         text = path.read_text(encoding="utf-8")
         for line_number, line in enumerate(text.splitlines(), start=1):
+            if re.search(
+                r"\b(?:no|not|never|without)\b.{0,35}\b"
+                r"(?:fixed|default|required|minimum|maximum)\b.{0,25}\b"
+                r"(?:count|roster|reviewers?|agents?|tasks?|threads?)\b",
+                line,
+                re.I,
+            ):
+                continue
             if any(pattern.search(line) for pattern in patterns):
                 relative = path.relative_to(root).as_posix()
                 errors.append(
@@ -229,11 +242,50 @@ def validate_adapter_profile(root: pathlib.Path) -> list[str]:
         "effective_telemetry": "telemetry disclosure",
         "not_surfaced": "absent-telemetry state",
     }
-    return [
+    errors = [
         f"adapter-profile: missing {meaning}: {token}"
         for token, meaning in requirements.items()
         if token not in lowered
     ]
+    normalised = " ".join(lowered.split())
+    if not re.search(r"codex\s+`?max`?\s+is\s+not\s+equivalent\s+to\s+ultra", normalised):
+        errors.append("adapter-profile: Codex max must be explicitly non-equivalent")
+    if re.search(
+        r"(?:not_surfaced|absent telemetry).{0,60}(?:proves|establishes|supports)"
+        r".{0,30}runtime attestation",
+        normalised,
+    ):
+        errors.append(
+            "adapter-profile: absent telemetry cannot support runtime attestation"
+        )
+    if "neither is an active default" not in normalised:
+        errors.append("adapter-profile: inactive lifecycle candidates are ambiguous")
+
+    for relative in (
+        "adapters/codex/agents/cs-paper-reviewer.toml",
+        "adapters/codex/agents/cs-paper-ae.toml",
+    ):
+        agent_path = root / relative
+        if not agent_path.is_file():
+            errors.append(f"adapter-profile: missing custom agent example: {relative}")
+            continue
+        text = agent_path.read_text(encoding="utf-8")
+        assignments = {
+            key: value
+            for key, value in re.findall(
+                r'(?m)^(model|model_reasoning_effort|sandbox_mode)\s*=\s*"([^"]+)"\s*$',
+                text,
+            )
+        }
+        if assignments.get("model") != "gpt-5.6-sol":
+            errors.append(f"adapter-profile: {relative} model must be gpt-5.6-sol")
+        if assignments.get("model_reasoning_effort") != "ultra":
+            errors.append(f"adapter-profile: {relative} effort must be ultra")
+        if assignments.get("sandbox_mode") != "read-only":
+            errors.append(f"adapter-profile: {relative} sandbox must be read-only")
+        if not re.search(r"\bdo not\b.{0,220}\bdelegate any work\b", text, re.I | re.S):
+            errors.append(f"adapter-profile: {relative} must prohibit delegation")
+    return sorted(set(errors))
 
 
 def validate_json_files(root: pathlib.Path) -> list[str]:

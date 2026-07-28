@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import pathlib
 import re
+import shutil
 import tempfile
 import unittest
 
@@ -166,6 +167,16 @@ class ValidatorNegativeFixtureTests(unittest.TestCase):
             self.assertTrue(errors)
             self.assertTrue(all("docs/legacy.md" not in error for error in errors))
 
+    def test_negated_count_guidance_is_not_a_false_positive(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            (root / "SKILL.md").write_text(
+                "---\nname: fixture\ndescription: Author-side CS paper review\n---\n"
+                "There is no fixed task count or required reviewer roster.\n",
+                encoding="utf-8",
+            )
+            self.assertEqual([], validate_no_count_based_rigor(root))
+
     def test_missing_relative_reference_is_detected(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = pathlib.Path(directory)
@@ -193,6 +204,77 @@ class ValidatorNegativeFixtureTests(unittest.TestCase):
             errors = validate_json_files(root)
             self.assertTrue(errors)
             self.assertIn("duplicate object key", errors[0])
+
+
+class AdapterProfileNegativeTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.temp = tempfile.TemporaryDirectory()
+        self.root = pathlib.Path(self.temp.name)
+        shutil.copytree(ROOT / "adapters", self.root / "adapters")
+
+    def tearDown(self) -> None:
+        self.temp.cleanup()
+
+    def adapter_text(self) -> str:
+        return (
+            self.root / "adapters/codex-gpt-5.6-sol-ultra.md"
+        ).read_text(encoding="utf-8")
+
+    def write_adapter(self, text: str) -> None:
+        (
+            self.root / "adapters/codex-gpt-5.6-sol-ultra.md"
+        ).write_text(text, encoding="utf-8")
+
+    def assertProfileError(self, needle: str) -> None:
+        errors = validate_adapter_profile(self.root)
+        self.assertTrue(
+            any(needle in error for error in errors),
+            f"{needle!r} not found in {errors!r}",
+        )
+
+    def test_terra_or_max_custom_agent_fails(self) -> None:
+        path = self.root / "adapters/codex/agents/cs-paper-reviewer.toml"
+        text = path.read_text(encoding="utf-8")
+        path.write_text(
+            text.replace('model = "gpt-5.6-sol"', 'model = "gpt-5.6-terra"'),
+            encoding="utf-8",
+        )
+        self.assertProfileError("model must be gpt-5.6-sol")
+        path.write_text(
+            text.replace(
+                'model_reasoning_effort = "ultra"',
+                'model_reasoning_effort = "max"',
+            ),
+            encoding="utf-8",
+        )
+        self.assertProfileError("effort must be ultra")
+
+    def test_missing_leaf_or_fallback_control_fails(self) -> None:
+        text = self.adapter_text()
+        self.write_adapter(text.replace("leaf-only", "bounded-child"))
+        self.assertProfileError("child topology")
+        self.write_adapter(text.replace("no silent fallback", "fallback may occur"))
+        self.assertProfileError("fallback prohibition")
+
+    def test_max_equivalence_and_false_telemetry_claim_fail(self) -> None:
+        text = self.adapter_text()
+        self.write_adapter(
+            text.replace(
+                "`max` is not equivalent to Ultra",
+                "`max` is equivalent to Ultra",
+            )
+        )
+        self.assertProfileError("non-equivalent")
+        self.write_adapter(
+            text
+            + "\n`effective_telemetry: not_surfaced` proves runtime attestation.\n"
+        )
+        self.assertProfileError("absent telemetry")
+
+    def test_positive_fixed_reviewer_count_fails(self) -> None:
+        self.write_adapter(self.adapter_text() + "\nAlways dispatch 4 reviewers.\n")
+        errors = validate_no_count_based_rigor(self.root)
+        self.assertTrue(errors)
 
 
 if __name__ == "__main__":
